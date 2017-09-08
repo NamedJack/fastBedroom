@@ -4,7 +4,39 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:background="@color/light_gray">
 
+
+        <com.ejar.fastbedroom.register.view.ClearEditText
+            android:id="@+id/school_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:maxLines="1"
+            android:paddingLeft="15dp"
+            android:textSize="15dp"
+            android:hint="请输入要选择的学校名称"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/school_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <com.ejar.fastbedroom.register.view.WaveSideBarView
+                android:id="@+id/school_side_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
     </LinearLayout>
 </layout>

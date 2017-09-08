@@ -2,6 +2,7 @@ package com.ejar.fastbedroom.register.model;
 
 import com.ejar.fastbedroom.register.bean.CodeBean;
 import com.ejar.fastbedroom.register.bean.ConfirmRegisterBean;
+import com.ejar.fastbedroom.register.bean.PointBean;
 import com.ejar.fastbedroom.register.bean.RegisterCodeBean;
 import com.ejar.fastbedroom.register.bean.SchoolBean;
 
@@ -42,7 +43,6 @@ public interface RegisterApi {
      * 确认注册
      * @param userTel
      * @param userSchool
-     * @param startYearSchool
      * @param pwd
      * @param confirmPwd
      * @param userName
@@ -53,7 +53,6 @@ public interface RegisterApi {
     @POST("regUser")
     Observable<ConfirmRegisterBean> doRegister(@Field("tel") String userTel,
                                                @Field("schoolid") int userSchool,
-                                               @Field("intSlyear") String startYearSchool,
                                                @Field("password1") String pwd,
                                                @Field("password2") String confirmPwd,
                                                @Field("name") String userName,
@@ -68,6 +67,18 @@ public interface RegisterApi {
     @POST("querySchool")
     Observable<SchoolBean> querySchool(@Field("time") String time);
 
+
+
+
+
+    /**
+     * 获取学校代理点
+     * @param id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("allshowagent")
+    Observable<PointBean> querySchoolPoint(@Field("id") int id);
 
 }
 

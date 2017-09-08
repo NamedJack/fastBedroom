@@ -1,38 +1,28 @@
 package com.ejar.fastbedroom.login;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.ejar.baseframe.base.aty.BaseActivity;
-import com.ejar.baseframe.utils.net.NetWork;
+import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
-import com.ejar.baseframe.widget.CustomDialog;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
-import com.ejar.fastbedroom.camera.CameraActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyLoginBinding;
 import com.ejar.fastbedroom.home.HomeActivity;
 import com.ejar.fastbedroom.register.aty.RegisterAty;
-import com.ejar.fastbedroom.splash.SplashActivity;
-
-import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by json on 2017/8/14.
@@ -92,7 +82,7 @@ public class LoginActivity extends BaseActivity<AtyLoginBinding> {
             return;
         }
         dialog = NetDialog.createDialog(this,"登录中...");
-        NetWork.getInstance(UrlConfig.baseUrl).create(LoginApi.class)
+        NetRequest.getInstance(UrlConfig.baseUrl).create(LoginApi.class)
                 .postLogin(userName, userPwd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,7 +114,7 @@ public class LoginActivity extends BaseActivity<AtyLoginBinding> {
                     @Override
                     public void onError(Throwable e) {
                         NetDialog.closeDialog(dialog);
-                        Log.e("msg", "错误" + e.toString());
+                        TU.cT("尚未连接到服务器,请稍后再试！");
                     }
 
                     @Override

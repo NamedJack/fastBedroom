@@ -40,11 +40,12 @@
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
                         android:text="自营超市"
+                        android:textSize="12sp"
                         android:textColor="@color/white" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_above="@id/text_ziyin"
                         android:layout_centerInParent="true"
                         android:src="@drawable/icon_shop_store" />
@@ -67,11 +68,12 @@
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
                         android:text="二手市场"
+                        android:textSize="12sp"
                         android:textColor="@color/app_title_gb" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_above="@id/text_second_hand"
                         android:layout_centerInParent="true"
                         android:src="@drawable/icon_second_hand" />
@@ -90,18 +92,21 @@
                         android:id="@+id/text_deliver"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
                         android:text="快递领取"
-                        android:textColor="@color/app_title_gb" />
+                        android:textSize="12sp"
+                        android:textColor="@color/app_title_gb"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_above="@id/text_deliver"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/icon_fast_gife" />
+                        android:src="@drawable/icon_fast_gife"
+                        android:id="@+id/imageView" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -121,11 +126,12 @@
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
                         android:text="外卖配送"
+                        android:textSize="12sp"
                         android:textColor="@color/white" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_above="@id/text_out_buy"
                         android:layout_centerInParent="true"
                         android:src="@drawable/icon_out_buy" />

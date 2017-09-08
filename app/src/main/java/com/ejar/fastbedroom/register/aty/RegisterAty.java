@@ -2,14 +2,12 @@ package com.ejar.fastbedroom.register.aty;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.ejar.baseframe.base.aty.BaseActivity;
-import com.ejar.baseframe.utils.net.NetWork;
+import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
@@ -21,13 +19,10 @@ import com.ejar.fastbedroom.register.bean.CodeBean;
 import com.ejar.fastbedroom.register.bean.RegisterCodeBean;
 import com.ejar.fastbedroom.register.model.RegisterApi;
 
-import java.io.IOException;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by json on 2017/8/15.
@@ -72,7 +67,7 @@ public class RegisterAty extends BaseActivity<AtyRegisterBinding> {
             return;
         }
         dialog = NetDialog.createDialog(this,"验证码获取中...");
-        NetWork.getInstance(UrlConfig.baseUrl).create(RegisterApi.class)
+        NetRequest.getInstance(UrlConfig.baseUrl).create(RegisterApi.class)
                 .getRegisterCode(registerName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +116,7 @@ public class RegisterAty extends BaseActivity<AtyRegisterBinding> {
             return;
         }
         dialog = NetDialog.createDialog(this,"");
-        NetWork.getInstance(UrlConfig.baseUrl).create(RegisterApi.class)
+        NetRequest.getInstance(UrlConfig.baseUrl).create(RegisterApi.class)
                 .provingTel(registerName, registerCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

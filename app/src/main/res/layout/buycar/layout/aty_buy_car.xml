@@ -6,33 +6,70 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/buy_car_rv"
+        <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/my_sw"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:textColor="@color/app_title_gb"
-                android:paddingLeft="20dp"
-                android:gravity="center_vertical"
-                android:text="合计: 368 元 (含配送费: 6元)"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-            <Button
-                android:textColor="@color/app_title_gb"
-                android:text="去结算"
-                android:padding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/view_paid_info"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/buy_car_total_money"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:paddingLeft="20dp"
+                    android:textColor="@color/app_title_gb" />
+
+                <Button
+                    android:id="@+id/go_to_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:text="去结算"
+                    android:textColor="@color/app_title_gb" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/buy_car_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/view_paid_info">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <View
+                android:id="@+id/aa"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@id/view_paid_info"
+                android:background="@color/light_gray" />
+
+            <include
+                android:id="@+id/paid_view"
+                layout="@layout/view_pay_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/aa"
+                android:visibility="gone">
+
+            </include>
+        </RelativeLayout>
+        <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+
     </LinearLayout>
 </layout>

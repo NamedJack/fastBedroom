@@ -10,33 +10,29 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
 import com.ejar.baseframe.base.aty.AppManager;
 import com.ejar.baseframe.base.aty.BaseActivity;
-import com.ejar.baseframe.utils.net.NetWork;
+import com.ejar.baseframe.utils.file.FileUtils;
+import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
-import com.ejar.fastbedroom.camera.CameraActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyPersoninfoBinding;
 import com.ejar.fastbedroom.home.HomeAtyApi;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.personal.adapter.MyListAdaper;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,40 +60,96 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
 
     private Uri imageUri;
     private String sdPath;
+    private UserInfoBean.DataBean userInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_personinfo);
-        initData();
-        init();
+//        initData();
+        initTitle();
+        setListener();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.person_center, menu);
-        setMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.save_info:
-                        showSaveinfoDialog();
-                        break;
-                }
-                return true;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
+    protected void onResume() {
+        super.onResume();
+        getPersoninfo();
     }
 
-    /**
-     * 点击保存按钮
-     */
-    private void showSaveinfoDialog() {
-        TU.cT("baocun");
+    private void getPersoninfo() {
+        mDialog = NetDialog.createDialog(this, "获取个人信息中...");
+        NetRequest.getInstance(UrlConfig.baseUrl).create(HomeAtyApi.class)
+                .getPersonInfo(APP.token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<UserInfoBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfoBean userInfoBean) {
+                        NetDialog.closeDialog(mDialog);
+                        if (userInfoBean.getCode().equals("200")) {
+//                            bundleUser.putSerializable("userInfo", userInfoBean.getData());
+                            userInfo = userInfoBean.getData();
+                            bindingView.changePersonName.setText(userInfo.getName());
+                            bindingView.changePersonSex.setText(userInfo.getSex() > 1 ? "女" : "男");
+                            bindingView.changePersonNumber.setText(userInfo.getTel());
+                            Glide.with(PersonInfoAty.this).load(UrlConfig.baseUrl + userInfo.getImg()).into(bindingView.personImgChange);
+                        } else {
+                            TU.cT(userInfoBean.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("msg", "cuowu" + e.toString());
+                        NetDialog.closeDialog(mDialog);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        NetDialog.closeDialog(mDialog);
+                    }
+                });
+    }
+
+    private void setListener() {
+        setNavigationOnClickListener(v -> {
+            finish();
+        });
+        bindingView.personImgChange.setOnClickListener(clickListener);
+        bindingView.changePersonName.setOnClickListener(clickListener);
+        bindingView.logoutAccount.setOnClickListener(clickListener);
+        bindingView.changePersonSchool.setOnClickListener(clickListener);
+        bindingView.changePersonNumber.setOnClickListener(clickListener);
+        bindingView.changePersonPwd.setOnClickListener(clickListener);
     }
 
     private void initData() {
+//        methods.add("从相册中获取");
+//        methods.add("拍照");
+//        methods.add("取消");
+//
+//        sdPath = Environment.getExternalStorageDirectory().getPath();
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
+//        String picPath = sdPath + "/DCIM/Camera/" + timeStamp + "_" + (int) Math.floor(Math.random() * 10000 + 10000) + ".png";
+//        FileUtils.createDir(sdPath + "/DCIM/Camera/");
+//        imageUri = Uri.fromFile(new File(picPath));
+//
+//        Intent intent = getIntent();
+//        Bundle bundleInfo =  new Bundle();
+//        bundleInfo =  intent.getExtras();
+//        userInfo = (UserInfoBean.DataBean) bundleInfo.getSerializable("userInfo");
+
+    }
+
+    private void initTitle() {
+        setTitle("个人中心");
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         methods.add("从相册中获取");
         methods.add("拍照");
         methods.add("取消");
@@ -105,27 +157,43 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
         sdPath = Environment.getExternalStorageDirectory().getPath();
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String picPath = sdPath + "/DCIM/Camera/" + timeStamp + "_" + (int) Math.floor(Math.random() * 10000 + 10000) + ".png";
+        FileUtils.createDir(sdPath + "/DCIM/Camera/");
         imageUri = Uri.fromFile(new File(picPath));
-    }
-
-    private void init() {
-        setTitle("个人中心");
-        setHomeBackIcon(R.drawable.icon_back_buy_car);
-        setNavigationOnClickListener(v -> {
-            finish();
-        });
-        bindingView.changePersonImg.setOnClickListener(v -> {
-            showChooseDialog();
-        });
-        bindingView.logoutAccount.setOnClickListener(clickListener);
+//        if(userInfo != null){
+//            bindingView.changePersonName.setText(userInfo.getName());
+//            bindingView.changePersonSex.setText(userInfo.getSex() > 1 ? "女" : "男");
+//            bindingView.changePersonNumber.setText(userInfo.getTel());
+//            Glide.with(this).load(UrlConfig.baseUrl + userInfo.getImg()).into(bindingView.personImgChange);
+//        }
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            Intent intent = null;
+            switch (v.getId()) {
                 case R.id.logout_account:
                     showLogoutDialog();
+                    break;
+                case R.id.person_img_change:
+                    showChooseDialog();
+                    break;
+                case R.id.change_person_name:
+                    intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
+                    intent.putExtra("item", 1);
+                    startActivity(intent);
+                    break;
+                case R.id.change_person_school:
+                    break;
+                case R.id.change_person_number:
+                    intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
+                    intent.putExtra("item", 2);
+                    startActivity(intent);
+                    break;
+                case R.id.change_person_pwd:
+                    intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
+                    intent.putExtra("item", 3);
+                    startActivity(intent);
                     break;
             }
         }
@@ -148,11 +216,16 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
             }
         });
         builder.create();
+        dialog = builder.show();
     }
 
+    /**
+     * 退出登录
+     * @param dialog
+     */
     private void gotoLogout(DialogInterface dialog) {
-        mDialog = NetDialog.createDialog(this,"退出中...");
-        NetWork.getInstance(UrlConfig.baseUrl).create(HomeAtyApi.class)
+        mDialog = NetDialog.createDialog(this, "退出中...");
+        NetRequest.getInstance(UrlConfig.baseUrl).create(HomeAtyApi.class)
                 .logout(APP.token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -166,12 +239,12 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     public void onNext(LogoutBean logoutBean) {
                         NetDialog.closeDialog(mDialog);
                         dialog.dismiss();
-                        if(logoutBean.getCode().equals("200")){
-                            SpUtils.put(APP.getInstance(),"token","");
+                        if (logoutBean.getCode().equals("200")) {
+                            SpUtils.put(APP.getInstance(), "token", "");
                             AppManager.removeAllAty();
                             Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);
                             startActivity(intent);
-                        }else {
+                        } else {
                             TU.cT("" + logoutBean.getMsg());
                         }
                     }
@@ -225,19 +298,18 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
     /**
      * 0：相册
      * 1：拍照
+     *
      * @param i
      */
     public void openMethod(int i) {
-        Log.e("msg",i + "");
+        Log.e("msg", i + "");
         Intent intent = null;
         switch (i) {
             case 0://   相册获取
-                Log.e("msg", "相册");
-                intent = new Intent(this, CameraActivity.class);
-                startActivityForResult(intent, TACK_SD_IMG);
+//                intent = new Intent(this, CameraActivity.class);
+//                startActivityForResult(intent, TACK_SD_IMG);
                 break;
             case 1://拍照
-                Log.e("msg", "拍照");
                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(intent, TACK_PICTURE);
@@ -259,12 +331,13 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                 cropImageUri(data.getData(), 800, 800, CROP_TACK_SD_IMG);
                 break;
             case CROP_TACK_PICTURE:
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    bindingView.personImg.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Glide.with(this).load(imageUri).centerCrop().into(bindingView.personImgChange);
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                    bindingView.personImg.setImageBitmap(bitmap);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
                 break;
             case CROP_TACK_SD_IMG:
@@ -298,7 +371,6 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
         //启动
         startActivityForResult(intent, requestCode);
     }
-
 
 
 }

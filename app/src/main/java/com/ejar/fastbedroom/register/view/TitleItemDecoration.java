@@ -1,4 +1,4 @@
-package com.ejar.baseframe.school;
+package com.ejar.fastbedroom.register.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,15 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.ejar.fastbedroom.register.bean.School;
+
 import java.util.List;
 
 /**
  * Created by json on 2017/9/5.
+ * 分组Title  A~Z
  */
 
 public class TitleItemDecoration extends RecyclerView.ItemDecoration {
     private static final String TAG = "TitleItemDecoration";
-    private List<SchollBean> mData;
+    private List<School> mData;
     private Paint mPaint;
     private Rect mBounds;
 
@@ -28,7 +31,7 @@ public class TitleItemDecoration extends RecyclerView.ItemDecoration {
     private static int mTitleTextSize;
 
 
-    public TitleItemDecoration(Context context, List<SchollBean> data) {
+    public TitleItemDecoration(Context context, List<School> data) {
         super();
         mData = data;
         mPaint = new Paint();

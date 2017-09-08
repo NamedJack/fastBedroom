@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:id="@+id/my_store_banner"
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_store_rv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/app_title_gb" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:id="@+id/center_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@drawable/icon_store_tv"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="推荐商品" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/center_title_text"
+                    android:paddingRight="20dp"
+                    android:src="@drawable/icon_cycle" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="21dp"
+                    android:layout_toLeftOf="@id/center_title_text"
+                    android:background="@color/app_title_gb" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/center_title_text"
+                    android:paddingLeft="20dp"
+                    android:src="@drawable/icon_cycle" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="21dp"
+                    android:layout_toRightOf="@id/center_title_text"
+                    android:background="@color/app_title_gb" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/store_recommend_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

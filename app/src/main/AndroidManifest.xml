@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ejar.fastbedroom">
 
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -27,9 +30,15 @@
         <activity android:name=".home.HomeActivity"></activity>
         <activity android:name=".register.aty.RegisterAty"></activity>
         <activity android:name=".register.aty.RegisterInfoAty"></activity>
-        <activity android:name=".camera.CameraActivity"></activity>
         <activity android:name=".buycar.BuyCarAty"></activity>
         <activity android:name=".personal.PersonInfoAty"></activity>
+        <activity android:name=".personal.ChangeMessageAty"></activity>
+        <activity android:name=".fastmail.FastMailAty"></activity>
+        <activity android:name=".mystore.StoreActivity"></activity>
+        <activity android:name=".mybook.view.BookActivity"></activity>
+        <activity android:name=".mystore.StoreSecondAty"></activity>
+        <activity android:name=".register.aty.ChooseSchoolAty"></activity>
+        <activity android:name=".schoolpoint.TobeSchoolPoinAty"></activity>
     </application>
 
 </manifest>

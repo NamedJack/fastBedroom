@@ -13,6 +13,7 @@ public class NetDialog {
         ProgressDialog dialog = new ProgressDialog(context);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage(msg);
+        dialog.setCancelable(false);
         dialog.show();
         return  dialog;
     }

@@ -6,11 +6,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:id="@+id/person_info"
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:clickable="true"
             android:orientation="horizontal">
 
             <com.ejar.baseframe.base.view.RectImageView
@@ -27,19 +28,19 @@
 
                 <TextView
                     android:id="@+id/person_name"
-                    android:paddingLeft="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:paddingBottom="10dp"
-                    android:text="七里香"
+                    android:paddingLeft="10dp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/person_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -47,8 +48,7 @@
                     android:drawableLeft="@drawable/icon_person_phone"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="13356788769" />
+                    android:paddingLeft="10dp" />
 
 
             </LinearLayout>
@@ -93,7 +93,6 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="￥  300"
                 android:textColor="@color/app_title_gb" />
 
             <Button
@@ -118,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="28dp"
                 android:layout_height="match_parent" />
@@ -143,17 +143,27 @@
                     android:layout_below="@id/image_not_pay"
                     android:gravity="center"
                     android:text="未支付" />
+
+                <TextView
+                    android:id="@+id/person_not_pay_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/image_head_number"
+                    android:gravity="center"
+                    android:text="5"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/person_not_accepte"
+                android:id="@+id/person_not_accept"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:clickable="true">
 
                 <ImageView
-
                     android:id="@+id/image_not_accepte"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
@@ -167,6 +177,17 @@
                     android:layout_below="@id/image_not_accepte"
                     android:gravity="center"
                     android:text="未接单" />
+
+                <TextView
+                    android:id="@+id/person_not_accepte_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/image_head_number"
+                    android:gravity="center"
+                    android:text="5"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -177,7 +198,7 @@
                 android:clickable="true">
 
                 <ImageView
-                    android:id="@+id/image_have_pay"
+                    android:id="@+id/person_have_pay"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_centerHorizontal="true"
@@ -187,9 +208,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/image_have_pay"
+                    android:layout_below="@id/person_have_pay"
                     android:gravity="center"
                     android:text="已支付" />
+
+                <TextView
+                    android:id="@+id/person_have_pay_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/image_head_number"
+                    android:gravity="center"
+                    android:text="5"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -213,6 +245,17 @@
                     android:layout_below="@id/image_have_complete"
                     android:gravity="center"
                     android:text="已完成" />
+
+                <TextView
+                    android:id="@+id/person_complete_number"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/image_head_number"
+                    android:gravity="center"
+                    android:text="5"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <TextView

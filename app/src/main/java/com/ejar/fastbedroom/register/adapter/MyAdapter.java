@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.fastbedroom.R;
+import com.ejar.fastbedroom.register.bean.School;
 import com.ejar.fastbedroom.register.bean.SchoolBean;
 import com.ejar.fastbedroom.register.view.PinyinUtils;
 
@@ -21,89 +23,115 @@ import java.util.List;
  * Created by json on 2017/8/21.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyRvHolder> implements View.OnClickListener {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
+    private LayoutInflater mInflater;
+    //    private List<SortModel> mData;
+    private List<School> mData;
+    private Context mContext;
 
-
-    private List<SchoolBean.DataBean.SchollBean> schoolList;
-    private LayoutInflater inflater;
-    private MyItemClickListener itemClickListener = null;
-
-    public MyAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
-        schoolList = new ArrayList<>();
+    public MyAdapter(Context context, List<School> data) {
+        mInflater = LayoutInflater.from(context);
+        mData = data;
+        this.mContext = context;
     }
 
     @Override
-    public MyRvHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_school, parent, false);
-        MyRvHolder holder = new MyRvHolder(view);
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.item_school, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.tvName = (TextView) view.findViewById(R.id.school_name);
         view.setOnClickListener(this);
-        return holder;
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MyRvHolder holder, int position) {
-        holder.schoolName.setText(schoolList.get(position).getSchollName());
+    public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
+//        if (mOnItemClickListener != null) {
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mOnItemClickListener.onItemClick(holder.itemView, position);
+//                }
+//            });
+//
+//        }
+
+        holder.tvName.setText(this.mData.get(position).getSchollName());
         holder.itemView.setTag(position);
+//        holder.tvName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(mContext, mData.get(position).getSchollName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
     }
 
-    public void setData(List<SchoolBean.DataBean.SchollBean> userList) {
-        this.schoolList.clear();
-        this.schoolList = userList;
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+
+    //**********************itemClick************************
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(mOnItemClickListener != null){
+            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+        }
+    }
+//**************************************************************
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     /**
-     * 用于获得列表中第一个首字母为sign的item位置
+     * 提供给Activity刷新数据
      *
-     * @param sign
-     * @return
+     * @param list
      */
-    public int getFirstPositionByChar(char sign) {
-        if (sign == '#') {
-            return 0;
-        }
-        for (int i = 0; i < schoolList.size(); i++) {
+    public void updateList(List<School> list) {
+        this.mData = list;
+        notifyDataSetChanged();
+    }
 
-            String name = schoolList.get(i).getSchollName();
-            char head = PinyinUtils.getHeadChar(name);
-            if (head == sign) {
+    public Object getItem(int position) {
+        return mData.get(position);
+    }
+
+    /**
+     * 根据ListView的当前位置获取分类的首字母的char ascii值
+     */
+    public int getSectionForPosition(int position) {
+        return mData.get(position).getLetters().charAt(0);
+    }
+
+    /**
+     * 根据分类的首字母的Char ascii值获取其第一次出现该首字母的位置
+     */
+    public int getPositionForSection(int section) {
+        for (int i = 0; i < getItemCount(); i++) {
+            String sortStr = mData.get(i).getLetters();
+            char firstChar = sortStr.toUpperCase().charAt(0);
+            if (firstChar == section) {
                 return i;
             }
         }
         return -1;
     }
-
-    @Override
-    public int getItemCount() {
-        return schoolList.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (itemClickListener != null) {
-            itemClickListener.onItemClick(v, (int) v.getTag());
-        }
-    }
-
-
-    class MyRvHolder extends RecyclerView.ViewHolder {
-        TextView schoolName;
-
-        public MyRvHolder(View itemView) {
-            super(itemView);
-            schoolName = (TextView) itemView.findViewById(R.id.school_name);
-        }
-
-    }
-
-    public void setItemClickListener(MyItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-
-    public static interface MyItemClickListener {
-        void onItemClick(View view, int postion);
-    }
-
-
 }

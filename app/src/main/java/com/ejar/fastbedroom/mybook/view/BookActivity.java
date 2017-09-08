@@ -1,11 +1,13 @@
-package com.ejar.fastbedroom.mybook;
+package com.ejar.fastbedroom.mybook.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.widget.TabHost;
 
 import com.ejar.baseframe.base.aty.BaseActivity;
 import com.ejar.fastbedroom.R;
@@ -22,6 +24,7 @@ import java.util.List;
 
 /**
  * Created by json on 2017/8/28.
+ * home 快递领取 进去
  */
 
 public class BookActivity extends BaseActivity<AtyBookBinding> {
@@ -30,14 +33,19 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
     private NotPaidFragment notPaidFragment;
     private WaitAcceptFragment waitAcceptFragment;
     private WaitDeliverFragment waitDeliverFragment;
-
+    private int codeAty;
 
     private String[] titles = {"自营超市","外卖配送","快递领取"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_book);
-        initTitle();
+
+        Intent intent = getIntent();
+        codeAty = intent.getIntExtra("view",-1);
+
+
+        initTitle(codeAty);
         initData();
 
         if (savedInstanceState != null) {
@@ -73,8 +81,22 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
         bindingView.myBookTab.setupWithViewPager(bindingView.myBookPager);
     }
 
-    private void initTitle() {
-        setTitle("");
+    private void initTitle(int codeAty) {
+        switch (codeAty){
+            case 1:
+                setTitle("未支付");
+                break;
+            case 2:
+                setTitle("未接单");
+                break;
+            case 3:
+                setTitle("已支付");
+                break;
+            case 4:
+                setTitle("已完成");
+                break;
+        }
+
         setNavigationOnClickListener(v -> {finish();});
 
     }

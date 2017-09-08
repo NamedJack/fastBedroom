@@ -83,4 +83,5 @@ public abstract class MyRecyclerViewAdapter<T> extends RecyclerView.Adapter<MyVi
         });
     }
 
+
 }

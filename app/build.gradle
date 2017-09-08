@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 25
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.ejar.fastbedroom"
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -39,7 +39,10 @@ android {
                     'src/main/res/layout/personal',
                     'src/main/res/layout/register',
                     'src/main/res/layout/splash',
-                    'src/main/res/layout/buycar'
+                    'src/main/res/layout/buycar',
+                    'src/main/res/layout/fastmail',
+                    'src/main/res/layout/mystore',
+                    'src/main/res/layout/mybook'
             ]
         }
     }
@@ -51,11 +54,11 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:22+'
+    implementation 'com.android.support:appcompat-v7:25+'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation project(':base_frame')
     compile 'org.litepal.android:core:1.6.0'
-    compile 'com.android.support:recyclerview-v7:22.+'
+    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
     implementation files('libs/pinyin4j-2.5.0.jar')
 }

@@ -1,5 +1,6 @@
 package com.ejar.fastbedroom.personal;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,14 +9,19 @@ import java.util.List;
 
 public class UserInfoBean {
 
+
     /**
      * code : 200
+     * okurl : null
+     * failUrl : null
      * msg : 获取成功
      * token : null
-     * data : {"id":1,"tel":"123","username":"nidaye","password":"","name":" 碧二","img":null,"sex":1,"intSlyear":"2016.6","schoolid":1,"edittime":0,"agent":{"id":1,"agentname":"屎粑粑","adminid":1,"schoolname":null,"adminname":"倪大爷","couriernum":2,"agentremarks":"1","courierbonus":0.7,"agentbonus":0.2,"superbonus":0.1},"userAddress":[{"id":1,"receivename":"倪大爷","receivetel":"13990909896","receivesite":"畜生公寓3楼318号","dpareaid":1,"userid":1,"state":1}],"money":250,"tobedistribution":1,"pendingpayment":1,"receiptofgoods":1}
+     * data : {"id":17,"tel":"18081231464","username":null,"password":"","name":"我也是","img":"assets/upload/img/201708/20170804115516653.jpeg","sex":2,"schoolid":30,"edittime":1,"agent":{"id":30,"schoolid":1,"agentname":"北京大学朝阳校区","adminid":56,"schoolname":"北京大学","adminname":"123","couriernum":0,"agentremarks":"2","courierbonus":0.6,"agentbonus":0.2,"superbonus":0.2},"userAddress":[{"id":16,"receivename":"刚刚","receivetel":"13548754875","receivesite":"到底","dpareaid":9,"dpareaname":null,"userid":17,"state":2},{"id":17,"receivename":"呵呵","receivetel":"13548754875","receivesite":"说的","dpareaid":10,"dpareaname":null,"userid":17,"state":1},{"id":18,"receivename":"刚刚","receivetel":"13584848484","receivesite":"刚刚","dpareaid":9,"dpareaname":null,"userid":17,"state":1},{"id":20,"receivename":"你是智障","receivetel":"18081231464","receivesite":"my破傻X我现在","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":21,"receivename":"高学历","receivetel":"18081231464","receivesite":"里咯红","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":22,"receivename":"高学历","receivetel":"18081231464","receivesite":"里咯红","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":26,"receivename":"何久腾","receivetel":"17711405865","receivesite":"17栋211","dpareaid":9,"dpareaname":null,"userid":17,"state":1}],"endgoods":9,"money":121.25,"is_authentication":4,"au_img":"assets/upload/img/201708/20170804115516653.jpeg","img_state":1,"wx_account":"888888","wx_name":"必须发","api_account":"666666666","api_name":"就是牛","tobedistribution":5,"receiptofgoods":6,"pendingpayment":0}
      */
 
     private String code;
+    private String okurl;
+    private String failUrl;
     private String msg;
     private String token;
     private DataBean data;
@@ -26,6 +32,22 @@ public class UserInfoBean {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Object getOkurl() {
+        return okurl;
+    }
+
+    public void setOkurl(String okurl) {
+        this.okurl = okurl;
+    }
+
+    public Object getFailUrl() {
+        return failUrl;
+    }
+
+    public void setFailUrl(String failUrl) {
+        this.failUrl = failUrl;
     }
 
     public String getMsg() {
@@ -52,24 +74,31 @@ public class UserInfoBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
-         * id : 1
-         * tel : 123
-         * username : nidaye
+         * id : 17
+         * tel : 18081231464
+         * username : null
          * password :
-         * name :  碧二
-         * img : null
-         * sex : 1
-         * intSlyear : 2016.6
-         * schoolid : 1
-         * edittime : 0
-         * agent : {"id":1,"agentname":"屎粑粑","adminid":1,"schoolname":null,"adminname":"倪大爷","couriernum":2,"agentremarks":"1","courierbonus":0.7,"agentbonus":0.2,"superbonus":0.1}
-         * userAddress : [{"id":1,"receivename":"倪大爷","receivetel":"13990909896","receivesite":"畜生公寓3楼318号","dpareaid":1,"userid":1,"state":1}]
-         * money : 250
-         * tobedistribution : 1
-         * pendingpayment : 1
-         * receiptofgoods : 1
+         * name : 我也是
+         * img : assets/upload/img/201708/20170804115516653.jpeg
+         * sex : 2
+         * schoolid : 30
+         * edittime : 1
+         * agent : {"id":30,"schoolid":1,"agentname":"北京大学朝阳校区","adminid":56,"schoolname":"北京大学","adminname":"123","couriernum":0,"agentremarks":"2","courierbonus":0.6,"agentbonus":0.2,"superbonus":0.2}
+         * userAddress : [{"id":16,"receivename":"刚刚","receivetel":"13548754875","receivesite":"到底","dpareaid":9,"dpareaname":null,"userid":17,"state":2},{"id":17,"receivename":"呵呵","receivetel":"13548754875","receivesite":"说的","dpareaid":10,"dpareaname":null,"userid":17,"state":1},{"id":18,"receivename":"刚刚","receivetel":"13584848484","receivesite":"刚刚","dpareaid":9,"dpareaname":null,"userid":17,"state":1},{"id":20,"receivename":"你是智障","receivetel":"18081231464","receivesite":"my破傻X我现在","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":21,"receivename":"高学历","receivetel":"18081231464","receivesite":"里咯红","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":22,"receivename":"高学历","receivetel":"18081231464","receivesite":"里咯红","dpareaid":12,"dpareaname":null,"userid":17,"state":1},{"id":26,"receivename":"何久腾","receivetel":"17711405865","receivesite":"17栋211","dpareaid":9,"dpareaname":null,"userid":17,"state":1}]
+         * endgoods : 9
+         * money : 121.25
+         * is_authentication : 4
+         * au_img : assets/upload/img/201708/20170804115516653.jpeg
+         * img_state : 1
+         * wx_account : 888888
+         * wx_name : 必须发
+         * api_account : 666666666
+         * api_name : 就是牛
+         * tobedistribution : 5
+         * receiptofgoods : 6
+         * pendingpayment : 0
          */
 
         private int id;
@@ -79,14 +108,21 @@ public class UserInfoBean {
         private String name;
         private String img;
         private int sex;
-        private String intSlyear;
         private int schoolid;
         private int edittime;
         private AgentBean agent;
-        private int money;
+        private int endgoods;
+        private double money;
+        private int is_authentication;
+        private String au_img;
+        private int img_state;
+        private String wx_account;
+        private String wx_name;
+        private String api_account;
+        private String api_name;
         private int tobedistribution;
-        private int pendingpayment;
         private int receiptofgoods;
+        private int pendingpayment;
         private List<UserAddressBean> userAddress;
 
         public int getId() {
@@ -105,7 +141,7 @@ public class UserInfoBean {
             this.tel = tel;
         }
 
-        public String getUsername() {
+        public Object getUsername() {
             return username;
         }
 
@@ -129,7 +165,7 @@ public class UserInfoBean {
             this.name = name;
         }
 
-        public Object getImg() {
+        public String getImg() {
             return img;
         }
 
@@ -143,14 +179,6 @@ public class UserInfoBean {
 
         public void setSex(int sex) {
             this.sex = sex;
-        }
-
-        public String getIntSlyear() {
-            return intSlyear;
-        }
-
-        public void setIntSlyear(String intSlyear) {
-            this.intSlyear = intSlyear;
         }
 
         public int getSchoolid() {
@@ -177,12 +205,76 @@ public class UserInfoBean {
             this.agent = agent;
         }
 
-        public int getMoney() {
+        public int getEndgoods() {
+            return endgoods;
+        }
+
+        public void setEndgoods(int endgoods) {
+            this.endgoods = endgoods;
+        }
+
+        public double getMoney() {
             return money;
         }
 
-        public void setMoney(int money) {
+        public void setMoney(double money) {
             this.money = money;
+        }
+
+        public int getIs_authentication() {
+            return is_authentication;
+        }
+
+        public void setIs_authentication(int is_authentication) {
+            this.is_authentication = is_authentication;
+        }
+
+        public String getAu_img() {
+            return au_img;
+        }
+
+        public void setAu_img(String au_img) {
+            this.au_img = au_img;
+        }
+
+        public int getImg_state() {
+            return img_state;
+        }
+
+        public void setImg_state(int img_state) {
+            this.img_state = img_state;
+        }
+
+        public String getWx_account() {
+            return wx_account;
+        }
+
+        public void setWx_account(String wx_account) {
+            this.wx_account = wx_account;
+        }
+
+        public String getWx_name() {
+            return wx_name;
+        }
+
+        public void setWx_name(String wx_name) {
+            this.wx_name = wx_name;
+        }
+
+        public String getApi_account() {
+            return api_account;
+        }
+
+        public void setApi_account(String api_account) {
+            this.api_account = api_account;
+        }
+
+        public String getApi_name() {
+            return api_name;
+        }
+
+        public void setApi_name(String api_name) {
+            this.api_name = api_name;
         }
 
         public int getTobedistribution() {
@@ -193,20 +285,20 @@ public class UserInfoBean {
             this.tobedistribution = tobedistribution;
         }
 
-        public int getPendingpayment() {
-            return pendingpayment;
-        }
-
-        public void setPendingpayment(int pendingpayment) {
-            this.pendingpayment = pendingpayment;
-        }
-
         public int getReceiptofgoods() {
             return receiptofgoods;
         }
 
         public void setReceiptofgoods(int receiptofgoods) {
             this.receiptofgoods = receiptofgoods;
+        }
+
+        public int getPendingpayment() {
+            return pendingpayment;
+        }
+
+        public void setPendingpayment(int pendingpayment) {
+            this.pendingpayment = pendingpayment;
         }
 
         public List<UserAddressBean> getUserAddress() {
@@ -217,24 +309,26 @@ public class UserInfoBean {
             this.userAddress = userAddress;
         }
 
-        public static class AgentBean {
+        public static class AgentBean implements Serializable{
             /**
-             * id : 1
-             * agentname : 屎粑粑
-             * adminid : 1
-             * schoolname : null
-             * adminname : 倪大爷
-             * couriernum : 2
-             * agentremarks : 1
-             * courierbonus : 0.7
+             * id : 30
+             * schoolid : 1
+             * agentname : 北京大学朝阳校区
+             * adminid : 56
+             * schoolname : 北京大学
+             * adminname : 123
+             * couriernum : 0
+             * agentremarks : 2
+             * courierbonus : 0.6
              * agentbonus : 0.2
-             * superbonus : 0.1
+             * superbonus : 0.2
              */
 
             private int id;
+            private int schoolid;
             private String agentname;
             private int adminid;
-            private Object schoolname;
+            private String schoolname;
             private String adminname;
             private int couriernum;
             private String agentremarks;
@@ -248,6 +342,14 @@ public class UserInfoBean {
 
             public void setId(int id) {
                 this.id = id;
+            }
+
+            public int getSchoolid() {
+                return schoolid;
+            }
+
+            public void setSchoolid(int schoolid) {
+                this.schoolid = schoolid;
             }
 
             public String getAgentname() {
@@ -266,11 +368,11 @@ public class UserInfoBean {
                 this.adminid = adminid;
             }
 
-            public Object getSchoolname() {
+            public String getSchoolname() {
                 return schoolname;
             }
 
-            public void setSchoolname(Object schoolname) {
+            public void setSchoolname(String schoolname) {
                 this.schoolname = schoolname;
             }
 
@@ -323,15 +425,16 @@ public class UserInfoBean {
             }
         }
 
-        public static class UserAddressBean {
+        public static class UserAddressBean implements Serializable{
             /**
-             * id : 1
-             * receivename : 倪大爷
-             * receivetel : 13990909896
-             * receivesite : 畜生公寓3楼318号
-             * dpareaid : 1
-             * userid : 1
-             * state : 1
+             * id : 16
+             * receivename : 刚刚
+             * receivetel : 13548754875
+             * receivesite : 到底
+             * dpareaid : 9
+             * dpareaname : null
+             * userid : 17
+             * state : 2
              */
 
             private int id;
@@ -339,6 +442,7 @@ public class UserInfoBean {
             private String receivetel;
             private String receivesite;
             private int dpareaid;
+            private Object dpareaname;
             private int userid;
             private int state;
 
@@ -380,6 +484,14 @@ public class UserInfoBean {
 
             public void setDpareaid(int dpareaid) {
                 this.dpareaid = dpareaid;
+            }
+
+            public Object getDpareaname() {
+                return dpareaname;
+            }
+
+            public void setDpareaname(Object dpareaname) {
+                this.dpareaname = dpareaname;
             }
 
             public int getUserid() {

@@ -1,4 +1,4 @@
-package com.ejar.baseframe;
+package com.ejar.fastbedroom.mystore.banner;
 
 import android.content.Context;
 import android.widget.ImageView;

@@ -1,4 +1,4 @@
-package com.ejar.baseframe.school;
+package com.ejar.fastbedroom.register.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.ejar.baseframe.R;
+import com.ejar.fastbedroom.R;
 
 import java.util.Arrays;
 import java.util.List;

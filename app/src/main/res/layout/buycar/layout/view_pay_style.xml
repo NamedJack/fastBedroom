@@ -1,6 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fcf1f1"
+    android:orientation="vertical"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="请选择你的支付方式"
+        android:textColor="@color/app_title_gb" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/paid_by_weixin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/img_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:src="@drawable/img_weixin" />
+
+            <TextView
+                android:textColor="#1afa29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_weixin"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/radiou_button_normal"
+                android:drawablePadding="5dp"
+                android:padding="10dp"
+                android:text="微信支付" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/paid_by_zhifubao"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/img_zhifubao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:src="@drawable/img_zhifubao" />
+
+            <TextView
+                android:textColor="#19a0e5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_zhifubao"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/radiou_button_normal"
+                android:drawablePadding="5dp"
+                android:padding="10dp"
+                android:text="支付宝支付" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray">
+
+    </TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp">
+
+    </View>
 
 </LinearLayout>

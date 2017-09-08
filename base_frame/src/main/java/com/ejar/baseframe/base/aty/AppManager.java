@@ -16,7 +16,6 @@ public class AppManager {
     private static Stack<Activity> activityStruct = new Stack<>();
 
     public static void addActivity(Activity activity) {
-        Log.e("msg","bbbbbbb");
         activityStruct.push(activity);
     }
 

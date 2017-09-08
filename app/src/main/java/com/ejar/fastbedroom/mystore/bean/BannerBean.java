@@ -1,4 +1,4 @@
-package com.ejar.fastbedroom.mystore;
+package com.ejar.fastbedroom.mystore.bean;
 
 import java.util.List;
 

@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
-import com.ejar.fastbedroom.camera.CameraActivity;
 import com.ejar.fastbedroom.home.HomeActivity;
 import com.ejar.fastbedroom.login.LoginActivity;
 
@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                String token = (String) SpUtils.get(APP.getInstance(), "token", "");
+                Log.e("msg","" + token);
                 if (TextUtils.isEmpty(token)) {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
 //                    startActivity(new Intent(SplashActivity.this, CameraActivity.class));
