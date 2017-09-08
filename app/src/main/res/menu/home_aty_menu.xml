@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/icon_home_right"
+        android:icon="@drawable/icon_toolbar_right"
+        android:showAsAction="always"
+        android:title="校园动态"
+        app:showAsAction="always"
+        tools:ignore="AppCompatResource"></item>
+</menu>

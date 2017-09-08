@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_men"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_sex_man"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="@drawable/sex_btn_bg"
+            android:id="@+id/btn_man"
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/img_men"
+            android:text="男神"
+            android:textSize="20sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_woman"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_sex_woman"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="@drawable/sex_btn_bg"
+            android:id="@+id/btn_woman"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/img_woman"
+            android:text="女神"
+            android:textSize="20sp"
+            android:layout_width="80dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

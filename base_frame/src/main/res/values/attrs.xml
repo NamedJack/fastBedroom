@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--底部Tabbar菜单栏的自定义属性-->
+    <declare-styleable name="TabBar_Attr">
+        <attr name="icon" format="reference" />
+        <attr name="name" format="string" />
+    </declare-styleable>
+
+
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchEditTextView">
+        <attr name="imagewidth" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+
+    </declare-styleable>
+
+
+    <declare-styleable name="MyRadioButton">
+        <attr name="rbDrawableTopSize" format="dimension" />
+        <attr name="rbDrawableTop" format="reference" />
+    </declare-styleable>
+</resources>
