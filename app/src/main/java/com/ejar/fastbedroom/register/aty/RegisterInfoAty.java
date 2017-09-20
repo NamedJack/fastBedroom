@@ -2,15 +2,10 @@ package com.ejar.fastbedroom.register.aty;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -31,17 +26,10 @@ import com.ejar.fastbedroom.databinding.AtyRegisterInfoBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.register.adapter.MyAdapter;
 import com.ejar.fastbedroom.register.bean.ConfirmRegisterBean;
-import com.ejar.fastbedroom.register.bean.School;
-import com.ejar.fastbedroom.register.model.RegisterApi;
-import com.ejar.fastbedroom.register.view.ClearEditText;
+import com.ejar.fastbedroom.Api.RegisterApi;
 import com.ejar.fastbedroom.register.view.PinyinComparator;
-import com.ejar.fastbedroom.register.view.TitleItemDecoration;
-import com.ejar.fastbedroom.register.view.WaveSideBarView;
-
-import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;

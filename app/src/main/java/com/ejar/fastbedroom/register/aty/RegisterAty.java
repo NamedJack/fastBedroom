@@ -17,7 +17,7 @@ import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyRegisterBinding;
 import com.ejar.fastbedroom.register.bean.CodeBean;
 import com.ejar.fastbedroom.register.bean.RegisterCodeBean;
-import com.ejar.fastbedroom.register.model.RegisterApi;
+import com.ejar.fastbedroom.Api.RegisterApi;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"></TextView>
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <ImageView
+
+            android:src="@drawable/icon_add_user_name"
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"/>
+        <EditText
+            android:id="@+id/add_user_name"
+            android:textSize="@dimen/center_text_size"
+            android:hint="收货人姓名"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <ImageView
+            android:tint="@color/phone"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_add_user_tel"
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="20dp" />
+        <EditText
+            android:inputType="number"
+            android:maxLength="11"
+            android:id="@+id/add_user_phone"
+            android:textSize="@dimen/center_text_size"
+            android:hint="收货人手机号码"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <ImageView
+            android:tint="@color/app_title_gb"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_add_user_addr"
+            android:layout_weight="1.5"
+            android:layout_width="0dp"
+            android:layout_height="20dp" />
+        <TextView
+            android:id="@+id/add_user_addr"
+            android:paddingRight="18dp"
+            android:drawableRight="@drawable/icon_more"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/center_text_size"
+            android:hint="收货人地址"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <EditText
+            android:id="@+id/add_user_door"
+            android:paddingLeft="20dp"
+            android:paddingRight="18dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/center_text_size"
+            android:hint="楼层门号 例如:XX层 - XX号"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_confirm"
+        android:textColor="@color/white"
+        android:text="确认添加"
+        android:layout_margin="20dp"
+        android:background="@color/app_title_gb"
+        android:layout_width="match_parent"
+        android:layout_height="38dp" />
+</LinearLayout>
+</layout>

@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera2.full" />
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".application.APP"
         android:allowBackup="true"
@@ -38,7 +41,18 @@
         <activity android:name=".mybook.view.BookActivity"></activity>
         <activity android:name=".mystore.StoreSecondAty"></activity>
         <activity android:name=".register.aty.ChooseSchoolAty"></activity>
-        <activity android:name=".schoolpoint.TobeSchoolPoinAty"></activity>
+        <activity android:name=".useraddr.UserAddrAty"></activity>
+        <activity android:name=".useraddr.UserAddAddressAty"></activity>
+        <activity android:name=".fastmail.MailDeliverWayAty"></activity>
+        <activity android:name=".pay.PayAty"></activity>
+        <activity android:name=".wxapi.WXPayEntryActivity"></activity>
+        <activity android:name=".pay.PayYueAty"></activity>
+        <activity android:name=".mystore.GoodsDetailAty"></activity>
+        <activity android:name=".jion.ToBeAgentAty"></activity>
+        <activity android:name=".jion.AgentAty"></activity>
+        <activity android:name=".certification.CertificationAty"></activity>
+        <activity android:name=".personal.aty.PhotoAty"
+            android:theme="@style/MyAtyDialogStyle"></activity>
     </application>
 
 </manifest>

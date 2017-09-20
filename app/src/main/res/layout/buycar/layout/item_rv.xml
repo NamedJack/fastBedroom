@@ -9,8 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
-
+        <CheckBox
+            android:button="@drawable/buy_car_radio_button_bg"
+            android:id="@+id/goods_isChoose"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_normal_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <ImageView
+            android:layout_marginStart="10dp"
             android:id="@+id/goods_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -31,7 +39,7 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="夏威夷松子,颗粒饱满"
-                android:textSize="18sp"
+                android:textSize="@dimen/center_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -41,80 +49,103 @@
                 android:layout_weight="0.8"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="夏威夷松子,颗粒饱满" />
+                android:text="夏威夷松子,颗粒饱满"
+                android:textSize="@dimen/small_text_size" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/goods_send_charge"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.8"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="夏威夷松子,颗粒饱满" />
+                android:text="夏威夷松子,颗粒饱满"
+                android:visibility="gone" />
 
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.2"
-                android:gravity="center_vertical">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:textColor="@color/app_title_gb"
-                    android:layout_alignParentLeft="true"
                     android:id="@+id/goods_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
                     android:gravity="center_vertical"
                     android:text="25元/250g"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:textColor="@color/app_title_gb"
+                    android:textSize="@dimen/small_text_size" />
+
                 <ImageView
-                    android:visibility="invisible"
-                    android:layout_marginRight="5dp"
+
                     android:id="@+id/img_add_number"
-                    android:layout_gravity="center"
-                    android:tint="@color/app_title_gb"
-                    android:src="@drawable/img_buy_goods_animation"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignTop="@+id/goods_cut_number"
-                    android:layout_alignParentEnd="true" />
-                <ImageView
-                    android:layout_marginRight="5dp"
-                    android:id="@+id/goods_add_number"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/goods_cut_number"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_add"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/img_buy_goods_animation"
+                    android:tint="@color/app_title_gb"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/goods_add_number"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignTop="@+id/goods_cut_number"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/goods_cut_number"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/icon_add" />
+
+                <TextView
+                    android:id="@+id/white_a"
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/goods_add_number" />
 
                 <TextView
                     android:id="@+id/goods_number"
-                    android:gravity="center"
-                    android:background="@null"
-                    android:inputType="number"
-                    android:layout_width="60dp"
+                    android:layout_width="25dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/goods_add_number" />
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_toLeftOf="@id/white_a"
+                    android:background="@drawable/goods_number_shape"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/white_b"
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/goods_number" />
+
                 <ImageView
-                    android:layout_toLeftOf="@id/goods_number"
                     android:id="@+id/goods_cut_number"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icon_less"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_gravity="center"
+                    android:layout_toLeftOf="@id/white_b"
+                    android:src="@drawable/icon_less" />
 
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/light_gray"/>
+        android:background="@color/light_gray" />
 </LinearLayout>

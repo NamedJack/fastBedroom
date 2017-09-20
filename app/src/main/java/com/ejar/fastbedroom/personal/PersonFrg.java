@@ -1,11 +1,8 @@
 package com.ejar.fastbedroom.personal;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 //import com.bumptech.glide.Glide;
@@ -13,19 +10,19 @@ import com.bumptech.glide.Glide;
 import com.ejar.baseframe.base.frg.BaseFragment;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.buycar.BuyCarAty;
+import com.ejar.fastbedroom.certification.CertificationAty;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.FrgPersonBinding;
-import com.ejar.fastbedroom.home.HomeAtyApi;
+import com.ejar.fastbedroom.Api.HomeAtyApi;
+import com.ejar.fastbedroom.jion.ToBeAgentAty;
 import com.ejar.fastbedroom.mybook.view.BookActivity;
+import com.ejar.fastbedroom.useraddr.UserAddrAty;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -77,24 +74,9 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
         bindingView.personPhoneNumber.setVisibility(View.VISIBLE);
         bindingView.personPhoneNumber.setText("" + userInfoBean.getData().getTel());
         bindingView.personTotalMoney.setText("￥  " + userInfoBean.getData().getMoney());
-        if (userInfoBean.getData().getTobedistribution() > 0) {
-            //未付款数量
-            bindingView.personNotPayNumber.setVisibility(View.VISIBLE);
-            bindingView.personNotPayNumber.setText(userInfoBean.getData().getTobedistribution() + "");
-        }
-        if (userInfoBean.getData().getReceiptofgoods() > 0) {
-            //未接单数量
-            bindingView.personNotAccepteNumber.setVisibility(View.VISIBLE);
-            bindingView.personNotAccepteNumber.setText(userInfoBean.getData().getReceiptofgoods() + "");
-        }
-        if (userInfoBean.getData().getPendingpayment() > 0) {
-            //未收货数量
-            bindingView.personHavePayNumber.setVisibility(View.VISIBLE);
-            bindingView.personHavePayNumber.setText(userInfoBean.getData().getPendingpayment() + "");
-        }
         Glide.with(this)
                 .load(UrlConfig.baseUrl + userInfoBean.getData().getImg())
-                .error(R.drawable.defult_img)
+                .error(R.drawable.image_user_head)
                 .into(bindingView.personImg);
 
     }
@@ -109,6 +91,10 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
         bindingView.personMySecondHand.setOnClickListener(clickListener);
         bindingView.personAdvice.setOnClickListener(clickListener);
         bindingView.personAboutUs.setOnClickListener(clickListener);
+        bindingView.personBuyAddress.setOnClickListener(clickListener);
+
+
+
 
         bindingView.personNotPay.setOnClickListener(clickListener);//未支付
         bindingView.personNotAccept.setOnClickListener(clickListener);//未接单
@@ -130,6 +116,10 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
                 intent = new Intent(getActivity(), BuyCarAty.class);
                 startActivity(intent);
                 break;
+            case R.id.person_buy_address://收货地址
+                intent = new Intent(getActivity(), UserAddrAty.class);
+                startActivity(intent);
+                break;
             case R.id.person_not_pay://未支付
                 intent = new Intent(getActivity(), BookActivity.class);
                 intent.putExtra("view", 1);
@@ -148,6 +138,14 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
             case R.id.person_complete://已完成
                 intent = new Intent(getActivity(), BookActivity.class);
                 intent.putExtra("view", 4);
+                startActivity(intent);
+                break;
+            case R.id.person_to_act://成为代理人
+                intent = new Intent(getActivity(), ToBeAgentAty.class);
+                startActivity(intent);
+                break;
+            case R.id.person_certification://实名认证
+                intent = new Intent(getActivity(), CertificationAty.class);
                 startActivity(intent);
                 break;
 

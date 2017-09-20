@@ -19,28 +19,37 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" />
 
-        <com.youth.banner.Banner
-            android:id="@+id/my_store_second_banner"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="120dp">
-        </com.youth.banner.Banner>
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.youth.banner.Banner
+                    android:id="@+id/my_store_second_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+                </com.youth.banner.Banner>
 
-        <RadioGroup
-            android:layout_below="@id/my_store_second_banner"
-            android:id="@+id/second_store_tab"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+                <RadioGroup
+                    android:layout_below="@id/my_store_second_banner"
+                    android:id="@+id/second_store_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
 
-        </RadioGroup>
+                </RadioGroup>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/second_store_use_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/second_store_tab">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/second_store_use_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/second_store_tab">
 
-        </android.support.v7.widget.RecyclerView>
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+        </ScrollView>
+
 
     </RelativeLayout>
 </layout>

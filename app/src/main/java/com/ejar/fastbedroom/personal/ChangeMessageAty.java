@@ -18,7 +18,7 @@ import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyChangeMessageBinding;
-import com.ejar.fastbedroom.home.HomeAtyApi;
+import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.login.LoginActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+
+            android:gravity="center"
+            android:text="快到寝校园负责人"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/app_title_gb"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+        <TextView
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_weight="1"
+            android:id="@+id/content"
+            android:textSize="@dimen/small_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"/>
+        <RelativeLayout
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/icon_to_agent"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+            <TextView
+                android:id="@+id/message_to_you"
+                android:paddingLeft="15dp"
+                android:gravity="center_vertical"
+                android:text="送给你的一封信"
+                android:textSize="@dimen/center_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+            <TextView
+
+                android:id="@+id/give_you_message"
+                android:padding="15dp"
+                android:textSize="@dimen/small_text_size"
+                android:layout_below="@id/message_to_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/to_be_agent"
+                android:textSize="@dimen/center_text_size"
+                android:text="成为校园负责人"
+                android:background="@color/yellow"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="150dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

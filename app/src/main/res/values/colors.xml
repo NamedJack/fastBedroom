@@ -5,6 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="black">#0d0d0d</color>
+    <color name="black">#282828</color>
     <color name="light_gray">#BDBDBD</color>
+    <color name="btn_bg_change">#fd81e5</color>
+    <color name="pay_style_bg_choose">#ffe201</color>
+    <color name="pay_style_bg_normal">#686868</color>
 </resources>

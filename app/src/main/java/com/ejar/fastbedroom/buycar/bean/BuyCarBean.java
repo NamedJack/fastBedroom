@@ -101,6 +101,15 @@ public class BuyCarBean {
         private int id;
         private int state;
         private int stock;
+        private boolean isChecked;
+
+        public boolean isChecked() {
+            return isChecked;
+        }
+
+        public void setChecked(boolean checked) {
+            isChecked = checked;
+        }
 
         public String getSummary() {
             return summary;

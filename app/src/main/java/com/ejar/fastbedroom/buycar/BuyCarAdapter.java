@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -39,12 +41,20 @@ public class BuyCarAdapter extends BaseItemDraggableAdapter<BuyCarBean.DataBean,
         holder.setText(R.id.goods_price, item.getShopPrice() + "元/"
                 + item.getUnit());
         ImageView iv = holder.getView(R.id.goods_img);
+        CheckBox checkBox = holder.getView(R.id.goods_isChoose);
+        checkBox.setVisibility(View.VISIBLE);
+        checkBox.setChecked(item.isChecked());
         Glide.with(context).load(UrlConfig.baseUrl + item.getImg())
                 .error(R.drawable.defult_img).into(iv);
         holder.setText(R.id.goods_number, item.getNumber()+"");
         holder.addOnClickListener(R.id.goods_add_number);
         holder.addOnClickListener(R.id.goods_cut_number);
+        holder.addOnClickListener(R.id.goods_isChoose);
 
+
+//        holder.getView(R.id.goods_isChoose).setOnClickListener(v -> {
+////            if(isI){}
+//        });
     }
 
 

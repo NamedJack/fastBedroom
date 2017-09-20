@@ -20,28 +20,39 @@ import com.bumptech.glide.Glide;
 import com.ejar.baseframe.base.aty.AppManager;
 import com.ejar.baseframe.base.aty.BaseActivity;
 import com.ejar.baseframe.utils.file.FileUtils;
+import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.UserCenterApi;
+import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
+import com.ejar.fastbedroom.certification.CertificationAty;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyPersoninfoBinding;
-import com.ejar.fastbedroom.home.HomeAtyApi;
+import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.personal.adapter.MyListAdaper;
+import com.ejar.fastbedroom.personal.aty.PhotoAty;
+import com.ejar.fastbedroom.register.aty.ChooseSchoolAty;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by json on 2017/8/24.
@@ -49,17 +60,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
 
-    private static final int TACK_PICTURE = 0x0001;//拍照
-    private static final int TACK_SD_IMG = 0x0002;//相册获取
-    private static final int CROP_TACK_PICTURE = 0x0003;//拍照裁剪
-    private static final int CROP_TACK_SD_IMG = 0x0004;//相册获取裁剪
+//    private static final int TACK_PICTURE = 0x0001;//拍照
+//    private static final int TACK_SD_IMG = 0x0002;//相册获取
+//    private static final int CROP_TACK_PICTURE = 0x0003;//拍照裁剪
+//    private static final int CROP_TACK_SD_IMG = 0x0004;//相册获取裁剪
     private AlertDialog.Builder builder;
-    private List<String> methods = new ArrayList<>();
-    private AlertDialog dialog;
+//    private List<String> methods = new ArrayList<>();
+//    private AlertDialog dialog;
     private Dialog mDialog;//网络请求时dialog
 
-    private Uri imageUri;
-    private String sdPath;
+//    private Uri imageUri;
+//    private String sdPath;
     private UserInfoBean.DataBean userInfo;
 
     @Override
@@ -98,7 +109,8 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                             bindingView.changePersonName.setText(userInfo.getName());
                             bindingView.changePersonSex.setText(userInfo.getSex() > 1 ? "女" : "男");
                             bindingView.changePersonNumber.setText(userInfo.getTel());
-                            Glide.with(PersonInfoAty.this).load(UrlConfig.baseUrl + userInfo.getImg()).into(bindingView.personImgChange);
+                            Glide.with(PersonInfoAty.this).load(UrlConfig.baseUrl + userInfo.getImg())
+                                    .error(R.drawable.image_user_head).into(bindingView.personImgChange);
                         } else {
                             TU.cT(userInfoBean.getMsg());
                         }
@@ -106,7 +118,7 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("msg", "cuowu" + e.toString());
+//                        Log.e("msg", "cuowu" + e.toString());
                         NetDialog.closeDialog(mDialog);
                     }
 
@@ -150,15 +162,15 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
     private void initTitle() {
         setTitle("个人中心");
         setHomeBackIcon(R.drawable.icon_back_buy_car);
-        methods.add("从相册中获取");
-        methods.add("拍照");
-        methods.add("取消");
+//        methods.add("从相册中获取");
+//        methods.add("拍照");
+//        methods.add("取消");
 
-        sdPath = Environment.getExternalStorageDirectory().getPath();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String picPath = sdPath + "/DCIM/Camera/" + timeStamp + "_" + (int) Math.floor(Math.random() * 10000 + 10000) + ".png";
-        FileUtils.createDir(sdPath + "/DCIM/Camera/");
-        imageUri = Uri.fromFile(new File(picPath));
+//        sdPath = Environment.getExternalStorageDirectory().getPath();
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
+//        String picPath = sdPath + "/DCIM/Camera/" + timeStamp + "_" + (int) Math.floor(Math.random() * 10000 + 10000) + ".png";
+//        FileUtils.createDir(sdPath + "/DCIM/Camera/");
+//        imageUri = Uri.fromFile(new File(picPath));
 //        if(userInfo != null){
 //            bindingView.changePersonName.setText(userInfo.getName());
 //            bindingView.changePersonSex.setText(userInfo.getSex() > 1 ? "女" : "男");
@@ -176,7 +188,10 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     showLogoutDialog();
                     break;
                 case R.id.person_img_change:
-                    showChooseDialog();
+//                    showChooseDialog();
+                    intent = new Intent(PersonInfoAty.this, PhotoAty.class);
+                    startActivityForResult(intent,1);
+                    PersonInfoAty.this.overridePendingTransition(R.animator.aty_in,0);
                     break;
                 case R.id.change_person_name:
                     intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
@@ -184,6 +199,7 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     startActivity(intent);
                     break;
                 case R.id.change_person_school:
+                    openNextActivity(ChooseSchoolAty.class);
                     break;
                 case R.id.change_person_number:
                     intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
@@ -216,7 +232,7 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
             }
         });
         builder.create();
-        dialog = builder.show();
+        builder.show();
     }
 
     /**
@@ -268,109 +284,134 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
     /**
      * 更换头像图片
      */
-    private void showChooseDialog() {
-        builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.choose_dialog, null, false);
-        ListView lv = (ListView) view.findViewById(R.id.choose_method);
-        MyListAdaper adaper = new MyListAdaper(methods, this);
-        lv.setAdapter(adaper);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        openMethod(0);
-                        break;
-                    case 1:
-                        openMethod(1);
-                        break;
-                    case 2:
-                        break;
-                }
-                dialog.dismiss();
-            }
-        });
-        builder.setView(view);
-        builder.create();
-        dialog = builder.show();
-    }
+//    private void showChooseDialog() {
+//        builder = new AlertDialog.Builder(this);
+//        View view = LayoutInflater.from(this).inflate(R.layout.choose_dialog, null, false);
+//        ListView lv = (ListView) view.findViewById(R.id.choose_method);
+//        MyListAdaper adaper = new MyListAdaper(methods, this);
+//        lv.setAdapter(adaper);
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                switch (position) {
+//                    case 0:
+//                        openMethod(0);
+//                        break;
+//                    case 1:
+//                        openMethod(1);
+//                        break;
+//                    case 2:
+//                        break;
+//                }
+//                dialog.dismiss();
+//            }
+//        });
+//        builder.setView(view);
+//        builder.create();
+//        dialog = builder.show();
+////    }
 
     /**
      * 0：相册
      * 1：拍照
      *
-     * @param i
+//     * @param i
      */
-    public void openMethod(int i) {
-        Log.e("msg", i + "");
-        Intent intent = null;
-        switch (i) {
-            case 0://   相册获取
-//                intent = new Intent(this, CameraActivity.class);
-//                startActivityForResult(intent, TACK_SD_IMG);
-                break;
-            case 1://拍照
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TACK_PICTURE);
-                break;
-            default:
-                break;
-        }
+//    public void openMethod(int i) {
+//        Log.e("msg", i + "");
+//        Intent intent = null;
+//        switch (i) {
+//            case 0://   相册获取
+////                intent = new Intent(this, CameraActivity.class);
+////                startActivityForResult(intent, TACK_SD_IMG);
+//                break;
+//            case 1://拍照
+//                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//                startActivityForResult(intent, TACK_PICTURE);
+//                break;
+//            default:
+//                break;
+//        }
 
 
-    }
+//    }
+    Map map = new HashMap();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case TACK_PICTURE:
-                cropImageUri(imageUri, 800, 800, CROP_TACK_PICTURE);
-                break;
-            case TACK_SD_IMG:
-                cropImageUri(data.getData(), 800, 800, CROP_TACK_SD_IMG);
-                break;
-            case CROP_TACK_PICTURE:
-                Glide.with(this).load(imageUri).centerCrop().into(bindingView.personImgChange);
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                    bindingView.personImg.setImageBitmap(bitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+        switch (resultCode) {
+            case RESULT_OK:
 
-                break;
-            case CROP_TACK_SD_IMG:
-                break;
+                String path = data.getStringExtra("path");
+                Glide.with(PersonInfoAty.this).load(path)
+                        .error(R.drawable.image_user_head).into(bindingView.personImgChange);
+                File file = new File(path);
+                map.put("token", APP.token);
+                // 创建 RequestBody，用于封装构建RequestBody
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+                MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                NetRequest.getInstance(UrlConfig.baseUrl).create(UserCenterApi.class)
+                        .changUserImg(map, body)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyBaseObserver<BaseBean>(this,true,"图片上传中...") {
+                            @Override
+                            public void _doNext(BaseBean baseBean) {
+                                Log.e("msg", "touxiang" +baseBean.getCode() + baseBean.getMsg());
+                            }
+                        });
+//                Log.e("msg", path + "ff");
+//                Glide.with(this).load(path).centerCrop().into(bindingView.personImgChange);
+//            case TACK_PICTURE:
+//                cropImageUri(imageUri, 800, 800, CROP_TACK_PICTURE);
+//                break;
+//            case TACK_SD_IMG:
+//                cropImageUri(data.getData(), 800, 800, CROP_TACK_SD_IMG);
+//                break;
+//            case CROP_TACK_PICTURE:
+//                Glide.with(this).load(imageUri).centerCrop().into(bindingView.personImgChange);
+////                try {
+////                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+////                    bindingView.personImg.setImageBitmap(bitmap);
+////                } catch (IOException e) {
+////                    e.printStackTrace();
+////                }
+//
+//                break;
+//            case CROP_TACK_SD_IMG:
+//                break;
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
 
-    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        //是否裁剪
-        intent.putExtra("crop", "true");
-        //设置xy的裁剪比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        //设置输出的宽高
-        intent.putExtra("outputX", outputX);
-        intent.putExtra("outputY", outputY);
-        //是否缩放
-        intent.putExtra("scale", false);
-        //输入图片的Uri，指定以后，可以在这个uri获得图片
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        //是否返回图片数据，可以不用，直接用uri就可以了
-        intent.putExtra("return-data", false);
-        //设置输入图片格式
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        //是否关闭面部识别
-        intent.putExtra("noFaceDetection", true); // no face detection
-        //启动
-        startActivityForResult(intent, requestCode);
-    }
+//    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode) {
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(uri, "image/*");
+//        //是否裁剪
+//        intent.putExtra("crop", "true");
+//        //设置xy的裁剪比例
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        //设置输出的宽高
+//        intent.putExtra("outputX", outputX);
+//        intent.putExtra("outputY", outputY);
+//        //是否缩放
+//        intent.putExtra("scale", false);
+//        //输入图片的Uri，指定以后，可以在这个uri获得图片
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        //是否返回图片数据，可以不用，直接用uri就可以了
+//        intent.putExtra("return-data", false);
+//        //设置输入图片格式
+//        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//        //是否关闭面部识别
+//        intent.putExtra("noFaceDetection", true); // no face detection
+//        //启动
+//        startActivityForResult(intent, requestCode);
+//    }
 
 
 }

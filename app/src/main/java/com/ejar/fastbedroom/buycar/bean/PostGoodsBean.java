@@ -2,6 +2,7 @@ package com.ejar.fastbedroom.buycar.bean;
 
 /**
  * Created by json on 2017/9/7.
+ *添加购物车
  */
 
 public class PostGoodsBean {

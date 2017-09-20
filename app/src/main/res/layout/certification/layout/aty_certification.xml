@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/app_title_gb"
+        android:orientation="horizontal"
+        android:theme="@style/Toolbar.TitleText">
+
+        <ImageView
+            android:id="@+id/take_photo_back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:src="@drawable/icon_back_buy_car" />
+
+        <TextView
+            android:id="@+id/photo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="实名认证"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:drawableLeft="@drawable/icon_left_tips"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="证件类型"
+            android:textSize="@dimen/center_text_size" />
+
+        <TextView
+            android:id="@+id/user_id_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:clickable="true"
+            android:drawableLeft="@drawable/icon_default_choose"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:text="身份证"
+            android:textSize="@dimen/center_text_size" />
+
+        <TextView
+            android:id="@+id/user_student_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:clickable="true"
+            android:drawableLeft="@drawable/icon_default_choose"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:text="学生证"
+            android:textSize="@dimen/center_text_size" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:drawableLeft="@drawable/icon_left_tips"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="证件号码"
+            android:textSize="@dimen/center_text_size" />
+
+        <EditText
+            android:maxLength="18"
+            android:id="@+id/user_card_number"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:textSize="@dimen/center_text_size"
+            android:maxLines="1"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:drawableLeft="@drawable/icon_left_tips"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="证件照片"
+            android:textSize="@dimen/center_text_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/user_card_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_margin="15dp"
+                    android:background="@color/shallow_light_gray"
+                    android:clickable="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/img_post" />
+
+
+                <TextView
+                    android:id="@+id/photo_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:clickable="true"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="添加正面照片"
+                    android:textSize="@dimen/center_text_size" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/user_card_photo_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_margin="15dp"
+                    android:background="@color/shallow_light_gray"
+                    android:clickable="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/img_post" />
+
+                <TextView
+                    android:id="@+id/photo_add_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:clickable="true"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="添加背面照片"
+                    android:textSize="@dimen/center_text_size" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:text="同意二手市场买卖协议"
+            android:textColor="@color/app_title_gb"
+            android:textSize="@dimen/center_text_size" />
+
+        <ImageView
+            android:id="@+id/user_agree"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="70dp"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_not_agree" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/user_post_info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/goods_detail_buy"
+            android:background="@drawable/tab_menu_bg"
+            android:text="提交审核"
+            android:textColor="@color/white"
+            android:textSize="@dimen/center_text_size" />
+    </RelativeLayout>
+
+</LinearLayout>

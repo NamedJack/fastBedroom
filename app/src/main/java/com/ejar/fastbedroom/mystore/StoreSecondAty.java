@@ -21,6 +21,7 @@ import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.baseframe.widget.AddCartAnimation;
+import com.ejar.fastbedroom.Api.StoreApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
@@ -43,9 +44,7 @@ import com.youth.banner.listener.OnBannerListener;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -159,6 +158,15 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> implemen
         });
         bindingView.secondStoreUseRv.setLayoutManager(new LinearLayoutManager(this));
         bindingView.secondStoreUseRv.setAdapter(adapter);
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            Intent intent = new Intent(StoreSecondAty.this, GoodsDetailAty.class);
+            intent.putExtra("goodsAty","store");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("goods", rows.get(position));
+            intent.putExtras(bundle);
+            startActivity(intent);
+//            openNextActivity(GoodsDetailAty.class, bundle);
+        });
     }
 
     private void getUseTab() {
@@ -295,6 +303,7 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> implemen
     public void postMyGoods(List<RowBean> goodsList) {
         Gson gson = new Gson();
         List<PostGoodsBean> postList = new ArrayList<>();
+        if(postList.size() == 0 ){return;}
         for (int i = 0; i < goodsList.size(); i++) {
             PostGoodsBean rowBean = new PostGoodsBean();
             rowBean.setGoodsid(goodsList.get(i).getGoodsId());
@@ -310,7 +319,7 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> implemen
                 .subscribe(new MyBaseObserver<BaseBean>(this, false, "购物车提交中...") {
                     @Override
                     public void _doNext(BaseBean baseBean) {
-//                        Log.e("post", baseBean.getCode()  +  "" + baseBean.getMsg() +s);
+//                        Log.e("postgouwuche", baseBean.getCode()  +  "" + baseBean.getMsg() +s);
                     }
                 });
     }

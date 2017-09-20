@@ -21,7 +21,7 @@ import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.FrgFastBinding;
 import com.ejar.fastbedroom.fastmail.FastMailAty;
-import com.ejar.fastbedroom.home.HomeAtyApi;
+import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.mystore.StoreActivity;
 

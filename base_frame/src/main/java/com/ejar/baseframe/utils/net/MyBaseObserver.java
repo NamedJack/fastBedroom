@@ -2,12 +2,13 @@ package com.ejar.baseframe.utils.net;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
-import com.google.gson.Gson;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import io.reactivex.Observer;
@@ -58,15 +59,28 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
             HttpException httpException = (HttpException) e;
             errorCode = httpException.code() + "";
             errorMsg = httpException.getMessage();
-            getErrorMsg(httpException);
-        } else if( e instanceof SocketTimeoutException) { //VPN open
-            errorCode = RESPONSE_CODE_FAILED;
-            errorMsg = "服务器响应超时"; }
+            if (errorCode.equals("500")) {
+                TU.cT("服务器内部错误");
+            }
             _doError(errorCode, errorMsg);
+
+//            getErrorMsg(httpException);
+        } else if (e instanceof SocketTimeoutException
+                || e instanceof ConnectException
+                || e instanceof Resources.NotFoundException
+                || e instanceof InternalError) { //VPN open
+            errorCode = RESPONSE_CODE_FAILED;
+            errorMsg = "服务器响应超时";
+            _doError(errorCode, errorMsg);
+        } else {
+
+            _doError(errorCode, e.toString());
+        }
+
     }
 
     private void _doError(String errorCode, String errorMsg) {
-        if(errorCode.equals("-1")){
+        if (errorCode.equals("-1")) {
             TU.cT(errorMsg + "");
         }else {
             Log.e("netError",errorCode + " " +errorMsg );
@@ -79,7 +93,7 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-
+        NetDialog.closeDialog(dialog);
     }
 
 

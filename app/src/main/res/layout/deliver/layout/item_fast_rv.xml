@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+    android:layout_height="72dp"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="71dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -24,17 +25,17 @@
                 android:gravity="center"
                 android:text="7月3日"
                 android:textColor="@color/app_title_gb"
-                android:textSize="16sp" />
+                android:textSize="@dimen/small_text_size" />
 
             <TextView
                 android:id="@+id/fast_year"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:text="2017"
                 android:textColor="@color/app_title_gb"
-                android:textSize="18sp"
+                android:textSize="@dimen/center_text_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -49,9 +50,10 @@
                 android:id="@+id/fast_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:gravity="center_vertical"
                 android:text="通知"
+                android:textSize="@dimen/center_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -62,7 +64,8 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
-                android:text="fafafafafaf" />
+                android:text="fafafafafaf"
+                android:textSize="@dimen/small_text_size" />
         </LinearLayout>
     </LinearLayout>
 

@@ -4,7 +4,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -24,34 +24,28 @@ import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.RegisterApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyChooseSchoolBinding;
+import com.ejar.fastbedroom.jion.ToBeAgentAty;
 import com.ejar.fastbedroom.register.adapter.MyAdapter;
 import com.ejar.fastbedroom.register.bean.PointBean;
 import com.ejar.fastbedroom.register.bean.School;
 import com.ejar.fastbedroom.register.bean.SchoolBean;
-import com.ejar.fastbedroom.register.model.RegisterApi;
 import com.ejar.fastbedroom.register.view.PinyinComparator;
 import com.ejar.fastbedroom.register.view.PinyinUtils;
 import com.ejar.fastbedroom.register.view.TitleItemDecoration;
 import com.ejar.fastbedroom.register.view.WaveSideBarView;
-import com.ejar.fastbedroom.schoolpoint.TobeSchoolPoinAty;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by json on 2017/8/24.
@@ -64,19 +58,26 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
     private LinearLayoutManager manager;
     private MyAdapter mAdapter;
     private TitleItemDecoration mDecoration;
+    private DividerItemDecoration dividerItemDecoration;
     private String searchTime;
     private List<School> mList = new ArrayList<>();
+    private List<School> lettersList = new ArrayList<>();
     private PinyinComparator mComparator;
     private List<PointBean.DataBean> pointList = new ArrayList<>();
     private int pointID;
     private String schoolName;
+    private int schoolId;
 
+    private String agentAty = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_choose_school);
         dialog = NetDialog.createDialog(this, "数据处理中...");
+        Intent intent = getIntent();
+        agentAty = intent.getStringExtra("agentAty");
         setTitle("选择学校");
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
         });
@@ -84,22 +85,28 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
         requestData(searchTime);
     }
 
+    /**
+     * 请求学校信息
+     *
+     * @param time
+     */
     private void requestData(String time) {
-        NetRequest.getInstance(UrlConfig.baseUrl).create(RegisterApi.class).querySchool("")
+        NetRequest.getInstance(UrlConfig.baseUrl).create(RegisterApi.class).querySchool(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MyBaseObserver<SchoolBean>(this, false, "") {
                     @Override
                     public void _doNext(SchoolBean schoolBean) {
                         if (schoolBean.getCode().equals("200")) {
-                            if (schoolBean.getData().getScholl().size() > 0) {
-                                mList.addAll(filledData(schoolBean.getData().getScholl()));
+                            if (schoolBean.getData().getScholl() != null) {
                                 SpUtils.put(ChooseSchoolAty.this, "searchSchoolTime"
                                         , schoolBean.getData().getTime());
+                                filledData(schoolBean.getData().getScholl());
                             } else {
                                 mList.addAll(DataSupport.findAll(School.class));
+                                setView();
                             }
-                            setView();
+
                         }
                     }
                 });
@@ -108,14 +115,23 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
     private void setView() {
         manager = new LinearLayoutManager(this);
         mComparator = new PinyinComparator();
-        Collections.sort(mList, mComparator);
+        Collections.sort(mList, mComparator);//排序
         mAdapter = new MyAdapter(this, mList);
-        bindingView.schoolRv.setLayoutManager(manager);
         bindingView.schoolRv.setAdapter(mAdapter);
-        mDecoration = new TitleItemDecoration(this, mList);
-        //渲染字母TITLE
-        bindingView.schoolRv.addItemDecoration(mDecoration);
-        bindingView.schoolRv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        bindingView.schoolRv.setLayoutManager(manager);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mDecoration = new TitleItemDecoration(ChooseSchoolAty.this, mList);
+                //渲染字母TITLE
+                dividerItemDecoration = new DividerItemDecoration(ChooseSchoolAty.this, DividerItemDecoration.VERTICAL);
+                Message message = new Message();
+                message.what = 0x0001;
+                handler.sendMessage(message);
+            }
+        });
+        thread.start();
+
         bindingView.schoolSideBar.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
@@ -145,7 +161,15 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
             @Override
             public void onItemClick(View view, int position) {
                 schoolName = mList.get(position).getSchollName();
-                requestSchoolPoint(mList.get(position).getSchoolId());
+                schoolId = mList.get(position).getSchoolId();
+                if (TextUtils.isEmpty(agentAty) || agentAty == null) {
+                    requestSchoolPoint(schoolId);
+                } else if ("agentAty".equals(agentAty)) {
+                    SpUtils.put(ChooseSchoolAty.this, "agentSchoolName", schoolName);
+                    SpUtils.put(ChooseSchoolAty.this, "agentSchoolId", schoolId);
+                    ChooseSchoolAty.this.finish();//成为校园代理人的是直接选择学校后就结束
+                }
+
             }
         });
         NetDialog.closeDialog(dialog);
@@ -186,7 +210,7 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                openNextActivity(TobeSchoolPoinAty.class);
+                openNextActivity(ToBeAgentAty.class);
             }
         });
         builder.create();
@@ -247,33 +271,44 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
      * @param data
      * @return
      */
-    private List<School> filledData(List<School> data) {
-//        dialog = NetDialog.createDialog(this,"shujuchuli");
-        List<School> lettersList = new ArrayList<>();
-        if (DataSupport.findAll(School.class).size() > 0) {
-            DataSupport.deleteAll(School.class);
-        } else {
-            requestData(searchTime);//用户误删数据库 数据
-        }
-        for (int i = 0; i < data.size(); i++) {
-            School school = new School();
-            String pinyin = PinyinUtils.getPingYin(data.get(i).getSchollName());
-            String sortString = pinyin.substring(0, 1).toUpperCase();
+    private void filledData(List<School> data) {
 
-            // 正则表达式，判断首字母是否是英文字母
-            if (sortString.matches("[A-Z]")) {
-                school.setLetters(sortString.toUpperCase());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (DataSupport.findAll(School.class).size() > 0) {
+                    DataSupport.deleteAll(School.class);
+                }
+                for (int i = 0; i < data.size(); i++) {
+                    School school = new School();
+                    String pinyin = PinyinUtils.getPingYin(data.get(i).getSchollName());
+                    String sortString = pinyin.substring(0, 1).toUpperCase();
+
+                    // 正则表达式，判断首字母是否是英文字母
+                    if (sortString.matches("[A-Z]")) {
+                        school.setLetters(sortString);
 //                sortModel.setLetters(sortString.toUpperCase());
-            } else {
-                school.setLetters("#");
+                    } else {
+                        school.setLetters("#");
+                    }
+                    school.setSchollName(data.get(i).getSchollName());
+                    school.setSchoolId(data.get(i).getSchoolId());
+                    school.save();
+                    lettersList.add(school);
+
+                }
+
+                Message message = new Message();
+                message.what = 0x0002;
+                handler.sendMessage(message);
+
             }
-            school.setSchollName(data.get(i).getSchollName());
-            school.setSchoolId(data.get(i).getSchoolId());
-            school.save();
-            lettersList.add(school);
-        }
-//
-        return lettersList;
+
+        }).start();
+
+//        return lettersList;
+
+
     }
 
 
@@ -284,4 +319,21 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
         builder.create();
         dialog = builder.show();
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x0001:
+                    bindingView.schoolRv.addItemDecoration(mDecoration);
+                    bindingView.schoolRv.addItemDecoration(dividerItemDecoration);
+                    break;
+                case 0x0002:
+                    mList.addAll(lettersList);
+                    setView();
+                    break;
+            }
+        }
+    };
+
 }

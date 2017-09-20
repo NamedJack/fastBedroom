@@ -19,28 +19,60 @@
 
             <LinearLayout
                 android:id="@+id/view_paid_info"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
-
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"/>
+                <CheckBox
+                    android:id="@+id/checked_all"
+                    android:button="@drawable/buy_car_radio_button_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
                 <TextView
+                    android:paddingLeft="8dp"
+                    android:gravity="center_vertical"
+                    android:text="全选"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:paddingLeft="5dp"
                     android:id="@+id/buy_car_total_money"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:paddingLeft="20dp"
+                    android:text="合计： "
                     android:textColor="@color/app_title_gb" />
 
                 <Button
+                    android:id="@+id/go_to_delete"
+                    android:layout_width="68dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/goods_detail_buy"
+                    android:background="@drawable/tab_menu_bg"
+                    android:text="删除"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/center_text_size" />
+                <Button
                     android:id="@+id/go_to_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:text="去结算"
-                    android:textColor="@color/app_title_gb" />
+                    android:layout_width="68dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/goods_detail_buy"
+                    android:background="@drawable/tab_menu_bg"
+                    android:text="结算"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/center_text_size" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -58,15 +90,28 @@
                 android:layout_above="@id/view_paid_info"
                 android:background="@color/light_gray" />
 
-            <include
-                android:id="@+id/paid_view"
-                layout="@layout/view_pay_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/show_paid_view"
                 android:layout_above="@id/aa"
-                android:visibility="gone">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
 
-            </include>
+                <include
+                    android:id="@+id/paid_view"
+                    layout="@layout/view_pay_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                </include>
+            </LinearLayout>
         </RelativeLayout>
         <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 

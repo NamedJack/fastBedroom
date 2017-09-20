@@ -18,8 +18,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:src="@drawable/fast_choose" />
+                android:layout_margin="10dp" />
 
             <TextView
                 android:id="@+id/change_person_img"

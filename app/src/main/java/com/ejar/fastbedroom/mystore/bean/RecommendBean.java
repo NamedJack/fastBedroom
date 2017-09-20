@@ -1,5 +1,6 @@
 package com.ejar.fastbedroom.mystore.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class RecommendBean {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * summary : 好好好
          * img : /assets/upload/goods_image/1502948927023_1.jpg
@@ -87,7 +88,7 @@ public class RecommendBean {
         private String content;
         private String unit;
         private String stypeName;
-        private String shopPrice;
+        private double shopPrice;
         private int proId;
         private int schoolId;
         private String name;
@@ -151,11 +152,11 @@ public class RecommendBean {
             this.stypeName = stypeName;
         }
 
-        public String getShopPrice() {
+        public double getShopPrice() {
             return shopPrice;
         }
 
-        public void setShopPrice(String shopPrice) {
+        public void setShopPrice(double shopPrice) {
             this.shopPrice = shopPrice;
         }
 

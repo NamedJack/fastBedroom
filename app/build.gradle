@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'ejar'
+            keyPassword 'ejar8888'
+            storeFile file('F:/ejar/bed_jsk/ejar.jks')
+            storePassword 'ejar8888'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
     defaultConfig {
@@ -15,19 +23,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-
-    dataBinding{
+    dataBinding {
         enabled = true
     }
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             res.srcDirs = [
                     'src/main/res',
                     'src/main/res/layout/advice',
@@ -42,11 +49,14 @@ android {
                     'src/main/res/layout/buycar',
                     'src/main/res/layout/fastmail',
                     'src/main/res/layout/mystore',
-                    'src/main/res/layout/mybook'
+                    'src/main/res/layout/mybook',
+                    'src/main/res/layout/useraddr',
+                    'src/main/res/layout/pay',
+                    'src/main/res/layout/wxapi',
+                    'src/main/res/layout/certification'
             ]
         }
     }
-
 }
 
 dependencies {
@@ -59,6 +69,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation project(':base_frame')
     compile 'org.litepal.android:core:1.6.0'
-    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
+//    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
     implementation files('libs/pinyin4j-2.5.0.jar')
+    implementation files('libs/alipaySdk-20170725.jar')
+    implementation files('libs/libammsdk.jar')
 }

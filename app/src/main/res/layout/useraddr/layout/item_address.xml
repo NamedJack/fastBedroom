@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/user_address_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="zhangsan"
+                android:textColor="@color/black"
+                android:textSize="@dimen/center_text_size" />
+
+            <TextView
+                android:id="@+id/user_address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="13795812390"
+                android:textColor="@color/black"
+                android:textSize="@dimen/center_text_size" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/user_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="四川省绵阳市涪城区城南大道222号四川省绵阳市涪城区城南大道222号四川省绵阳市涪城区城南大道222号"
+            android:textSize="@dimen/center_text_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray">
+
+        </View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/user_address_default"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:drawableLeft="@drawable/icon_normal_address"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="设为默认"
+                android:textColor="@color/item_address"
+                android:textSize="@dimen/center_text_size" />
+
+            <TextView
+                android:id="@+id/user_address_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:drawableLeft="@drawable/icon_delete_address"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingRight="10dp"
+                android:text="删除"
+                android:textSize="@dimen/center_text_size" />
+
+            <TextView
+                android:id="@+id/user_address_change"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/user_address_delete"
+                android:clickable="true"
+                android:drawableLeft="@drawable/icon_changed_addr"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingEnd="20dp"
+                android:text="编辑"
+                android:textSize="@dimen/center_text_size" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="100dp"
+    android:layout_width="68dp"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <TextView
         android:id="@+id/tab_Dial_Tv"
         android:gravity="center"
-        android:text="title"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <ImageView
         android:scaleType="centerInside"
         android:id="@+id/tab_Dial_Img"
-        android:src="@drawable/image_have_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

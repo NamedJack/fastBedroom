@@ -2,10 +2,11 @@
 
 <litepal>
     <dbname value="basedata"></dbname>
-    <version value="7"></version>
+    <version value="9"></version>
     <list>
         <mapping class="com.ejar.fastbedroom.register.bean.SchoolBean"></mapping>
         <mapping class="com.ejar.fastbedroom.mystore.bean.RowBean"></mapping>
         <mapping class="com.ejar.fastbedroom.register.bean.School"></mapping>
+        <mapping class="com.ejar.fastbedroom.fastmail.bean.MailWayBean"></mapping>
     </list>
 </litepal>

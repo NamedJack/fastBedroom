@@ -4,13 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * Created by json on 2017/9/4.
  */
 
-public class RowBean extends DataSupport  {
+public class RowBean extends DataSupport  implements Serializable{
 
 
     /**

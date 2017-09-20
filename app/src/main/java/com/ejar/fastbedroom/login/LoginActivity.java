@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.ejar.baseframe.base.aty.BaseActivity;
@@ -12,6 +11,7 @@ import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
 import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.LoginApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;

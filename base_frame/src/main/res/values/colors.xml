@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="app_title_gb">#fefe0c58</color>
+    <color name="app_title_gb">#f2215e</color>
 
-    <color name="white">#fefdfcfd</color>
+    <color name="white">#ffffff</color>
     <color name="divider">#BDBDBD</color>
     <color name="light_gray">#BDBDBD</color>
     <color name="black">#0b0b0b</color>
@@ -14,4 +14,11 @@
     <color name="yellow">#edffcc00</color>
     <color name="toast">#55efaf89</color>
     <color name="red">#ff0000</color>
+
+    <color name="phone">#0987ff</color>
+    <color name="shallow_light_gray">#f4f4f4</color>
+
+
+
+
 </resources>
