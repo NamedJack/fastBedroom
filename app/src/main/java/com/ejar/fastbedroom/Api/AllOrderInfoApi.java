@@ -1,6 +1,10 @@
 package com.ejar.fastbedroom.Api;
 
 
+import com.ejar.fastbedroom.BaseBean;
+import com.ejar.fastbedroom.mybook.bean.OrderBean;
+import com.ejar.fastbedroom.mybook.bean.StoreOrderBean;
+
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
@@ -17,38 +21,94 @@ public interface AllOrderInfoApi {
     /***********快递领取***************/
 
     /**
-     * 未付款
+     * 未付款订单列表
      * @param token
      * @return
      */
     @FormUrlEncoded
     @POST("pub/usernpayOrderlist")
-    Observable<ResponseBody> getNotPayMailOrder(@Field("token") String token);
+    Observable<OrderBean> getNotPayMailOrder(@Field("token") String token);
 
     /**
-     * 未接单
+     * 未接单订单列表
      * @param token
      * @return
      */
     @FormUrlEncoded
     @POST("pub/userpayOrderlist")
-    Observable<ResponseBody> getNotSendOrder(@Field("token") String token);
+    Observable<OrderBean> getNotSendOrder(@Field("token") String token);
 
     /**
-     * 待签收 （已支付）
+     * 待签收 （已支付）订单列表
      * @param token
      * @return
      */
     @FormUrlEncoded
     @POST("pub/userhaveOrderlist")
-    Observable<ResponseBody> getUserHaveOrder(@Field("token") String token);
+    Observable<OrderBean> getUserHaveOrder(@Field("token") String token);
 
+
+
+    /**
+     * 取消未支付订单
+     *
+     * @param orderid
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/cancelOrder")
+    Observable<BaseBean> userCancelNotPaidOrder(@Field("orderid") int orderid,
+                                                @Field("token") String token);
+
+
+    /**
+     * 取消已支付订单
+     * @param orderid
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/cancelpayOrder")
+    Observable<BaseBean> userCancelPaidOrder(@Field("orderid") int orderid,
+                                             @Field("token") String token);
+
+
+    /**
+     * 用户确认收货
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/overOrder")
+    Observable<BaseBean> userConfirmOrder(@Field("orderid") int orderid,
+                                          @Field("token") String token);
 
 
 
     /***********自营超市***************/
 
+    /**
+     * 订单列表获取
+     * @param token
+     * @param state
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/orderList")
+    Observable<StoreOrderBean> getUserOrder(@Field("token") String token,
+                                            @Field("state") int state);
 
+//    确认收货
+    @FormUrlEncoded
+    @POST("pub/confirm")
+    Observable<BaseBean> storeConfirmOrder(@Field("token") String token,
+                                           @Field("id") int id);
+
+    //取消订单
+    @FormUrlEncoded
+    @POST("pub/cancel")
+    Observable<BaseBean> storeCancelOder(@Field("token") String token,
+                                         @Field("id") int id);
 
 
     /***********外卖配送***************/

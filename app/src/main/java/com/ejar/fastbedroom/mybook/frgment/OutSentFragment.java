@@ -5,6 +5,7 @@ import com.ejar.fastbedroom.R;
 
 /**
  * Created by json on 2017/8/29.
+ * 外卖配送
  */
 
 public class OutSentFragment extends BaseFragment {

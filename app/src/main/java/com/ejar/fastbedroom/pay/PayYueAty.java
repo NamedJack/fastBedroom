@@ -3,20 +3,20 @@ package com.ejar.fastbedroom.pay;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.ejar.baseframe.base.aty.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
+import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyYuEPayBinding;
-import com.ejar.fastbedroom.fastmail.bean.PostMailBean;
+import com.ejar.fastbedroom.pay.bean.YuEBean;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -26,8 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
-    private PostMailBean.DataBean orderInfo;
-
+    private YuEBean yuEBean;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +34,21 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
         bundle = intent.getExtras();
-        orderInfo = (PostMailBean.DataBean) bundle.getSerializable("orderId");
+        yuEBean = (YuEBean) bundle.getSerializable("orderId");
         initTitle();
         setListener();
+        Log.e("msg", yuEBean.getId() + "dingdaha" + yuEBean.getTotalMoney());
     }
 
     private void setListener() {
+
         bindingView.yuEPay.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(orderInfo.getOrderId()) || orderInfo.getOrderId().equals("")) {
-                return;
-            } else {
+//            if (yuEBean.getId() == 0) {
+//                return;
+//            } else {
+            if (yuEBean.getTag() == -1) {//订单号付款
                 NetRequest.getInstance(UrlConfig.baseUrl).create(UserCenterApi.class)
-                        .payByYu_e(APP.token, orderInfo.getId())
+                        .payByYu_e(APP.token, yuEBean.getId())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new MyBaseObserver<BaseBean>(this, true, "订单支付中") {
@@ -60,13 +62,45 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
                                     bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT("订单已经支付");
                                 } else {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
                                     bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT(baseBean.getMsg() + "");
                                 }
                             }
                         });
+            } else if (yuEBean.getTag() == -2) {//订单编号
+                NetRequest.getInstance(UrlConfig.baseUrl).create(UserCenterApi.class)
+                        .goodsPaidByYue(APP.token, yuEBean.getOrderId())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MyBaseObserver<BaseBean>(this, true, "订单支付中...") {
+                            @Override
+                            public void _doNext(BaseBean baseBean) {
+                                if (baseBean.getCode().equals("200")) {
+                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_sucess);
+                                    bindingView.tvPay.setText("支付成功");
+                                    bindingView.yuEPay.setVisibility(View.GONE);
+                                } else if (baseBean.getCode().equals("201")) {
+                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
+                                    bindingView.tvPay.setText("支付失败");
+                                    bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT("订单已经支付");
+                                } else {
+                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
+                                    bindingView.tvPay.setText("支付失败");
+                                    bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT(baseBean.getMsg() + "");
+                                }
+                            }
+                        });
+//                }
+
+
+
+
             }
         });
 
@@ -79,8 +113,8 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
             finish();
         });
 
-        bindingView.yuePayMoney.setText("￥ " + orderInfo.getPrice());
-        bindingView.paidOrderNumber.setText("" + orderInfo.getOrderId());
-        bindingView.paidOderAddress.setText("收货地址：" + orderInfo.getArea() + orderInfo.getAddress());
+        bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney());
+        bindingView.paidOrderNumber.setText("" + yuEBean.getOrderId());
+        bindingView.paidOderAddress.setText("收货地址：" + yuEBean.getArea() + yuEBean.getDoor());
     }
 }

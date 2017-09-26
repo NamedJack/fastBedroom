@@ -7,6 +7,43 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:background="@color/white"
+            android:id="@+id/second_bottom_rl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"/>
+            <Button
+                android:id="@+id/second_store_post_order"
+                android:layout_width="85dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/tab_menu_bg"
+                android:text="提交订单"
+                android:textColor="@color/white"
+                android:textSize="@dimen/center_text_size" />
+
+
+            <TextView
+
+                android:id="@+id/second_choose_goods_money"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/goods_detail_add_car"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="80dp"
+                android:text="合计："
+                android:textColor="@color/app_title_gb" />
+        </RelativeLayout>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/my_store_fl_button"
             android:layout_width="wrap_content"
@@ -14,12 +51,13 @@
             app:backgroundTint="@color/app_title_gb"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_store_buy_car"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" />
 
         <ScrollView
+            android:layout_above="@id/second_bottom_rl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -31,22 +69,22 @@
                     android:layout_height="150dp">
                 </com.youth.banner.Banner>
 
-                <RadioGroup
+                <android.support.v7.widget.RecyclerView
                     android:layout_below="@id/my_store_second_banner"
                     android:id="@+id/second_store_tab"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                </RadioGroup>
+                </android.support.v7.widget.RecyclerView>
 
-                <android.support.v7.widget.RecyclerView
+                <com.ejar.baseframe.widget.MyLoadMoreRecycleView
                     android:id="@+id/second_store_use_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/second_store_tab">
 
-                </android.support.v7.widget.RecyclerView>
+                </com.ejar.baseframe.widget.MyLoadMoreRecycleView>
             </RelativeLayout>
         </ScrollView>
 

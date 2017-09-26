@@ -42,15 +42,16 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
         bundle = new Bundle();
 
         initTitle(codeAty);
-        initData();
+        initFragments();
 
         if (savedInstanceState != null) {
             mailFragment = (MailFragment) getSupportFragmentManager().findFragmentByTag(MailFragment.class.getName());
             outSentFragment = (OutSentFragment) getSupportFragmentManager().findFragmentByTag(OutSentFragment.class.getName());
             myStoreFragment = (MyStoreFragment) getSupportFragmentManager().findFragmentByTag(MyStoreFragment.class.getName());
-            getSupportFragmentManager().beginTransaction().show(mailFragment)
+            getSupportFragmentManager().beginTransaction()
                     .hide(outSentFragment)
-                    .hide(myStoreFragment)
+                    .hide(mailFragment)
+                    .show(myStoreFragment)
                     .commit();
         } else {
 
@@ -66,23 +67,27 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
                     .add(R.id.my_book_pager, myStoreFragment, MyStoreFragment.class.getName())
                     .add(R.id.my_book_pager, outSentFragment, OutSentFragment.class.getName())
                     .hide(outSentFragment)
-                    .hide(myStoreFragment)
+                    .hide(mailFragment)
+                    .show(myStoreFragment)
                     .commit();
         }
 
     }
 
-    private void initData() {
+    private void initFragments() {
         fragments = new ArrayList<>();
         MailFragment mailFragment = new MailFragment();
         mailFragment.setArguments(bundle);
-        fragments.add(mailFragment);
+
         OutSentFragment outSentFragment = new OutSentFragment();
         outSentFragment.setArguments(bundle);
-        fragments.add(outSentFragment);
+
         MyStoreFragment storeFragment = new MyStoreFragment();
         storeFragment.setArguments(bundle);
+
         fragments.add(storeFragment);
+        fragments.add(outSentFragment);
+        fragments.add(mailFragment);
         adaper = new MyBookAdaper(getSupportFragmentManager());
         bindingView.myBookPager.setAdapter(adaper);
         bindingView.myBookTab.setupWithViewPager(bindingView.myBookPager);
@@ -91,8 +96,8 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
     private void initTitle(int codeAty) {
         switch (codeAty){
             case 1:
-                setTitle("未支付");
                 bundle.putString("whichAty", "未支付");
+                setTitle("未支付");
                 break;
             case 2:
                 bundle.putString("whichAty", "未接单");
@@ -107,7 +112,7 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
                 setTitle("已完成");
                 break;
         }
-
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {finish();});
 
     }

@@ -7,7 +7,6 @@ import java.util.List;
  */
 
 public class OrderBean {
-
     /**
      * code : 200
      * okurl : null
@@ -105,8 +104,8 @@ public class OrderBean {
         private int id;
         private int weight;
         private int amount;
-        private int price;
-        private Object content;
+        private double price;
+        private String content;
         private String expressname;
         private String expressorder;
         private String orderId;
@@ -116,17 +115,17 @@ public class OrderBean {
         private int revaid;
         private int courierId;
         private String area;
-        private Object expresstype;
+        private String expresstype;
         private String address;
         private String orderinitial;
         private String orderTime;
-        private Object sendTime;
-        private Object awaitTime;
-        private Object arriveTime;
+        private String sendTime;
+        private String awaitTime;
+        private String arriveTime;
         private int state;
         private String remarks;
         private int paystate;
-        private Object courier;
+        private String courier;
         private UserBean user;
 
         public int getId() {
@@ -153,19 +152,19 @@ public class OrderBean {
             this.amount = amount;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 
-        public Object getContent() {
+        public String getContent() {
             return content;
         }
 
-        public void setContent(Object content) {
+        public void setContent(String content) {
             this.content = content;
         }
 
@@ -241,11 +240,11 @@ public class OrderBean {
             this.area = area;
         }
 
-        public Object getExpresstype() {
+        public String getExpresstype() {
             return expresstype;
         }
 
-        public void setExpresstype(Object expresstype) {
+        public void setExpresstype(String expresstype) {
             this.expresstype = expresstype;
         }
 
@@ -273,27 +272,27 @@ public class OrderBean {
             this.orderTime = orderTime;
         }
 
-        public Object getSendTime() {
+        public String getSendTime() {
             return sendTime;
         }
 
-        public void setSendTime(Object sendTime) {
+        public void setSendTime(String sendTime) {
             this.sendTime = sendTime;
         }
 
-        public Object getAwaitTime() {
+        public String getAwaitTime() {
             return awaitTime;
         }
 
-        public void setAwaitTime(Object awaitTime) {
+        public void setAwaitTime(String awaitTime) {
             this.awaitTime = awaitTime;
         }
 
-        public Object getArriveTime() {
+        public String getArriveTime() {
             return arriveTime;
         }
 
-        public void setArriveTime(Object arriveTime) {
+        public void setArriveTime(String arriveTime) {
             this.arriveTime = arriveTime;
         }
 
@@ -321,11 +320,11 @@ public class OrderBean {
             this.paystate = paystate;
         }
 
-        public Object getCourier() {
+        public String getCourier() {
             return courier;
         }
 
-        public void setCourier(Object courier) {
+        public void setCourier(String courier) {
             this.courier = courier;
         }
 
@@ -358,13 +357,13 @@ public class OrderBean {
             private String username;
             private String password;
             private String name;
-            private Object img;
+            private String img;
             private int sex;
             private String intSlyear;
             private int schoolid;
             private int edittime;
-            private Object agent;
-            private Object userAddress;
+            private String agent;
+            private String userAddress;
 
             public int getId() {
                 return id;
@@ -406,11 +405,11 @@ public class OrderBean {
                 this.name = name;
             }
 
-            public Object getImg() {
+            public String getImg() {
                 return img;
             }
 
-            public void setImg(Object img) {
+            public void setImg(String img) {
                 this.img = img;
             }
 
@@ -446,21 +445,22 @@ public class OrderBean {
                 this.edittime = edittime;
             }
 
-            public Object getAgent() {
+            public String getAgent() {
                 return agent;
             }
 
-            public void setAgent(Object agent) {
+            public void setAgent(String agent) {
                 this.agent = agent;
             }
 
-            public Object getUserAddress() {
+            public String getUserAddress() {
                 return userAddress;
             }
 
-            public void setUserAddress(Object userAddress) {
+            public void setUserAddress(String userAddress) {
                 this.userAddress = userAddress;
             }
         }
     }
+
 }

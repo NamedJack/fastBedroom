@@ -118,12 +118,12 @@
                     android:background="@color/shallow_light_gray" />
 
                 <TextView
+                    android:gravity="center_vertical"
                     android:id="@+id/pay_order_tips"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="备注信息" />
+                    android:paddingRight="15dp"/>
 
 
                 <TextView
@@ -228,7 +228,8 @@
             android:layout_alignParentBottom="true"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:paddingTop="3dp">
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
 
             <TextView
                 android:id="@+id/pay_order_total"

@@ -128,9 +128,9 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                 });
                 holder.setOnClickListener(R.id.user_address_delete, v -> {//删除
                     deleteUserAddress(data.get(position).getId());
-                    data.remove(position);
-                    adapter.notifyItemRemoved(position);
-                    adapter.notifyItemChanged(0, data);
+//                    data.remove(position);
+//                    adapter.notifyItemRemoved(position);
+//                    adapter.notifyItemChanged(0, data);
                 });
             }
 
@@ -150,9 +150,38 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                     @Override
                     public void _doNext(BaseBean result) {
                             //直接调用删除接口 未作处理
-                        Log.e("msg",result.getCode() + result.getMsg());
+                        if(result.getCode().equals("200")){
+                            clearLocalDefaultAddress(id);
+                            getUserAddress();
+                            TU.cT("删除成功");
+
+                        }else {
+                            TU.cT(result.getMsg() +"");
+                        }
+//                        Log.e("msg",result.getCode() + result.getMsg());
                     }
                 });
+    }
+    //如果删除成功 判断是不是本地存储的默认地址 是就删除本地的存储的地址
+    private void clearLocalDefaultAddress(int id) {
+       int localId = (int) SpUtils.get(this, "defaultUserAddrId", -1);
+       if(localId == id){
+           SpUtils.put(UserAddrAty.this, "defaultAddr",
+                   "" );
+           SpUtils.put(UserAddrAty.this, "defaultAddrId",
+                   "" );
+           //存储默认地址信息
+           SpUtils.put(UserAddrAty.this, "defaultUserAddrId",
+                   "" );
+           SpUtils.put(UserAddrAty.this, "defaultAddrTel",
+                   "" );
+           SpUtils.put(UserAddrAty.this, "defaultAddrName",
+                   "" );
+           SpUtils.put(UserAddrAty.this, "defaultAddrArea",
+                   "" );
+           SpUtils.put(UserAddrAty.this, "defaultAddrDoor",
+                   "" );
+       }
     }
 
     private void setDefaultAddress(AddressBean.DataBean bean) {

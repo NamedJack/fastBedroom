@@ -222,7 +222,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/person_have_pay"
                     android:gravity="center"
-                    android:text="已支付"
+                    android:text="待收货"
                     android:textSize="12sp" />
 
                 <TextView

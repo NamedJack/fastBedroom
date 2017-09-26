@@ -12,7 +12,7 @@ public class BaseBean<T> {
     private String failUrl;
     private String msg;
     private String token;
-    private List<T> t;
+    private List<T> data;
 
 
     public String getCode() {
@@ -56,10 +56,10 @@ public class BaseBean<T> {
     }
 
     public List<T> getT() {
-        return t;
+        return data;
     }
 
     public void setT(List<T> t) {
-        this.t = t;
+        this.data = t;
     }
 }

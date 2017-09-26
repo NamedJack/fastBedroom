@@ -1,5 +1,8 @@
 package com.ejar.fastbedroom.buycar.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -62,7 +65,7 @@ public class BuyCarBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * summary : 小竹筷 好帮手
          * img : /assets/upload/goods_image/1503050205395_1.jpg
@@ -102,6 +105,38 @@ public class BuyCarBean {
         private int state;
         private int stock;
         private boolean isChecked;
+
+        protected DataBean(Parcel in) {
+            summary = in.readString();
+            img = in.readString();
+            goodsid = in.readInt();
+            cartId = in.readInt();
+            type = in.readInt();
+            userId = in.readInt();
+            content = in.readString();
+            number = in.readInt();
+            unit = in.readString();
+            shopPrice = in.readDouble();
+            proId = in.readInt();
+            schoolId = in.readInt();
+            name = in.readString();
+            id = in.readInt();
+            state = in.readInt();
+            stock = in.readInt();
+            isChecked = in.readByte() != 0;
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public boolean isChecked() {
             return isChecked;
@@ -237,6 +272,33 @@ public class BuyCarBean {
 
         public void setStock(int stock) {
             this.stock = stock;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        //
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(summary);
+            dest.writeString(img);
+            dest.writeInt(goodsid);
+            dest.writeInt(cartId);
+            dest.writeInt(type);
+            dest.writeInt(userId);
+            dest.writeString(content);
+            dest.writeInt(number);
+            dest.writeString(unit);
+            dest.writeDouble(shopPrice);
+            dest.writeInt(proId);
+            dest.writeInt(schoolId);
+            dest.writeString(name);
+            dest.writeInt(id);
+            dest.writeInt(state);
+            dest.writeInt(stock);
+            dest.writeByte((byte) (isChecked ? 1 : 0));
         }
     }
 }

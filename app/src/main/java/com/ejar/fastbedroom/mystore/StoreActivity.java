@@ -29,6 +29,7 @@ import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyMyStoreBinding;
 import com.ejar.fastbedroom.mystore.banner.GlideImageLoader;
 import com.ejar.fastbedroom.mystore.bean.BannerBean;
+import com.ejar.fastbedroom.mystore.bean.ConfirmBuyGoodsDetail;
 import com.ejar.fastbedroom.mystore.bean.FastBuyBean;
 import com.ejar.fastbedroom.mystore.bean.RecommendBean;
 import com.ejar.fastbedroom.mystore.bean.StoreAllBean;
@@ -63,8 +64,6 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
     private List<RecommendBean.RowsBean> recommendBeanList = new ArrayList<>();
     private List<TabCenterBean.DataBean> tabList = new ArrayList<>();
 
-    private Button changeAddr, confirmAddr;
-    private TextView showAddr;
     private String userAddress, userDoor;
     private int userArea;
     private boolean flag = false;
@@ -101,7 +100,6 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         adapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-//                TU.cT(data.get(position).getId() + "");
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("lifeUser", data.get(position));
                 openNextActivity(StoreSecondAty.class, bundle);
@@ -123,7 +121,6 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
      */
     private void initRecommendRv(List<RecommendBean.RowsBean> rows) {
         if(rows == null){
-//            Log.e("msg","kong");
             return;
         }
 
@@ -138,21 +135,20 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
                 holder.setText(R.id.recommend_goods_describe, rows.get(position).getSummary());
                 holder.setText(R.id.recommend_goods_price, "¥" + rows.get(position).getShopPrice() + "元/" +
                         rows.get(position).getUnit());
+                //立即购买
                 holder.setOnClickListener(R.id.recommend_goods_fast_buy, v -> {
-//                    TU.cT(rows.get(position).getName() + rows.get(position).getShopPrice());
-                    //立即购买
-                    if (!flag) {
-                        bindingView.fastBuyChooseAddr.setVisibility(View.VISIBLE);
-                        flag = true;
-                    } else {
-                        bindingView.fastBuyChooseAddr.setVisibility(View.GONE);
-                        flag = false;
-                    }
-                    goodsId = rows.get(position).getId();
-                    goodsPrice = new BigDecimal(rows.get(position).getShopPrice()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-//                    itemBundle.putSerializable("goodsId",rows.get(position));
-//                    Bundle bundle = new Bundle();
-//                    openNextActivity(GoodsDetailAty.class, bundle);
+                    ConfirmBuyGoodsDetail detailGood = new ConfirmBuyGoodsDetail();
+                    detailGood.setId(rows.get(position).getId());
+                    detailGood.setImg(rows.get(position).getImg());
+                    detailGood.setName(rows.get(position).getName());
+                    detailGood.setNumber(1);
+                    detailGood.setPrice(rows.get(position).getShopPrice());
+                    Intent intent = new Intent(StoreActivity.this, ConfirmBuyGoodsAty.class);
+                    intent.putExtra("goodAty",1);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("goodsDetail", detailGood);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 });
             }
         };
@@ -178,13 +174,14 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
 
 
     private void initBanner(List<BannerBean.DataBean> data) {
+        if(data == null){return;}
         banner = (Banner) findViewById(R.id.my_store_banner);
         //设置图片加载器
         banner.setIndicatorGravity(BannerConfig.RIGHT);
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         for (int i = 0; i < data.size(); i++) {
-            bannerImg.add(data.get(i).getImg());
+            bannerImg.add(UrlConfig.baseBannerUrl + data.get(i).getImg());
         }
 
         banner.setImages(bannerImg);
@@ -204,11 +201,11 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         setNavigationOnClickListener(v -> {
             finish();
         });
-        changeAddr = (Button) findViewById(R.id.goods_detail_choose_addr);
-        confirmAddr = (Button) findViewById(R.id.goods_detail_to_order);
-        showAddr = (TextView) findViewById(R.id.goods_detail_send_address);
-        changeAddr.setOnClickListener(clickListener);
-        confirmAddr.setOnClickListener(clickListener);
+//        changeAddr = (Button) findViewById(R.id.goods_detail_choose_addr);
+//        confirmAddr = (Button) findViewById(R.id.goods_detail_to_order);
+//        showAddr = (TextView) findViewById(R.id.goods_detail_send_address);
+//        changeAddr.setOnClickListener(clickListener);
+//        confirmAddr.setOnClickListener(clickListener);
     }
 
     View.OnClickListener clickListener = v -> {
@@ -216,52 +213,52 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
             case R.id.goods_detail_choose_addr:
                 openNextActivity(UserAddrAty.class);
                 break;
-            case R.id.goods_detail_to_order:
-                if (TextUtils.isEmpty(showAddr.getText().toString().trim())) {
-                    TU.cT("请选择收货地址");
-                    return;
-                }
-                fastBuyGetOrder();
-                break;
+//            case R.id.goods_detail_to_order:
+//                if (TextUtils.isEmpty(showAddr.getText().toString().trim())) {
+//                    TU.cT("请选择收货地址");
+//                    return;
+//                }
+//                fastBuyGetOrder();
+//                break;
         }
     };
 
-    /**
-     * 生成订单号。跳转到支付界面
-     */
-    private void fastBuyGetOrder() {
-        Log.e("msg",goodsId + " " +goodsPrice);
-        NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
-                .singleBuy(APP.token, goodsId, 1, userArea, goodsPrice +"")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MyBaseObserver<FastBuyBean>(this, true, "订单生成中，请稍后...") {
-                    @Override
-                    public void _doNext(FastBuyBean fastBuyBean) {
-                        if (fastBuyBean.getCode().equals("200")) {
-                            Intent intent = new Intent(StoreActivity.this, PayAty.class);
-                            intent.putExtra("aty", "single");
-                            Bundle itemBundle = new Bundle();
-                            itemBundle.putSerializable("singleInfo", fastBuyBean.getData());
-                            intent.putExtras(itemBundle);
-                            startActivity(intent);
+//    /**
+//     * 生成订单号。跳转到支付界面
+//     */
+//    private void fastBuyGetOrder() {
+//        Log.e("msg",goodsId + " " +goodsPrice);
+//        NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
+//                .singleBuy(APP.token, goodsId, 1, userArea, goodsPrice +"")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new MyBaseObserver<FastBuyBean>(this, true, "订单生成中，请稍后...") {
+//                    @Override
+//                    public void _doNext(FastBuyBean fastBuyBean) {
+//                        if (fastBuyBean.getCode().equals("200")) {
+//                            Intent intent = new Intent(StoreActivity.this, PayAty.class);
+//                            intent.putExtra("aty", "single");
+//                            Bundle itemBundle = new Bundle();
+//                            itemBundle.putSerializable("singleInfo", fastBuyBean.getData());
+//                            intent.putExtras(itemBundle);
+//                            startActivity(intent);
+//
+//                        } else {
+//                            TU.cT(fastBuyBean.getMsg() + " ");
+//                        }
+//                    }
+//                });
+//    }
 
-                        } else {
-                            TU.cT(fastBuyBean.getMsg() + " ");
-                        }
-                    }
-                });
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        userAddress = (String) SpUtils.get(this, "defaultAddrArea", "");
-        userDoor = (String) SpUtils.get(this, "defaultAddrDoor", "");
-        showAddr.setText(userAddress + userDoor + " ");
-        userArea = (int) SpUtils.get(this, "defaultUserAddrId", -1);
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        userAddress = (String) SpUtils.get(this, "defaultAddrArea", "");
+//        userDoor = (String) SpUtils.get(this, "defaultAddrDoor", "");
+//        showAddr.setText(userAddress + userDoor + " ");
+//        userArea = (int) SpUtils.get(this, "defaultUserAddrId", -1);
+//    }
 
     @Override
     protected void onStop() {

@@ -7,23 +7,13 @@ import java.io.Serializable;
  */
 
 public class PayOrder {
-
     /**
-     * msg : {"sendPrice":0,"money":11.25,"totalManey":80,"goodsPrice":80,"goodsOrderNo":"zy2017082116340091915519"}
      * code : 200
+     * data : {"sendPrice":0,"address":"地下室","totalManey":114,"goodsPrices":114,"revtel":"18081231464","dpareaname":"南门寝室","goodsOrderNo":"zy20170924103147243","revname":"啊啊啊"}
      */
 
-    private DataBean data;
     private String code;
-    private String msg;
-
-    public DataBean getData() {
-        return data;
-    }
-
-    public void setData(DataBean data) {
-        this.data = data;
-    }
+    private DataBean data;
 
     public String getCode() {
         return code;
@@ -33,59 +23,81 @@ public class PayOrder {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
     public static class DataBean implements Serializable{
         /**
-         * sendPrice : 0
-         * money : 11.25
-         * totalManey : 80
-         * goodsPrice : 80
-         * goodsOrderNo : zy2017082116340091915519
+         * sendPrice : 0.0
+         * address : 地下室
+         * totalManey : 114.0
+         * goodsPrices : 114.0
+         * revtel : 18081231464
+         * dpareaname : 南门寝室
+         * goodsOrderNo : zy20170924103147243
+         * revname : 啊啊啊
          */
 
-        private int sendPrice;
-        private double money;
-        private int totalManey;
-        private int goodsPrice;
+        private double sendPrice;
+        private String address;
+        private double totalManey;
+        private double goodsPrices;
+        private String revtel;
+        private String dpareaname;
         private String goodsOrderNo;
+        private String revname;
 
-        public int getSendPrice() {
+        public double getSendPrice() {
             return sendPrice;
         }
 
-        public void setSendPrice(int sendPrice) {
+        public void setSendPrice(double sendPrice) {
             this.sendPrice = sendPrice;
         }
 
-        public double getMoney() {
-            return money;
+        public String getAddress() {
+            return address;
         }
 
-        public void setMoney(double money) {
-            this.money = money;
+        public void setAddress(String address) {
+            this.address = address;
         }
 
-        public int getTotalManey() {
+        public double getTotalManey() {
             return totalManey;
         }
 
-        public void setTotalManey(int totalManey) {
+        public void setTotalManey(double totalManey) {
             this.totalManey = totalManey;
         }
 
-        public int getGoodsPrice() {
-            return goodsPrice;
+        public double getGoodsPrices() {
+            return goodsPrices;
         }
 
-        public void setGoodsPrice(int goodsPrice) {
-            this.goodsPrice = goodsPrice;
+        public void setGoodsPrices(double goodsPrices) {
+            this.goodsPrices = goodsPrices;
+        }
+
+        public String getRevtel() {
+            return revtel;
+        }
+
+        public void setRevtel(String revtel) {
+            this.revtel = revtel;
+        }
+
+        public String getDpareaname() {
+            return dpareaname;
+        }
+
+        public void setDpareaname(String dpareaname) {
+            this.dpareaname = dpareaname;
         }
 
         public String getGoodsOrderNo() {
@@ -96,15 +108,13 @@ public class PayOrder {
             this.goodsOrderNo = goodsOrderNo;
         }
 
-        @Override
-        public String toString() {
-            return "MsgBean{" +
-                    "sendPrice=" + sendPrice +
-                    ", money=" + money +
-                    ", totalManey=" + totalManey +
-                    ", goodsPrice=" + goodsPrice +
-                    ", goodsOrderNo='" + goodsOrderNo + '\'' +
-                    '}';
+        public String getRevname() {
+            return revname;
+        }
+
+        public void setRevname(String revname) {
+            this.revname = revname;
         }
     }
+
 }

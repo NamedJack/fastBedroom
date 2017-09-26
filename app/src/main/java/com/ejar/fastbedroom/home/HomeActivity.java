@@ -1,25 +1,27 @@
 package com.ejar.fastbedroom.home;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 
+import com.ejar.baseframe.base.aty.AppManager;
 import com.ejar.baseframe.base.aty.BaseActivity;
 import com.ejar.baseframe.utils.sp.SpUtils;
+import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.databinding.HomeActivityBinding;
 import com.ejar.fastbedroom.deliver.FastFrg;
 import com.ejar.fastbedroom.message.MessageFrg;
+import com.ejar.fastbedroom.mystore.bean.RowBean;
 import com.ejar.fastbedroom.personal.PersonFrg;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.litepal.crud.DataSupport;
 
 /**
  * Created by json on 2017/8/14.
@@ -131,25 +133,24 @@ public class HomeActivity extends BaseActivity<HomeActivityBinding> {
         return super.onOptionsItemSelected(item);
     }
 
+    private long exitTime = 0;
 
-
-    //    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//                if(keyCode == KeyEvent.KEYCODE_BACK){
-//                        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-//                                drawerLayout.closeDrawer(GravityCompat.START);
-//                            } else {
-//                                if(System.currentTimeMillis() - exitTime > 2000){
-//                                        exitTime = System.currentTimeMillis();
-//                                        Snackbar.make(coordinatorLayout, "再按一次退出程序", Snackbar.LENGTH_SHORT).show();
-//                                    } else {
-//                                        finish();
-//                                    }
-//                            }
-//                        return true;
-//                    }
-//                return super.onKeyDown(keyCode, event);
-//            }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                TU.cT( "再按一次退出程序");
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                DataSupport.deleteAll(RowBean.class);
+                AppManager.removeAllAty();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
 }

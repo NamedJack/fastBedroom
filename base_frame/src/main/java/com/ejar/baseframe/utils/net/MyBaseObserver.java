@@ -61,6 +61,8 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
             errorMsg = httpException.getMessage();
             if (errorCode.equals("500")) {
                 TU.cT("服务器内部错误");
+            }else if(errorCode.equals("404")){
+                TU.cT("服务器资源不存在,请稍后再试~~");
             }
             _doError(errorCode, errorMsg);
 

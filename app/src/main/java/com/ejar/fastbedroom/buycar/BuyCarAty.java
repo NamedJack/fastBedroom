@@ -1,11 +1,10 @@
 package com.ejar.fastbedroom.buycar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -15,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.bumptech.glide.Glide;
 import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
+import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
@@ -30,6 +31,8 @@ import com.ejar.fastbedroom.buycar.bean.DeleteGoodsBean;
 import com.ejar.fastbedroom.buycar.bean.PayOrder;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyBuyCarBinding;
+import com.ejar.fastbedroom.pay.PayYueAty;
+import com.ejar.fastbedroom.pay.bean.YuEBean;
 import com.ejar.fastbedroom.useraddr.UserAddrAty;
 import com.google.gson.Gson;
 
@@ -48,97 +51,107 @@ import io.reactivex.schedulers.Schedulers;
 public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
     private String money = "";
     //购物车列表
-    private List<BuyCarBean.DataBean> beans = new ArrayList<>();
+    private List<BuyCarBean.DataBean> allCarList = new ArrayList<>();
     //购物车结算/删除列表
-    private List<BuyCarBean.DataBean> paidList = new ArrayList<>();
+    private List<BuyCarBean.DataBean> chooseList = new ArrayList<>();
     List<DeleteGoodsBean> deleteGoods = new ArrayList<>();
 
-    private BuyCarAdapter myAdapter;
+    private MyRecyclerViewAdapter adapter;
     private RelativeLayout zfb, wx, yu_e;
-    private View notDataView;
     private boolean tag = false;//结算界面是否显示
     private TextView userAddr;
     private Button changeAddr;
     private int defaultAddrId = -1;
     private ImageView imgWx, imgZfb, imgYu_e, goodsChose, goodsAdd, goodsCut;
-    private boolean isSave = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_buy_car);
-        init();
-        initAdapter();
+        initTitle();
         getBuyCar();
     }
 
-
     private void initData(List<BuyCarBean.DataBean> netList) {
-        beans.addAll(netList);
-        if(beans.size() > 0){
-            myAdapter.setNewData(beans);
+        if (netList.size() > 0) {
+            allCarList.addAll(netList);
+            initAdapter(netList);
             bindingView.viewPaidInfo.setVisibility(View.VISIBLE);
         }else {
-            notDataView = getLayoutInflater().inflate(R.layout.empty_view,
-                    (ViewGroup) bindingView.buyCarRv.getParent(), false);
-            myAdapter.setEmptyView(notDataView);
+            TU.cT("购物车没有商品哦，赶紧去商城添加吧~~");
         }
     }
 
-    private void initAdapter() {
-        myAdapter = new BuyCarAdapter(R.layout.item_rv, beans, this);
-//        myAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
-
-        myAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+    private void initAdapter(List<BuyCarBean.DataBean> carList) {
+        adapter = new MyRecyclerViewAdapter(this, R.layout.item_rv, carList) {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                TextView buyNumber = (TextView) adapter.getViewByPosition(bindingView.buyCarRv, position, R.id.goods_number);
-                CheckBox checkBox = (CheckBox) adapter.getViewByPosition(bindingView.buyCarRv, position, R.id.goods_isChoose);
+            public void convert(MyViewHolder holder, int position) {
+                holder.setText(R.id.goods_title, carList.get(position).getName());
+                holder.setText(R.id.goods_content, carList.get(position).getSummary());
+                holder.setText(R.id.goods_price, carList.get(position).getShopPrice() + "元/"
+                        + carList.get(position).getUnit());
+                holder.setText(R.id.goods_number, carList.get(position).getNumber() + "");
+                ImageView iv = holder.getView(R.id.goods_img);
+                Glide.with(BuyCarAty.this).load(UrlConfig.baseUrl + carList.get(position).getImg())
+                        .error(R.drawable.defult_img).into(iv);
+                CheckBox checkBox = holder.getView(R.id.goods_isChoose);
+                checkBox.setVisibility(View.VISIBLE);
+                checkBox.setChecked(carList.get(position).isChecked());
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        beans.get(position).setChecked(isChecked);
+                        carList.get(position).setChecked(isChecked);
                         if (isChecked) {
-                            paidList.add(beans.get(position));
+                            chooseList.add(carList.get(position));
                         } else {
-                            paidList.remove(beans.get(position));
+                            chooseList.remove(carList.get(position));
+                            if (chooseList.size() == 0) {//单个商品挨个取消后 把全选设为false
+                                bindingView.checkedAll.setChecked(false);
+                            }
                         }
-                        Log.e("msg", "zongjia" + isChecked);
-                        getTotalMoney();
+                        getTotalMoney(chooseList);
                     }
                 });
-                int number = beans.get(position).getNumber();
-                switch (view.getId()) {
-                    case R.id.goods_add_number:
-                        if (number > beans.get(position).getStock()) {
-                            TU.cT("已达该商品最大库存");
+
+                View.OnClickListener itemClick = v -> {
+                    TextView goodsNumber = holder.getView(R.id.goods_number);
+                    int number = Integer.parseInt(goodsNumber.getText().toString().trim());
+                    switch (v.getId()) {
+                        case R.id.goods_add_number:
+                            if (number > carList.get(position).getStock()) {
+                                TU.cT("已达该商品最大库存");
+                                break;
+                            }
+                            number++;
+                            goodsNumber.setText(number + "");
+                            carList.get(position).setNumber(number);
+                            getTotalMoney(chooseList);
                             break;
-                        }
-                        number++;
-                        buyNumber.setText(number + "");
-                        beans.get(position).setNumber(number);
-                        getTotalMoney();
-                        break;
-                    case R.id.goods_cut_number:
-                        if (number > 1) {
-                            number--;
-                            buyNumber.setText(number + "");
-                            beans.get(position).setNumber(number);
-                        } else {//最少为1个
-                            number = 1;
-                            buyNumber.setText(number + "");
-                            beans.get(position).setNumber(number);
-                        }
-                        getTotalMoney();
-                        break;
-                }
+                        case R.id.goods_cut_number:
+                            if (number > 1) {
+                                number--;
+                                goodsNumber.setText(number + "");
+                                carList.get(position).setNumber(number);
+                            } else {//最少为1个
+                                number = 1;
+                                goodsNumber.setText(number + "");
+                                carList.get(position).setNumber(number);
+                            }
+                            getTotalMoney(chooseList);
+                            break;
+                        case R.id.goods_isChoose:
+                            break;
+                    }
+                };
+                holder.setOnClickListener(R.id.goods_add_number, itemClick);
+                holder.setOnClickListener(R.id.goods_cut_number, itemClick);
             }
-        });
+        };
         bindingView.buyCarRv.setLayoutManager(new LinearLayoutManager(this));
-        bindingView.buyCarRv.setAdapter(myAdapter);
+        bindingView.buyCarRv.setAdapter(adapter);
     }
 
-    private void init() {
+    private void initTitle() {
         setTitle("购物车");
         setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
@@ -160,35 +173,31 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
         wx.setOnClickListener(clickListener);
         yu_e.setOnClickListener(clickListener);
         changeAddr.setOnClickListener(clickListener);
+
         bindingView.checkedAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (beans.size() > 0) {
+                if (allCarList.size() > 0) {
                     if (isChecked) {
-                        for (int i = 0; i < beans.size(); i++) {
-                            beans.get(i).setChecked(true);
+                        for (int i = 0; i < allCarList.size(); i++) {
+                            allCarList.get(i).setChecked(true);
                         }
-                        paidList.addAll(beans);
                     } else {
-                        for (int i = 0; i < beans.size(); i++) {
-                            beans.get(i).setChecked(false);
+                        for (int i = 0; i < allCarList.size(); i++) {
+                            allCarList.get(i).setChecked(false);
                         }
-                        paidList.removeAll(beans);
                     }
-
-                    myAdapter.setNewData(beans);
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
     }
 
-    //List<BuyCarBean.DataBean> moneyList
-    private void getTotalMoney() {
-        Log.e("msg", "paidSize" + paidList.size());
+    private void getTotalMoney(List<BuyCarBean.DataBean> moneyList) {
         BigDecimal totalMoney = new BigDecimal(0d);
-        for (int i = 0; i < paidList.size(); i++) {
-            BigDecimal price = new BigDecimal(paidList.get(i).getShopPrice());
-            BigDecimal number = new BigDecimal(paidList.get(i).getNumber());
+        for (int i = 0; i < moneyList.size(); i++) {
+            BigDecimal price = new BigDecimal(moneyList.get(i).getShopPrice());
+            BigDecimal number = new BigDecimal(moneyList.get(i).getNumber());
             totalMoney = totalMoney.add(price.multiply(number));
         }
         money = totalMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
@@ -206,6 +215,10 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
         show.setDuration(1000);
         switch (v.getId()) {
             case R.id.go_to_pay://支付界面
+                if (chooseList.size() == 0) {
+                    TU.cT("未选择商品");
+                    return;
+                }
                 if (!tag) {
                     tag = true;
                     bindingView.showPaidView.setVisibility(View.VISIBLE);
@@ -215,25 +228,29 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     bindingView.showPaidView.setVisibility(View.GONE);
                 }
                 break;
-            case R.id.paid_by_weixin:
+            case R.id.paid_by_weixin://微信支付
                 setDefaultDrawable();
                 imgWx.setImageDrawable(getResources().getDrawable(R.drawable.img_weixin));
-                payMoney(beans);
+                payMoney(chooseList, 0);
                 break;
-            case R.id.paid_by_zhifubao:
+            case R.id.paid_by_zhifubao://支付宝支付
                 setDefaultDrawable();
                 imgZfb.setImageDrawable(getResources().getDrawable(R.drawable.img_zhifubao));
-                payMoney(beans);
+                payMoney(chooseList, 1);
                 break;
-            case R.id.paid_by_last_money:
+            case R.id.paid_by_last_money://余额支付
                 setDefaultDrawable();
                 imgYu_e.setImageDrawable(getResources().getDrawable(R.drawable.img_last_money_default));
-                payMoney(beans);
+                payMoney(chooseList, 2);
                 break;
             case R.id.choose_get_goods_addr:
                 openNextActivity(UserAddrAty.class);
                 break;
             case R.id.go_to_delete:
+                if (chooseList.size() == 0) {
+                    TU.cT("未选择商品");
+                    return;
+                }
                 deleteGoods();
                 break;
         }
@@ -243,9 +260,9 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
      * 删除购物车的商品
      */
     private void deleteGoods() {
-        for (int i = 0; i < paidList.size(); i++) {
+        for (int i = 0; i < chooseList.size(); i++) {
             DeleteGoodsBean goodsBean = new DeleteGoodsBean();
-            goodsBean.setId(paidList.get(i).getId());
+            goodsBean.setId(chooseList.get(i).getCartId());
             deleteGoods.add(goodsBean);
         }
         Gson gson = new Gson();
@@ -259,6 +276,7 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     public void _doNext(BaseBean baseBean) {
                         if (baseBean.getCode().equals("200")) {
                             TU.cT("删除成功");
+                            getBuyCar();
                         } else {
                             TU.cT("" + baseBean.getMsg());
                         }
@@ -285,15 +303,13 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     @Override
                     public void _doNext(BuyCarBean buyCarBean) {
                         if (buyCarBean.getCode().equals("200")) {
-                            if (buyCarBean.getData().size() > 0) {
-                                initData(buyCarBean.getData());
-                            }
+                            initData(buyCarBean.getData());
                         }
                     }
                 });
     }
 
-    private void payMoney(List<BuyCarBean.DataBean> buyList) {
+    private void payMoney(List<BuyCarBean.DataBean> buyList, int witchBtn) {
         String addr = userAddr.getText().toString().trim();
         if (addr.equals("") || addr == null) {
             TU.cT("请选择你的收货地址");
@@ -308,9 +324,25 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                 .subscribe(new MyBaseObserver<PayOrder>(this, true, "订单生成中...") {
                     @Override
                     public void _doNext(PayOrder payOrder) {
-                        Log.e("msg", payOrder.getMsg() + "  " + payOrder.getCode());
                         if (payOrder.getCode().equals("200")) {
-
+                            switch (witchBtn) {
+                                case 0://微信
+                                    break;
+                                case 1://支付宝
+                                    break;
+                                case 2://余额
+                                    Intent intent = new Intent(BuyCarAty.this, PayYueAty.class);
+                                    YuEBean yuEBean = new YuEBean();
+                                    yuEBean.setArea(payOrder.getData().getDpareaname());
+                                    yuEBean.setDoor(payOrder.getData().getAddress());
+                                    yuEBean.setTotalMoney(payOrder.getData().getTotalManey() +"");
+                                    yuEBean.setOrderId(payOrder.getData().getGoodsOrderNo());
+                                    yuEBean.setTag(-2);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("orderId", yuEBean);
+                                    intent.putExtras(bundle);
+                                    break;
+                            }
                         }
                     }
                 });

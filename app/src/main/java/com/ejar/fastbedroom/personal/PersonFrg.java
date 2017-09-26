@@ -44,13 +44,10 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            getUserInfo();
-        }
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
     }
-
 
     private void getUserInfo() {
         NetRequest.getInstance(UrlConfig.baseUrl).create(HomeAtyApi.class)
@@ -136,9 +133,9 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
                 startActivity(intent);
                 break;
             case R.id.person_complete://已完成
-                intent = new Intent(getActivity(), BookActivity.class);
-                intent.putExtra("view", 4);
-                startActivity(intent);
+//                intent = new Intent(getActivity(), BookActivity.class);
+//                intent.putExtra("view", 4);
+//                startActivity(intent);
                 break;
             case R.id.person_to_act://成为代理人
                 intent = new Intent(getActivity(), ToBeAgentAty.class);

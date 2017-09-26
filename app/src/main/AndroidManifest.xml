@@ -53,6 +53,7 @@
         <activity android:name=".certification.CertificationAty"></activity>
         <activity android:name=".personal.aty.PhotoAty"
             android:theme="@style/MyAtyDialogStyle"></activity>
+        <activity android:name=".mystore.ConfirmBuyGoodsAty"></activity>
     </application>
 
 </manifest>

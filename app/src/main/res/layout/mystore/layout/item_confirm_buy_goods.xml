@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="10dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/confirm_goods_img"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/confirm_goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/confirm_goods_img"
+            android:gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:text="￥"
+            android:textSize="@dimen/center_text_size" />
+
+        <TextView
+            android:id="@+id/confirm_goods_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/confirm_goods_img"
+            android:layout_toLeftOf="@id/confirm_goods_price"
+            android:layout_toRightOf="@id/confirm_goods_img"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text=""
+            android:textSize="@dimen/center_text_size" />
+
+        <TextView
+            android:id="@+id/confirm_goods_number"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/confirm_goods_name"
+            android:layout_toRightOf="@id/confirm_goods_img"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="X"
+            android:textSize="@dimen/center_text_size" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+</LinearLayout>

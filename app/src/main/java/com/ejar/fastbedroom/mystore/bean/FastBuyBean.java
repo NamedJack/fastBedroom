@@ -63,6 +63,10 @@ public class FastBuyBean {
          * goodsOrderNo : zy20170905104155283
          */
 
+        private String dpareaname;
+        private String revname;
+        private String revtel;
+        private String address;
         private String msg;
         private double sendPrice;
         private String code;
@@ -70,6 +74,38 @@ public class FastBuyBean {
         private int goodsPrices;
         private boolean success;
         private String goodsOrderNo;
+
+        public String getDpareaname() {
+            return dpareaname;
+        }
+
+        public void setDpareaname(String dpareaname) {
+            this.dpareaname = dpareaname;
+        }
+
+        public String getRevname() {
+            return revname;
+        }
+
+        public void setRevname(String revname) {
+            this.revname = revname;
+        }
+
+        public String getRevtel() {
+            return revtel;
+        }
+
+        public void setRevtel(String revtel) {
+            this.revtel = revtel;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
 
         public String getMsg() {
             return msg;

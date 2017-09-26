@@ -138,6 +138,12 @@ public interface StoreApi {
                                       @Field("totalMoney") String totalMoney);
 
 
+    @FormUrlEncoded
+    @POST("pub/submitNowOrder")
+    Observable<PayOrder> multiGoodsOrder(@Field("token") String token,
+                                             @Field("jsonData") String jsonData,
+                                             @Field("totalMoney") String totalMoney,
+                                             @Field("addressId") int addressId);
 
 
 
