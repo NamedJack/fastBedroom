@@ -3,20 +3,21 @@ package com.ejar.fastbedroom.pay;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyYuEPayBinding;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.pay.bean.YuEBean;
+import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -37,7 +38,7 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
         yuEBean = (YuEBean) bundle.getSerializable("orderId");
         initTitle();
         setListener();
-        Log.e("msg", yuEBean.getId() + "dingdaha" + yuEBean.getTotalMoney());
+//        Log.e("msg", yuEBean.getId() + "dingdaha" + yuEBean.getTotalMoney());
     }
 
     private void setListener() {
@@ -63,6 +64,10 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                                     bindingView.tvPay.setText("支付失败");
                                     bindingView.yuEPay.setVisibility(View.GONE);
                                     TU.cT("订单已经支付");
+                                } else if (baseBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
+                                    AppManager.removeAllAty();
+                                    Intent intent = new Intent(PayYueAty.this, LoginActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
@@ -88,6 +93,10 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                                     bindingView.tvPay.setText("支付失败");
                                     bindingView.yuEPay.setVisibility(View.GONE);
                                     TU.cT("订单已经支付");
+                                } else if (baseBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
+                                    AppManager.removeAllAty();
+                                    Intent intent = new Intent(PayYueAty.this, LoginActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
@@ -113,7 +122,8 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
             finish();
         });
 
-        bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney());
+        bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney()
+                + "含运费(" + yuEBean.getSendPrice() + ") 元");
         bindingView.paidOrderNumber.setText("" + yuEBean.getOrderId());
         bindingView.paidOderAddress.setText("收货地址：" + yuEBean.getArea() + yuEBean.getDoor());
     }

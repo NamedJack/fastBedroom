@@ -7,12 +7,21 @@ import java.io.Serializable;
  */
 
 public class YuEBean  implements Serializable{
-    private int tag; //使用那个接口 -1： 1期 -2： 2期
+    private int tag; //使用那个接口 -1： 1期 订单号付款    -2： 2期 订单编号付款
     private int id; //订单号
     private String orderId; //订单编号
     private String area; //区域
     private String door; //门牌号
     private String totalMoney; //总金额
+    private String sendPrice;//运费
+
+    public String getSendPrice() {
+        return sendPrice;
+    }
+
+    public void setSendPrice(String sendPrice) {
+        this.sendPrice = sendPrice;
+    }
 
     public int getTag() {
         return tag;

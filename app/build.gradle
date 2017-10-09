@@ -7,6 +7,7 @@ android {
             keyPassword 'ejar8888'
             storeFile file('F:/ejar/bed_jsk/ejar.jks')
             storePassword 'ejar8888'
+            v2SigningEnabled false
         }
     }
     compileSdkVersion 25
@@ -53,7 +54,8 @@ android {
                     'src/main/res/layout/useraddr',
                     'src/main/res/layout/pay',
                     'src/main/res/layout/wxapi',
-                    'src/main/res/layout/certification'
+                    'src/main/res/layout/certification',
+                    'src/main/res/layout/forgotpwd'
             ]
         }
     }
@@ -69,8 +71,9 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation project(':base_frame')
     compile 'org.litepal.android:core:1.6.0'
-//    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
+    //    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation files('libs/alipaySdk-20170725.jar')
     implementation files('libs/libammsdk.jar')
+    implementation project(':pickerview')
 }

@@ -17,15 +17,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.personal.aty.PhotoAty;
+import com.ejar.fastbedroom.utils.TU;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
 import com.jph.takephoto.compress.CompressConfig;
@@ -287,6 +289,10 @@ public class CertificationAty extends TakePhotoActivity {
                         if (baseBean.getCode().equals("200")) {
                             TU.cT("提交审核成功");
                             CertificationAty.this.finish();
+                        } else if (baseBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(CertificationAty.this, LoginActivity.class);
+                            startActivity(intent);
                         } else {
                             TU.cT(baseBean.getMsg() + "");
                         }

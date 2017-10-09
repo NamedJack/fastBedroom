@@ -9,20 +9,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyAddUserAddrBinding;
-import com.ejar.fastbedroom.Api.UserCenterApi;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.useraddr.bean.AddressBean;
 import com.ejar.fastbedroom.useraddr.bean.SchoolAreaBean;
+import com.ejar.fastbedroom.utils.TU;
 
 import java.util.List;
 
@@ -118,6 +120,10 @@ public class UserAddAddressAty extends BaseActivity<AtyAddUserAddrBinding> {
                         if(result.getCode().equals("200")){
                             TU.cT("修改成功");
                             UserAddAddressAty.this.finish();
+                        } else if (result.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddAddressAty.this, LoginActivity.class);
+                            startActivity(intent);
                         }else {
                             TU.cT(result.getMsg());
                         }
@@ -135,7 +141,11 @@ public class UserAddAddressAty extends BaseActivity<AtyAddUserAddrBinding> {
                     public void _doNext(SchoolAreaBean area) {
                         if(area.getCode().equals("200")){
                             showChooseDialog(area.getData());
-                        }else if(area.getCode().equals("201")){
+                        } else if (area.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddAddressAty.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else if (area.getCode().equals("201")) {
                             TU.cT("暂时没有可选区域");
                         }else {
                             TU.cT("" + area.getMsg());
@@ -191,7 +201,11 @@ public class UserAddAddressAty extends BaseActivity<AtyAddUserAddrBinding> {
                     public void _doNext(BaseBean result) {
                         if(result.getCode().equals("200")){
                             UserAddAddressAty.this.finish();
-                        }else if(result.getCode().equals("201")) {
+                        } else if (result.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddAddressAty.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else {
                             TU.cT(result.getMsg()+"");
                         }
                     }

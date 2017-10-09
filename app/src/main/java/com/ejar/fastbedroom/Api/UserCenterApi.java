@@ -1,10 +1,14 @@
 package com.ejar.fastbedroom.Api;
 
 import com.ejar.fastbedroom.BaseBean;
+import com.ejar.fastbedroom.advice.bean.AboutUsBean;
+import com.ejar.fastbedroom.advice.bean.UsAppBean;
 import com.ejar.fastbedroom.fastmail.bean.MailWayWarrper;
 import com.ejar.fastbedroom.fastmail.bean.PostMailBean;
 import com.ejar.fastbedroom.pay.bean.SignBean;
 import com.ejar.fastbedroom.pay.bean.SignWxBean;
+import com.ejar.fastbedroom.personal.bean.CashBean;
+import com.ejar.fastbedroom.personal.bean.MoneyDetailBean;
 import com.ejar.fastbedroom.useraddr.bean.AddressBean;
 import com.ejar.fastbedroom.useraddr.bean.SchoolAreaBean;
 
@@ -16,6 +20,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -146,7 +151,7 @@ public interface UserCenterApi {
 
 
     /**
-     * 支付宝获取签名
+     * 微信获取签名
      *
      * @return
      */
@@ -220,6 +225,57 @@ public interface UserCenterApi {
     Observable<BaseBean> goodsPaidByYue(@Field("token") String token,
                                             @Field("orderId") String orderId);
 
+    /**
+     * 提交建议
+     * @param token
+     * @param advice
+     * @param tel
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/opinionuser")
+    Observable<BaseBean> postAdvice(@Field("token") String token,
+                                    @Field("concate") String advice,
+                                    @Field("tel") String tel);
+
+    /**
+     * 客服电话
+     * @return
+     */
+    @GET("aboutkftel")
+    Observable<AboutUsBean> getUsTel();
+
+    /**
+     * 关于快到寝
+     * @return
+     */
+    @GET("aboutkdq")
+    Observable<UsAppBean> getUsTips();
+
+    /**
+     * 提现
+     * @param token
+     * @param account
+     * @param name
+     * @param style
+     * @param password
+     * @param money
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/userWd")
+    Observable<CashBean> takeCash(@Field("token") String token,
+                                  @Field("account") String account,
+                                  @Field("name") String name,
+                                  @Field("style") int style,
+                                  @Field("password") String password,
+                                  @Field("money") double money);
+
+    @FormUrlEncoded
+    @POST("pub/evaluation")
+    Observable<MoneyDetailBean> getMoneyDetail(@Field("token") String token,
+                                               @Field("years") int year,
+                                               @Field("month") int month);
 
 
 }

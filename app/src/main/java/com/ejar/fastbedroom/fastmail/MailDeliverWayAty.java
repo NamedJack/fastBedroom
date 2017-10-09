@@ -4,19 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.fastbedroom.Api.UserCenterApi;
-import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
@@ -24,22 +21,17 @@ import com.ejar.fastbedroom.databinding.AtyMailDeliverWayBinding;
 import com.ejar.fastbedroom.fastmail.bean.MailWayBean;
 import com.ejar.fastbedroom.fastmail.bean.MailWayWarrper;
 import com.ejar.fastbedroom.register.adapter.MyAdapter;
-import com.ejar.fastbedroom.register.bean.School;
-import com.ejar.fastbedroom.register.view.PinyinComparator;
 import com.ejar.fastbedroom.register.view.PinyinUtils;
-import com.ejar.fastbedroom.register.view.TitleItemDecoration;
 import com.ejar.fastbedroom.register.view.WaveSideBarView;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 /**
  * Created by json on 2017/9/12.

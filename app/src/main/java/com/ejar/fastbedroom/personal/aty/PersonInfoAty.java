@@ -1,4 +1,4 @@
-package com.ejar.fastbedroom.personal;
+package com.ejar.fastbedroom.personal.aty;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,12 +8,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.ejar.baseframe.base.aty.AppManager;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
@@ -22,8 +21,10 @@ import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyPersoninfoBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
-import com.ejar.fastbedroom.personal.aty.PhotoAty;
+import com.ejar.fastbedroom.personal.bean.LogoutBean;
+import com.ejar.fastbedroom.personal.bean.UserInfoBean;
 import com.ejar.fastbedroom.register.aty.ChooseSchoolAty;
+import com.ejar.fastbedroom.utils.TU;
 
 import java.io.File;
 import java.util.HashMap;
@@ -79,6 +80,10 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                                         .error(R.drawable.image_user_head).into(bindingView.personImgChange);
                             }
 
+                        } else if (userInfoBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);
+                            startActivity(intent);
                         } else {
                             TU.cT(userInfoBean.getMsg());
                         }
@@ -170,6 +175,10 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     public void _doNext(LogoutBean logoutBean) {
                         if (logoutBean.getCode().equals("200")) {
                             SpUtils.put(APP.getInstance(), "token", "");
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else if (logoutBean.getCode().equals(UrlConfig.logoutCodeOne)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);
                             startActivity(intent);

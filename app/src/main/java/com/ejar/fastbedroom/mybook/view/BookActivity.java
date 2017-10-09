@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.databinding.AtyBookBinding;
 import com.ejar.fastbedroom.mybook.frgment.MailFragment;

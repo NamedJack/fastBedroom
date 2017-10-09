@@ -6,17 +6,19 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyAgentBinding;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.register.aty.ChooseSchoolAty;
+import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -121,6 +123,10 @@ public class AgentAty extends BaseActivity<AtyAgentBinding> {
                     public void _doNext(BaseBean baseBean) {
                         if (baseBean.getCode().equals("200")) {
                             TU.cT("提交成功");
+                        } else if (baseBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(AgentAty.this, LoginActivity.class);
+                            startActivity(intent);
                         } else {
                             TU.cT(baseBean.getMsg() + " ");
                         }

@@ -1,28 +1,30 @@
 package com.ejar.fastbedroom.useraddr;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyUserAddrBinding;
-import com.ejar.fastbedroom.Api.UserCenterApi;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.useraddr.bean.AddressBean;
+import com.ejar.fastbedroom.utils.TU;
 
 import java.util.List;
 
@@ -82,6 +84,10 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                     public void _doNext(AddressBean addressBean) {
                         if(addressBean.getCode().equals("200")){
                             setAddrList(addressBean.getData());
+                        } else if (addressBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddrAty.this, LoginActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
@@ -155,7 +161,11 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                             getUserAddress();
                             TU.cT("删除成功");
 
-                        }else {
+                        } else if (result.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddrAty.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else {
                             TU.cT(result.getMsg() +"");
                         }
 //                        Log.e("msg",result.getCode() + result.getMsg());
@@ -206,6 +216,10 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                             SpUtils.put(UserAddrAty.this, "defaultAddrDoor",
                                     bean.getReceivesite() );
                             UserAddrAty.this.finish();
+                        } else if (result.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(UserAddrAty.this, LoginActivity.class);
+                            startActivity(intent);
                         }else {
                             TU.cT("" + result.getMsg());
                         }

@@ -23,11 +23,11 @@
                 android:src="@drawable/icon_login" />
 
             <TextView
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/img_register_log"
                 android:gravity="center"
-                android:paddingBottom="10dp"
                 android:text="快  到  寝"
                 android:textColor="@color/app_title_gb"
                 android:textSize="30sp"

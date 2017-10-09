@@ -124,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@null"
-            android:hint="快递物品或则到件时间提醒"
+            android:hint="快递物品或到件时间提醒"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
             android:textSize="@dimen/center_text_size" />

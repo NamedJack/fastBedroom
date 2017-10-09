@@ -1,4 +1,4 @@
-package com.ejar.fastbedroom.personal;
+package com.ejar.fastbedroom.personal.aty;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -9,17 +9,18 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.AppManager;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyChangeMessageBinding;
-import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.login.LoginActivity;
+import com.ejar.fastbedroom.personal.bean.ResultBean;
+import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -27,6 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by json on 2017/8/25.
+ * 修改个人电话  昵称等aty
  */
 
 public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
@@ -75,8 +77,10 @@ public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
                             if(resultBean.getCode().equals("200")){
                                 TU.cT("修改成功");
                                 ChangeMessageAty.this.finish();
-                            }else if(resultBean.getCode().equals("201")){
-                                bindingView.changeViewTips.setText(resultBean.getMsg());
+                            } else if (resultBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                                AppManager.removeAllAty();
+                                Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
+                                startActivity(intent);
                             }else {
                                 bindingView.changeViewTips.setText(resultBean.getMsg());
                             }
@@ -97,6 +101,10 @@ public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
                                 bindingView.changedContentFirst.setHint("请输入新的电话号码");
                                 bindingView.changedContentSecond.setVisibility(View.GONE);
                                 code = 4;
+                            } else if (resultBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                                AppManager.removeAllAty();
+                                Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
+                                startActivity(intent);
                             }else {
                                 bindingView.changeViewTips.setText(resultBean.getMsg());
                             }
@@ -118,6 +126,10 @@ public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
                                 bindingView.changedContentFirst.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                                 bindingView.changedContentSecond.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                                 code = 5;
+                            } else if (resultBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                                AppManager.removeAllAty();
+                                Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
+                                startActivity(intent);
                             }else {
                                 bindingView.changeViewTips.setText(resultBean.getMsg());
                             }
@@ -136,6 +148,10 @@ public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
                             if(resultBean.getCode().equals("200")){
                                 TU.cT("修改成功");
                                 ChangeMessageAty.this.finish();
+                            } else if (resultBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                                AppManager.removeAllAty();
+                                Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
+                                startActivity(intent);
                             }else {
                                 bindingView.changeViewTips.setText(resultBean.getMsg());
                             }
@@ -156,6 +172,10 @@ public class ChangeMessageAty extends BaseActivity<AtyChangeMessageBinding> {
                             NetDialog.closeDialog(mDialog);
                             if(resultBean.getCode().equals("200")){
                                 TU.cT("修改成功,请用新密码重新登录");
+                                AppManager.removeAllAty();
+                                Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
+                                startActivity(intent);
+                            } else if (resultBean.getCode().equals(UrlConfig.logoutCodeOne)) {
                                 AppManager.removeAllAty();
                                 Intent intent = new Intent(ChangeMessageAty.this, LoginActivity.class);
                                 startActivity(intent);

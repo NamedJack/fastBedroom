@@ -13,13 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.baseframe.base.aty.AppManager;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.baseframe.widget.AddCartAnimation;
 import com.ejar.baseframe.widget.MyLoadMoreRecycleView;
 import com.ejar.fastbedroom.Api.StoreApi;
@@ -35,6 +34,7 @@ import com.ejar.fastbedroom.mystore.bean.RowBean;
 import com.ejar.fastbedroom.mystore.bean.SecondStoreRvBean;
 import com.ejar.fastbedroom.mystore.bean.SecondStoreTab;
 import com.ejar.fastbedroom.mystore.bean.TabCenterBean;
+import com.ejar.fastbedroom.utils.TU;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -75,11 +75,12 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         initTile();
         netBannerRequest();
         getGoodsTab();
-        initRvList(1,0+"");
+        initRvList(1,dataBean.getId()+"");
     }
 
 
     private List<RowBean> initRvList(int pageNo, String pid) {
+
         NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
                 .getUseRvList(APP.token, "" + pid, pageNo + "")
                 .subscribeOn(Schedulers.io())
@@ -99,6 +100,10 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                         } else if (secondStoreRvBean.getCode().equals("201")) {
                             AppManager.removeAllAty();
                             openNextActivity(LoginActivity.class);
+                        } else if (secondStoreRvBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(StoreSecondAty.this, LoginActivity.class);
+                            startActivity(intent);
                         } else {
                             TU.cT(secondStoreRvBean.getMsg() + "");
                         }
@@ -108,6 +113,11 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
     }
 
     private void setDataList() {
+        if (goodsList.size() == 0) {
+            rv.setVisibility(View.GONE);
+            bindingView.secondStoreEmpty.setVisibility(View.VISIBLE);
+            return;
+        }
         LinearLayoutManager ll = new LinearLayoutManager(this);
         rv.setFooterResource(R.layout.default_loading);
         adapter = new MyRecyclerViewAdapter(this, R.layout.item_rv, goodsList) {
@@ -135,8 +145,8 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                             tv.setText(number + "");
                             goodsList.get(position).setBookNumber(number);
                             //动画
-                            AddCartAnimation.AddToCart(anim, bindingView.myStoreFlButton,
-                                    StoreSecondAty.this, bindingView.myStoreRl, 0.5);
+//                            AddCartAnimation.AddToCart(anim, bindingView.myStoreFlButton,
+//                                    StoreSecondAty.this, bindingView.myStoreRl, 0.5);
                             totalMoney = totalMoney.add(new BigDecimal(goodsList.get(position).getShopPrice()));
                             showMoney(totalMoney.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                             break;
@@ -266,9 +276,13 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                         if (bannerBean.getCode().equals("200")) {
 //                            list.addAll(bannerBean.getData());
                             for (int i = 0; i < bannerBean.getData().size(); i++) {
-                                bannerImg.add(UrlConfig.baseBannerUrl + bannerBean.getData().get(i).getImg());
+                                bannerImg.add(UrlConfig.baseUrl + bannerBean.getData().get(i).getImg());
                             }
                             initBanner();
+                        } else if (bannerBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(StoreSecondAty.this, LoginActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
@@ -280,11 +294,6 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         banner.setIndicatorGravity(BannerConfig.RIGHT);
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
-//        bannerImg.add("http://pic49.nipic.com/file/20140927/19617624_230415502002_2.jpg");
-//        bannerImg.add("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=ea57f833b91bb0519b29bb6b5e13b0c1/f9198618367adab409cdef5281d4b31c8701e486.jpg");
-//        bannerImg.add("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=f98d7c40b919ebc4d4757edaea4fa589/b64543a98226cffc9eabfc97b3014a90f603ea16.jpg");
-//        bannerImg.add("http://imgsrc.baidu.com/imgad/pic/item/1ad5ad6eddc451da2c3118f5bcfd5266d11632ec.jpg");
-
         banner.setImages(bannerImg);
         //banner设置方法全部调用完毕时最后调用
         banner.start();

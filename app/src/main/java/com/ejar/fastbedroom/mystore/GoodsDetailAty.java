@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.StoreApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
@@ -18,11 +18,13 @@ import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.buycar.bean.PostGoodsBean;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyGoodsDetailBinding;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.mystore.banner.GlideImageLoader;
 import com.ejar.fastbedroom.mystore.bean.ConfirmBuyGoodsDetail;
 import com.ejar.fastbedroom.mystore.bean.GoodsDetailBean;
 import com.ejar.fastbedroom.mystore.bean.RecommendBean;
 import com.ejar.fastbedroom.mystore.bean.RowBean;
+import com.ejar.fastbedroom.utils.TU;
 import com.google.gson.Gson;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -93,6 +95,10 @@ public class GoodsDetailAty extends BaseActivity<AtyGoodsDetailBinding> {
                     public void _doNext(GoodsDetailBean goodsDetail) {
                         if (goodsDetail.getCode().equals("200")) {
                             init(goodsDetail);
+                        } else if (goodsDetail.getCode().equals(UrlConfig.logoutCodeTwo)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(GoodsDetailAty.this, LoginActivity.class);
+                            startActivity(intent);
                         } else {
                             TU.cT("获取失败,请稍后再试");
                         }
@@ -101,7 +107,7 @@ public class GoodsDetailAty extends BaseActivity<AtyGoodsDetailBinding> {
     }
 
     private void init(GoodsDetailBean goodsDetail) {
-        Log.e("msg", goodsDetail.toString());
+//        Log.e("msg", goodsDetail.toString());
         bindingView.allLlView.setVisibility(View.VISIBLE);
         bindingView.goodsDeatailName.setText(goodsDetail.getGood().getName() + " ");
         bindingView.goodsDetailDescription.setText(goodsDetail.getGood().getSummary() + " ");

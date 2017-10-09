@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ejar.fastbedroom">
 
-
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,7 +15,7 @@
     <application
         android:name=".application.APP"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -34,8 +32,8 @@
         <activity android:name=".register.aty.RegisterAty"></activity>
         <activity android:name=".register.aty.RegisterInfoAty"></activity>
         <activity android:name=".buycar.BuyCarAty"></activity>
-        <activity android:name=".personal.PersonInfoAty"></activity>
-        <activity android:name=".personal.ChangeMessageAty"></activity>
+        <activity android:name=".personal.aty.PersonInfoAty"></activity>
+        <activity android:name=".personal.aty.ChangeMessageAty"></activity>
         <activity android:name=".fastmail.FastMailAty"></activity>
         <activity android:name=".mystore.StoreActivity"></activity>
         <activity android:name=".mybook.view.BookActivity"></activity>
@@ -54,6 +52,28 @@
         <activity android:name=".personal.aty.PhotoAty"
             android:theme="@style/MyAtyDialogStyle"></activity>
         <activity android:name=".mystore.ConfirmBuyGoodsAty"></activity>
+        <activity android:name=".advice.AdviceAty"></activity>
+        <activity android:name=".advice.AboutUsAppAty"></activity>
+        <activity android:name=".advice.AboutUsAty"></activity>
+        <activity android:name=".personal.aty.CashAty"></activity>
+        <activity android:name=".forgotpwd.aty.ForgotPwdAty"></activity>
+        <activity android:name=".forgotpwd.aty.ChangeUserPwdAty"></activity>
+        <activity android:name=".message.MessageWebAty"></activity>
+        <activity android:name=".personal.aty.MoneyDetailAty"></activity>
+        <!--支付宝beginning-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!--支付宝end-->
     </application>
 
 </manifest>

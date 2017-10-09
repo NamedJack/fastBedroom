@@ -11,14 +11,15 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.ejar.baseframe.base.aty.AppManager;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
+import com.ejar.fastbedroom.Api.RegisterApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
@@ -26,7 +27,6 @@ import com.ejar.fastbedroom.databinding.AtyRegisterInfoBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.register.adapter.MyAdapter;
 import com.ejar.fastbedroom.register.bean.ConfirmRegisterBean;
-import com.ejar.fastbedroom.Api.RegisterApi;
 import com.ejar.fastbedroom.register.view.PinyinComparator;
 
 import java.util.ArrayList;
@@ -67,6 +67,7 @@ public class RegisterInfoAty extends BaseActivity<AtyRegisterInfoBinding> {
     }
 
     private void init() {
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
         });

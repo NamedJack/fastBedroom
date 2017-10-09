@@ -1,7 +1,6 @@
 package com.ejar.fastbedroom.fastmail;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +13,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.login.LoginActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
@@ -109,7 +110,7 @@ public class FastMailAty extends BaseActivity<AtyFastMailBinding> {
                 if(!TextUtils.isEmpty(mailName)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("提示");
-                    builder.setMessage("重新选择快递将会清空当前取货码，是否继续选择");
+                    builder.setMessage("重新选择快递将会清空当前取货码，是否重新选择？");
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -164,6 +165,9 @@ public class FastMailAty extends BaseActivity<AtyFastMailBinding> {
                             bundle.putSerializable("orderInfo", mailBean.getData());
                             intent.putExtras(bundle);
                             startActivity(intent);
+                        }else if(mailBean.getCode().equals(UrlConfig.logoutCodeOne)){
+                            AppManager.removeAllAty();
+                            openNextActivity(LoginActivity.class);
                         }
                     }
                 });

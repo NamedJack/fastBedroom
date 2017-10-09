@@ -33,7 +33,7 @@ public interface StoreApi {
 
     /**************************一级页面 点击首页自营超市进入**************************************/
     @FormUrlEncoded
-    @POST("pub/wmimg")
+    @POST("pub/shopingimg")
     Observable<BannerBean> getBanner(@Field("token") String token);
 
     @FormUrlEncoded

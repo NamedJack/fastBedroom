@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
@@ -41,6 +41,7 @@ public class RegisterAty extends BaseActivity<AtyRegisterBinding> {
 
     private void init() {
         setTitle("注册");
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {finish();});
         bindingView.goToNext.setOnClickListener(clickListener);
         bindingView.getRegisterCode.setOnClickListener(clickListener);

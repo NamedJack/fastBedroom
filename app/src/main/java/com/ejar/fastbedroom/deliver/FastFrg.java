@@ -9,13 +9,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.AppManager;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.base.frg.BaseFragment;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;

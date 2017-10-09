@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.wxapi.bean.Constants;
 import com.tencent.mm.sdk.constants.ConstantsAPI;

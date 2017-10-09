@@ -40,11 +40,12 @@
                 android:layout_toLeftOf="@id/goods_detail_add_car"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:paddingLeft="80dp"
+                android:paddingLeft="15dp"
                 android:text="合计："
                 android:textColor="@color/app_title_gb" />
         </RelativeLayout>
         <android.support.design.widget.FloatingActionButton
+            android:visibility="gone"
             android:id="@+id/my_store_fl_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
             android:layout_alignParentLeft="true" />
 
         <ScrollView
+            android:fillViewport="true"
             android:layout_above="@id/second_bottom_rl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -85,6 +87,17 @@
                     android:layout_below="@id/second_store_tab">
 
                 </com.ejar.baseframe.widget.MyLoadMoreRecycleView>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/second_store_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/second_store_tab"
+                    android:gravity="center"
+                    android:text="没有商品哦~"
+                    android:textColor="@color/app_title_gb"
+                    android:textSize="@dimen/center_text_size" />
             </RelativeLayout>
         </ScrollView>
 

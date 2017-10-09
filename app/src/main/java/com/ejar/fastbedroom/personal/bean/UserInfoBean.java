@@ -1,4 +1,4 @@
-package com.ejar.fastbedroom.personal;
+package com.ejar.fastbedroom.personal.bean;
 
 import java.io.Serializable;
 import java.util.List;

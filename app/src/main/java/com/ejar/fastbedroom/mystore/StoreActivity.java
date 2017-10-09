@@ -7,40 +7,34 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.StoreApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyMyStoreBinding;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.mystore.banner.GlideImageLoader;
 import com.ejar.fastbedroom.mystore.bean.BannerBean;
 import com.ejar.fastbedroom.mystore.bean.ConfirmBuyGoodsDetail;
-import com.ejar.fastbedroom.mystore.bean.FastBuyBean;
 import com.ejar.fastbedroom.mystore.bean.RecommendBean;
 import com.ejar.fastbedroom.mystore.bean.StoreAllBean;
 import com.ejar.fastbedroom.mystore.bean.TabCenterBean;
-import com.ejar.fastbedroom.pay.PayAty;
 import com.ejar.fastbedroom.useraddr.UserAddrAty;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +114,9 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
      * @param rows
      */
     private void initRecommendRv(List<RecommendBean.RowsBean> rows) {
-        if(rows == null){
+        if(rows == null || rows.size() == 0){
+            bindingView.storeRecommendRv.setVisibility(View.GONE);
+            bindingView.storeRecommendEmpty.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -181,7 +177,7 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         for (int i = 0; i < data.size(); i++) {
-            bannerImg.add(UrlConfig.baseBannerUrl + data.get(i).getImg());
+            bannerImg.add(UrlConfig.baseUrl + data.get(i).getImg());
         }
 
         banner.setImages(bannerImg);
@@ -190,13 +186,13 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                TU.cT(position + "");
+//                TU.cT(position + "");
             }
         });
     }
 
     private void initTitle() {
-        setTitle("自营超市");
+        setTitle("网上超市");
         setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
@@ -295,6 +291,11 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
                         StoreAllBean allBean = (StoreAllBean) o;
                         if (o == null) {
                             return;
+                        }
+                        if(allBean.getRecommend().getCode().equals(UrlConfig.logoutCodeTwo)){
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(StoreActivity.this, LoginActivity.class);
+                            startActivity(intent);
                         }
                         initBanner(allBean.getBanner().getData());
                         initRecommendRv(allBean.getRecommend().getRows());

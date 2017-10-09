@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.StoreApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
@@ -198,7 +198,6 @@ public class ConfirmBuyGoodsAty extends BaseActivity<AtyConfirmBuyGoodsBinding> 
         }
         String goodsJson = gson.toJson(postList);
 
-//        Log.e("msg", "duogetjao  " + goodsJson );
         NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
                 .multiGoodsOrder(APP.token, goodsJson, money, userAreaId)
                 .subscribeOn(Schedulers.io())

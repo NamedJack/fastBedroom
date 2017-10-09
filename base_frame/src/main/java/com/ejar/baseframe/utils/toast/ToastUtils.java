@@ -1,7 +1,6 @@
 package com.ejar.baseframe.utils.toast;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -10,15 +9,15 @@ import android.widget.Toast;
 import com.ejar.baseframe.R;
 
 /**
- * Created by json on 2017/8/15.
+ * Created by json on 2017/9/29.
  */
 
-public class TU {
+public class ToastUtils {
     private static volatile Toast toast;
     public static Context c;
 
 
-    private TU() {
+    private ToastUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
@@ -30,7 +29,7 @@ public class TU {
 
     public static void t(String msg) {
         if (toast == null) {
-            synchronized (TU.class) {
+            synchronized (ToastUtils.class) {
                 if (toast == null) {
                     toast = Toast.makeText(c, msg, Toast.LENGTH_LONG);
                     toast.show();
@@ -92,5 +91,4 @@ public class TU {
     public static void cT(int res) {
         cT(c.getString(res));
     }
-
 }

@@ -1,10 +1,9 @@
-package com.ejar.baseframe.base.aty;
+package com.ejar.fastbedroom.base;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.ejar.baseframe.R;
 import com.ejar.baseframe.databinding.AtyBaseBinding;
+import com.ejar.fastbedroom.utils.AppManager;
 
 /**
  * Created by json on 2017/8/14.

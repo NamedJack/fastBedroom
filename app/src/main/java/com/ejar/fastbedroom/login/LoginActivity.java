@@ -6,16 +6,17 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.LoginApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyLoginBinding;
+import com.ejar.fastbedroom.forgotpwd.aty.ForgotPwdAty;
 import com.ejar.fastbedroom.home.HomeActivity;
 import com.ejar.fastbedroom.register.aty.RegisterAty;
 
@@ -41,6 +42,7 @@ public class LoginActivity extends BaseActivity<AtyLoginBinding> {
 
     private void init() {
         setTitle("登 录");
+        setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
         });
@@ -60,7 +62,7 @@ public class LoginActivity extends BaseActivity<AtyLoginBinding> {
                 openNextActivity(RegisterAty.class);
                 break;
             case R.id.do_forgot_pwd:
-//                openNextActivity(CameraActivity.class);
+                openNextActivity(ForgotPwdAty.class);
                 break;
             case R.id.btn_login:
                 checkinputDologin();

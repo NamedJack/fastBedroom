@@ -3,7 +3,7 @@ package com.ejar.fastbedroom.jion;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.databinding.AtyToBeAgentBinding;
 

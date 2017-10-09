@@ -17,7 +17,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
@@ -29,6 +30,7 @@ import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyChooseSchoolBinding;
 import com.ejar.fastbedroom.jion.ToBeAgentAty;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.register.adapter.MyAdapter;
 import com.ejar.fastbedroom.register.bean.PointBean;
 import com.ejar.fastbedroom.register.bean.School;
@@ -37,6 +39,7 @@ import com.ejar.fastbedroom.register.view.PinyinComparator;
 import com.ejar.fastbedroom.register.view.PinyinUtils;
 import com.ejar.fastbedroom.register.view.TitleItemDecoration;
 import com.ejar.fastbedroom.register.view.WaveSideBarView;
+import com.ejar.fastbedroom.utils.TU;
 
 import org.litepal.crud.DataSupport;
 
@@ -107,6 +110,12 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
                                 setView();
                             }
 
+                        } else if (schoolBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(ChooseSchoolAty.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else {
+                            TU.cT("" + schoolBean.getMsg());
                         }
                     }
                 });

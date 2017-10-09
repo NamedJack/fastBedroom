@@ -1,4 +1,4 @@
-package com.ejar.fastbedroom.personal;
+package com.ejar.fastbedroom.personal.bean;
 
 /**
  * Created by json on 2017/8/28.

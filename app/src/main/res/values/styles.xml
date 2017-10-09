@@ -50,4 +50,8 @@
         <attr name="middle_page_cover" format="boolean"/>
     </declare-styleable>
 
+    <style name="my_dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

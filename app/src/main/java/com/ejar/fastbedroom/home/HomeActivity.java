@@ -2,24 +2,23 @@ package com.ejar.fastbedroom.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 
-import com.ejar.baseframe.base.aty.AppManager;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.databinding.HomeActivityBinding;
 import com.ejar.fastbedroom.deliver.FastFrg;
 import com.ejar.fastbedroom.message.MessageFrg;
 import com.ejar.fastbedroom.mystore.bean.RowBean;
-import com.ejar.fastbedroom.personal.PersonFrg;
+import com.ejar.fastbedroom.personal.frg.PersonFrg;
 
 import org.litepal.crud.DataSupport;
 

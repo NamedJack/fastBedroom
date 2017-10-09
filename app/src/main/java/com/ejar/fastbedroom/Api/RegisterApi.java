@@ -1,5 +1,6 @@
 package com.ejar.fastbedroom.Api;
 
+import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.register.bean.CodeBean;
 import com.ejar.fastbedroom.register.bean.ConfirmRegisterBean;
 import com.ejar.fastbedroom.register.bean.PointBean;
@@ -7,7 +8,6 @@ import com.ejar.fastbedroom.register.bean.RegisterCodeBean;
 import com.ejar.fastbedroom.register.bean.SchoolBean;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -79,6 +79,42 @@ public interface RegisterApi {
     @FormUrlEncoded
     @POST("allshowagent")
     Observable<PointBean> querySchoolPoint(@Field("id") int id);
+
+
+    /**
+     * 忘记密码 获取验证码
+     *
+     * @param tel
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("getVerifyCodeForgetPas")
+    Observable<BaseBean> forgotPwd(@Field("tel") String tel);
+
+    /**
+     * 忘记密码验证验证码
+     *
+     * @param tel
+     * @param code
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("forgetpastel")
+    Observable<BaseBean> provideCode(@Field("tel") String tel,
+                                     @Field("verifyCode") String code);
+
+    /**
+     * 确认修改密码
+     * @param tel
+     * @param password
+     * @param password1
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("forgetPas")
+    Observable<BaseBean> confirmChangePwd(@Field("tel") String tel,
+                                          @Field("password") String password,
+                                          @Field("password1") String password1);
 
 }
 

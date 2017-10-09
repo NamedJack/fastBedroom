@@ -84,6 +84,15 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/store_recommend_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="没有推荐商品哦~"
+                android:textColor="@color/app_title_gb"
+                android:textSize="@dimen/center_text_size"
+                android:visibility="gone" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/store_recommend_rv"
                 android:layout_width="match_parent"

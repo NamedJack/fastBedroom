@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.util.Log;
 
 import com.ejar.baseframe.utils.toast.NetDialog;
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.baseframe.utils.toast.ToastUtils;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -41,7 +41,7 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
     @Override
     public void onSubscribe(Disposable d) {
         if(!NetUtils.isNetworkConnected(context)){
-            TU.cT("当前网络不可用,请检查网络设置");
+            ToastUtils.cT("当前网络不可用,请检查网络设置");
             return;
         }
     }
@@ -60,9 +60,9 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
             errorCode = httpException.code() + "";
             errorMsg = httpException.getMessage();
             if (errorCode.equals("500")) {
-                TU.cT("服务器内部错误");
+                ToastUtils.cT("服务器内部错误");
             }else if(errorCode.equals("404")){
-                TU.cT("服务器资源不存在,请稍后再试~~");
+                ToastUtils.cT("服务器资源不存在,请稍后再试~~");
             }
             _doError(errorCode, errorMsg);
 
@@ -83,7 +83,7 @@ public abstract class MyBaseObserver<T> implements Observer<T> {
 
     private void _doError(String errorCode, String errorMsg) {
         if (errorCode.equals("-1")) {
-            TU.cT(errorMsg + "");
+            ToastUtils.cT(errorMsg + "");
         }else {
             Log.e("netError",errorCode + " " +errorMsg );
         }

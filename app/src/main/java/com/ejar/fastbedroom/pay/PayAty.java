@@ -8,17 +8,16 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.alipay.sdk.app.PayTask;
-import com.ejar.baseframe.base.aty.BaseActivity;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.baseframe.utils.toast.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
@@ -26,6 +25,7 @@ import com.ejar.fastbedroom.buycar.bean.PayOrder;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyPayBinding;
 import com.ejar.fastbedroom.fastmail.bean.PostMailBean;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.mybook.bean.StoreOrderBean;
 import com.ejar.fastbedroom.mystore.bean.DetailBuyBean;
 import com.ejar.fastbedroom.mystore.bean.FastBuyBean;
@@ -33,6 +33,7 @@ import com.ejar.fastbedroom.pay.bean.PayResultZfb;
 import com.ejar.fastbedroom.pay.bean.SignBean;
 import com.ejar.fastbedroom.pay.bean.SignWxBean;
 import com.ejar.fastbedroom.pay.bean.YuEBean;
+import com.ejar.fastbedroom.utils.TU;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -72,35 +73,35 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
         initTitle();
         switch (tag) {
             case "detail"://商品详情界面购买
-                Log.e("msg","detail");
+//                Log.e("msg","detail");
                 bundle = intent.getExtras();
                 detailInfo = (DetailBuyBean.DataBean) bundle.getSerializable("pay_order");
                 setDetailView(detailInfo.getTotalManey(), detailInfo.getSendPrice());//购物车支付界面
                 bindingView.payOrderPay.setOnClickListener(clickListener1);
                 break;
             case "mail"://快递支付界面
-                Log.e("msg","mail");
+//                Log.e("msg","mail");
                 bundle = intent.getExtras();
                 orderInfo = (PostMailBean.DataBean) bundle.getSerializable("orderInfo");
                 bindingView.payOrderPay.setOnClickListener(clickListener0);
                 setMailview();
                 break;
             case "single"://推荐商品 立即购买
-                Log.e("msg","single");
+//                Log.e("msg","single");
                 bundle = intent.getExtras();
                 singleInfo = (FastBuyBean.DataBean) bundle.getSerializable("singleInfo");
                 setDetailView(singleInfo.getTotalManey(), singleInfo.getSendPrice());
                 bindingView.payOrderPay.setOnClickListener(clickListener2);
                 break;
             case "buyCar"://多个商品直接购买
-                Log.e("msg", "buyCar");
+//                Log.e("msg", "buyCar");
                 bundle = intent.getExtras();
                 carOrder = (PayOrder.DataBean) bundle.getSerializable("buyCar");
                 setDetailView(carOrder.getTotalManey(), carOrder.getSendPrice());
                 bindingView.payOrderPay.setOnClickListener(clickListener3);
                 break;
             case "storeOrder"://商城订单
-                Log.e("msg", "storeOrder");
+//                Log.e("msg", "storeOrder");
                 bundle = intent.getExtras();
                 storeOrder = (StoreOrderBean.DateBean.DataBean) bundle.getSerializable("storeOrder");
                 setDetailView(storeOrder.getTotalMoney(), storeOrder.getSendPrice());
@@ -165,6 +166,7 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
             case R.id.pay_order_wx:
                 setDefaultDrawable();
                 bindingView.payOrderWx.setCompoundDrawables(null, null, drawableRight, null);
+//                TU.cT("");
                 payWay = 0x0002;
                 break;
             case R.id.pay_order_ye:
@@ -179,13 +181,14 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
 
 
     View.OnClickListener clickListener0 = v -> {
-        Log.e("msg", "mail  dianji ");
+//        Log.e("msg", "mail  dianji ");
         YuEBean yuEBean = new YuEBean();
         yuEBean.setArea(orderInfo.getArea());
         yuEBean.setDoor(orderInfo.getAddress());
         yuEBean.setId(orderInfo.getId());
         yuEBean.setTotalMoney(orderInfo.getPrice() + "");
         yuEBean.setOrderId(orderInfo.getOrderId());
+        yuEBean.setSendPrice("0.00");
         yuEBean.setTag(-1);
         switch (v.getId()) {
             case R.id.pay_order_pay://快递点击
@@ -228,6 +231,7 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
         yuEBean.setArea(carOrder.getDpareaname());
         yuEBean.setTotalMoney(carOrder.getTotalManey() + "");
         yuEBean.setOrderId(carOrder.getGoodsOrderNo());//订单编号
+        yuEBean.setSendPrice(carOrder.getSendPrice() + "");
         yuEBean.setTag(-2);
         switch (v.getId()) {
             case R.id.pay_order_pay:
@@ -271,6 +275,7 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
         yuEBean.setArea(singleInfo.getDpareaname());
         yuEBean.setTotalMoney(singleInfo.getTotalManey() + "");
         yuEBean.setOrderId(singleInfo.getGoodsOrderNo());
+        yuEBean.setSendPrice(singleInfo.getSendPrice() + "");
         yuEBean.setTag(-2);
         switch (v.getId()) {
             case R.id.pay_order_pay:
@@ -295,20 +300,17 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
         yuEBean.setArea(storeOrder.getAddress().getDpareaname());
         yuEBean.setTotalMoney(storeOrder.getTotalMoney() + "");
         yuEBean.setOrderId(storeOrder.getGoodsOrderNo());
+        yuEBean.setSendPrice(storeOrder.getSendPrice() + "");
         yuEBean.setTag(-2);
         switch (v.getId()) {
             case R.id.pay_order_pay:
                 if (payWay == -1) {
                     TU.cT("请选择支付方式");
                 } else if (payWay == 0x0001) {//支付宝
-                    getOrderInfo(singleInfo.getGoodsOrderNo());
-//                    paidGoodsByZfb();
-                    getOrderInfo(singleInfo.getGoodsOrderNo());
+                    getOrderInfo(storeOrder.getGoodsOrderNo());
                 } else if (payWay == 0x0002) {//微信
-//                    paidGoodsByWx();
                 } else if (payWay == 0x0003) {//余额
                     paidByYe(yuEBean);
-//                    paidGoodsByYe(detailInfo.getGoodsOrderNo());
                 }
                 break;
         }
@@ -343,6 +345,10 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
                             Thread authThread = new Thread(authRunnable);
                             authThread.start();
 
+                        } else if (signBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            AppManager.removeAllAty();
+                            Intent intent = new Intent(PayAty.this, LoginActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
@@ -393,7 +399,7 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
             req.packageValue = signWxBean.getData().getSign().getPackageX();
             req.sign = signWxBean.getData().getSign().getSign();
             req.extData = "app data";
-            Log.e("msg", "weixin");
+//            Log.e("msg", "weixin");
             iwxapi.sendReq(req);
         }
     }

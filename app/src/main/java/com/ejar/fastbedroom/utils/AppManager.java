@@ -1,9 +1,14 @@
-package com.ejar.baseframe.base.aty;
+package com.ejar.fastbedroom.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
+
+import com.ejar.baseframe.utils.sp.SpUtils;
+import com.ejar.baseframe.utils.toast.ToastUtils;
+import com.ejar.fastbedroom.application.APP;
+import com.jph.takephoto.uitl.TUriParse;
 
 import java.util.Stack;
 
@@ -30,13 +35,26 @@ public class AppManager {
     }
 
     public static void removeAllAty() {
+        TU.cT("帐号在其他地方登录，请重新登录！");
         for (Activity activity : activityStruct) {
             if (activity != null) {
                 activity.finish();
             }
         }
         activityStruct.clear();
+        SpUtils.put(APP.getContext(),"token","");
     }
+
+//    public static void removeOtherAty() {
+//        for (Activity activity : activityStruct) {
+//            if (activity != LoginActivity) {
+//                activity.finish();
+//            }
+//        }
+//        activityStruct.clear();
+//    }
+
+
 
     /**
      * 退出应用程序

@@ -1,9 +1,9 @@
 package com.ejar.fastbedroom.application;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.ejar.baseframe.utils.toast.TU;
+import com.ejar.baseframe.utils.toast.ToastUtils;
+import com.ejar.fastbedroom.utils.TU;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
@@ -21,6 +21,7 @@ public class APP extends LitePalApplication {
         instance = this;
         LitePal.initialize(this);
         TU.register(this);
+        ToastUtils.register(this);
     }
 
     public static Context getInstance(){

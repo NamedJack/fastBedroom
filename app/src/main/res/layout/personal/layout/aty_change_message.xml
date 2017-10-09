@@ -40,13 +40,16 @@
             android:maxLines="1"
             android:padding="10dp"
             android:visibility="gone" />
-
         <Button
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
             android:id="@+id/confir_content"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="确认修改" />
+            android:layout_margin="10dp"
+            android:background="@drawable/tab_menu_bg"
+            android:text="确认修改"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="visible" />
     </LinearLayout>
 </layout>

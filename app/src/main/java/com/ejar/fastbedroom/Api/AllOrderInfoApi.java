@@ -2,6 +2,8 @@ package com.ejar.fastbedroom.Api;
 
 
 import com.ejar.fastbedroom.BaseBean;
+import com.ejar.fastbedroom.mybook.bean.MailFinishOrderBean;
+import com.ejar.fastbedroom.mybook.bean.MailPayOrderBean;
 import com.ejar.fastbedroom.mybook.bean.OrderBean;
 import com.ejar.fastbedroom.mybook.bean.StoreOrderBean;
 
@@ -45,7 +47,7 @@ public interface AllOrderInfoApi {
      */
     @FormUrlEncoded
     @POST("pub/userhaveOrderlist")
-    Observable<OrderBean> getUserHaveOrder(@Field("token") String token);
+    Observable<MailPayOrderBean> getUserHaveOrder(@Field("token") String token);
 
 
 
@@ -81,9 +83,16 @@ public interface AllOrderInfoApi {
     @FormUrlEncoded
     @POST("pub/overOrder")
     Observable<BaseBean> userConfirmOrder(@Field("orderid") int orderid,
-                                          @Field("token") String token);
+                                            @Field("token") String token);
 
-
+    /**
+     * 已完成订单
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/useroverOrderlist")
+    Observable<MailFinishOrderBean> mailFinishOrder(@Field("token") String token);
 
     /***********自营超市***************/
 
