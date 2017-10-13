@@ -5,13 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.ejar.fastbedroom.R;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
@@ -56,12 +57,19 @@ public class PhotoAty extends TakePhotoActivity {
         if (file.exists()) file.delete();
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         imageUri = Uri.fromFile(file);
+//        imageUri = FileProvider.getUriForFile(this, "com.jph.takephoto.fileprovider", file);
 
         //图片压缩
         CompressConfig config = new CompressConfig.Builder()
                 .setMaxPixel(500)
                 .enableReserveRaw(true)
                 .create();
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+//        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+//        startActivityForResult(intent, 1006);
+
 
         takePhoto = getTakePhoto();
         takePhoto.onEnableCompress(config, false);

@@ -19,8 +19,18 @@ public class RecommendBean {
 
     private String msg;
     private int total;
+    private int pagetatol;
     private String code;
     private boolean success;
+
+    public int getPagetatol() {
+        return pagetatol;
+    }
+
+    public void setPagetatol(int pagetatol) {
+        this.pagetatol = pagetatol;
+    }
+
     private List<RowsBean> rows;
 
     public String getMsg() {

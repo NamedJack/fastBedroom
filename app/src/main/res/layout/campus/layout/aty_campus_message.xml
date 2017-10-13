@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <WebView
+            android:id="@+id/campus_message_web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+        <TextView
+            android:visibility="gone"
+            android:text="没有消息哦~"
+            android:textColor="@color/app_title_gb"
+            android:textSize="@dimen/center_text_size"
+            android:gravity="center"
+            android:id="@+id/empty_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.base.frg.BaseFragment;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
@@ -26,6 +25,7 @@ import com.ejar.fastbedroom.mybook.bean.MailFinishOrderBean;
 import com.ejar.fastbedroom.mybook.bean.MailPayOrderBean;
 import com.ejar.fastbedroom.mybook.bean.OrderBean;
 import com.ejar.fastbedroom.pay.PayAty;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
 
 import java.util.ArrayList;
@@ -45,7 +45,12 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
     private List<OrderBean.DataBean> notAcceptOrderList = new ArrayList<>();
     private List<OrderBean.DataBean> notPayOrderList = new ArrayList<>();
     private List<MailFinishOrderBean.DataBean> finishOrderList = new ArrayList<>();
-    private MyRecyclerViewAdapter adapter;
+    private MyRecyclerViewAdapter noPayAdapter;
+    private MyRecyclerViewAdapter paidAdapter;
+    private MyRecyclerViewAdapter noAcceptAdapter;
+    private MyRecyclerViewAdapter finishAdapter;
+    private int currentPage = 1;
+    private int totalPage;
 
     @Override
     public int setContent() {
@@ -56,6 +61,7 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         String data = getArguments().getString("whichAty");
+        initAdapter(data);
         switch (data) {
             case "未支付":
                 initRvDataNoPay();
@@ -72,13 +78,67 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
             default:
                 break;
         }
+//        loadMore(data);
+    }
+
+//    private void loadMore(String data) {
+//        bindingView.frgSm.setEnableLoadmore(true);
+//        bindingView.frgSm.setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh(RefreshLayout refreshlayout) {
+//                currentPage = 1;
+//                bindingView.frgSm.finishRefresh(2000);
+//            }
+//        });
+//        bindingView.frgSm.setOnLoadmoreListener(new OnLoadmoreListener() {
+//            @Override
+//            public void onLoadmore(RefreshLayout refreshlayout) {
+//                if(currentPage < totalPage){
+//                    currentPage++;
+//                    switch (data) {
+//                        case "未支付":
+//                            initRvDataNoPay();
+//                            break;
+//                        case "未接单":
+//
+//                            break;
+//                        case "已支付":
+//
+//                            break;
+//                        case "已完成":
+//
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
+//
+//            }
+//        });
+//    }
+
+    private void initAdapter(String data) {
+        switch (data) {
+            case "未支付":
+                setNotPaidRv();
+                break;
+            case "未接单":
+                setNotAcceptRv();
+                break;
+            case "已支付":
+                setPaidRv();
+                break;
+            case "已完成":
+                setFinishRv();
+                break;
+        }
+
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-//        initRvDataNoPay();
     }
 
 
@@ -95,14 +155,15 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                 .subscribe(new MyBaseObserver<OrderBean>(getContext(), true, "订单获取中...") {
                     @Override
                     public void _doNext(OrderBean orderBean) {
-                        Log.e("msg", "快递未支付" + orderBean.getCode());
+//                        Log.e("msg", "快递未支付" + orderBean.getCode());
                         if (orderBean.getCode().equals("200")) {
-                            notPayOrderList.clear();
+                            bindingView.emptyView.setVisibility(View.GONE);
+                            bindingView.rvGoodsInfo.setVisibility(View.VISIBLE);
                             notPayOrderList.addAll(orderBean.getData());
-                            setNotPaidRv(notPayOrderList);
-                        } else if (orderBean.getCode().equals("201")) {
-                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
+                            noPayAdapter.notifyDataSetChanged();
+                        } else if (orderBean.getCode().equals("201") && currentPage == 1) {
                             bindingView.emptyView.setVisibility(View.VISIBLE);
+                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
                         } else if (orderBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -114,33 +175,33 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                 });
     }
 
-    private void setNotPaidRv(List<OrderBean.DataBean> list) {
-
-        adapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, list) {
+    private void setNotPaidRv() {
+        noPayAdapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, notPayOrderList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
                 holder.setText(R.id.get_order_send_name, "接单人:" + "暂未接单");
-                holder.setText(R.id.get_order_time, "" + list.get(position).getOrderinitial());
-                holder.setText(R.id.get_order_got_name, "收货人:" + list.get(position).getRevname());
-                holder.setText(R.id.get_order_got_phone, "" + list.get(position).getRevtel());
-                holder.setText(R.id.get_order_number, "快递公司:" + list.get(position).getExpressname());
-                holder.setText(R.id.get_order_money, "￥:" + list.get(position).getPrice());
-                holder.setText(R.id.get_order_send_addr,"收货地址:" + list.get(position).getArea()
-                                        + list.get(position).getAddress());
+                holder.setText(R.id.get_order_time, "" + notPayOrderList.get(position).getOrderinitial());
+                holder.setText(R.id.get_order_got_name, "收货人:" + notPayOrderList.get(position).getRevname());
+                holder.setText(R.id.get_order_got_phone, "" + notPayOrderList.get(position).getRevtel());
+                holder.setText(R.id.get_order_number, "快递公司:" + notPayOrderList.get(position).getExpressname());
+                holder.setText(R.id.get_order_money, "￥:" + notPayOrderList.get(position).getPrice());
+                holder.setText(R.id.get_order_send_addr, "收货地址:"
+                        + notPayOrderList.get(position).getAddress());
                 TextView mailNumber = holder.getView(R.id.get_mail_number);
                 mailNumber.setVisibility(View.VISIBLE);
-                mailNumber.setText("编码:" +  list.get(position).getExpressorder());
+                mailNumber.setText("编码:" + notPayOrderList.get(position).getExpressorder());
                 holder.setOnClickListener(R.id.get_order_pay, v -> {
-                    toPayOrder(list.get(position));
+                    toPayOrder(notPayOrderList.get(position));
                 });
                 holder.setOnClickListener(R.id.get_order_cancel, v -> {
-                    toCancelOrder(list.get(position).getId());
+                    toCancelOrder(notPayOrderList.get(position).getId());
                 });
             }
 
         };
         bindingView.rvGoodsInfo.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bindingView.rvGoodsInfo.setAdapter(adapter);
+        bindingView.rvGoodsInfo.setAdapter(noPayAdapter);
+
     }
 
 
@@ -212,12 +273,13 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                     @Override
                     public void _doNext(OrderBean orderBean) {
                         if (orderBean.getCode().equals("200")) {
-                            notAcceptOrderList.clear();
-                            notAcceptOrderList.addAll(orderBean.getData());
-                            setNotAcceptRv(notAcceptOrderList);
-                        } else if (orderBean.getCode().equals("201")) {
-                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
                             bindingView.emptyView.setVisibility(View.VISIBLE);
+                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
+                            notAcceptOrderList.addAll(orderBean.getData());
+                            paidAdapter.notifyDataSetChanged();
+                        } else if (orderBean.getCode().equals("201") && currentPage == 1) {
+                            bindingView.emptyView.setVisibility(View.VISIBLE);
+                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
                         } else if (orderBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -229,27 +291,27 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                 });
     }
 
-    private void setNotAcceptRv(List<OrderBean.DataBean> list) {
-        adapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, list) {
+    private void setNotAcceptRv() {
+        paidAdapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, notAcceptOrderList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
                 holder.setText(R.id.get_order_send_name, "接单人:" + "暂未接单");
-                holder.setText(R.id.get_order_time, "" + list.get(position).getOrderTime());
-                holder.setText(R.id.get_order_got_name, "收货人:" + list.get(position).getRevname());
-                holder.setText(R.id.get_order_got_phone, "" + list.get(position).getRevtel());
-                holder.setText(R.id.get_order_number, "订单编号:" + list.get(position).getOrderId());
-                holder.setText(R.id.get_order_money, "￥:" + list.get(position).getPrice());
+                holder.setText(R.id.get_order_time, "" + notAcceptOrderList.get(position).getOrderTime());
+                holder.setText(R.id.get_order_got_name, "收货人:" + notAcceptOrderList.get(position).getRevname());
+                holder.setText(R.id.get_order_got_phone, "" + notAcceptOrderList.get(position).getRevtel());
+                holder.setText(R.id.get_order_number, "订单编号:" + notAcceptOrderList.get(position).getOrderId());
+                holder.setText(R.id.get_order_money, "￥:" + notAcceptOrderList.get(position).getPrice());
                 TextView cancelBtn = holder.getView(R.id.get_order_cancel);
                 cancelBtn.setVisibility(View.INVISIBLE);
                 holder.setText(R.id.get_order_pay, "取消订单");
                 holder.setOnClickListener(R.id.get_order_pay, v -> {
-                    toCancelPaidOrder(position, list.get(position).getId());
+                    toCancelPaidOrder(position, notAcceptOrderList.get(position).getId());
                 });
             }
 
         };
         bindingView.rvGoodsInfo.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bindingView.rvGoodsInfo.setAdapter(adapter);
+        bindingView.rvGoodsInfo.setAdapter(paidAdapter);
     }
 
     private void toCancelPaidOrder(int position, int id) {
@@ -289,12 +351,13 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                     @Override
                     public void _doNext(MailPayOrderBean orderBean) {
                         if (orderBean.getCode().equals("200")) {
-                            paidOrderList.clear();
+                            bindingView.emptyView.setVisibility(View.GONE);
+                            bindingView.rvGoodsInfo.setVisibility(View.VISIBLE);
                             paidOrderList.addAll(orderBean.getData());
-                            setPaidRv(paidOrderList);
-                        } else if (orderBean.getCode().equals("201")) {
-                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
+                            noAcceptAdapter.notifyDataSetChanged();
+                        } else if (orderBean.getCode().equals("201") && currentPage == 1) {
                             bindingView.emptyView.setVisibility(View.VISIBLE);
+                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
                         } else if (orderBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -310,30 +373,30 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
     /**
      * 已支付订单列表
      *
-     * @param list
+     *
      */
-    private void setPaidRv(List<MailPayOrderBean.DataBean> list) {
+    private void setPaidRv() {
 //        Log.e("msg", "已支付fff" + list.size());
-        adapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, list) {
+        noAcceptAdapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, paidOrderList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
-                holder.setText(R.id.get_order_send_name, "接单人:" + list.get(position).getUser().getName());
-                holder.setText(R.id.get_order_time, "" + list.get(position).getOrderTime());
-                holder.setText(R.id.get_order_got_name, "收货人:" + list.get(position).getRevname());
-                holder.setText(R.id.get_order_got_phone, "" + list.get(position).getRevtel());
-                holder.setText(R.id.get_order_number, "订单编号:" + list.get(position).getOrderId());
-                holder.setText(R.id.get_order_money, "￥:" + list.get(position).getPrice());
+                holder.setText(R.id.get_order_send_name, "接单人:" + paidOrderList.get(position).getUser().getName());
+                holder.setText(R.id.get_order_time, "" + paidOrderList.get(position).getOrderTime());
+                holder.setText(R.id.get_order_got_name, "收货人:" + paidOrderList.get(position).getRevname());
+                holder.setText(R.id.get_order_got_phone, "" + paidOrderList.get(position).getRevtel());
+                holder.setText(R.id.get_order_number, "订单编号:" + paidOrderList.get(position).getOrderId());
+                holder.setText(R.id.get_order_money, "￥:" + paidOrderList.get(position).getPrice());
                 TextView cancelBtn = holder.getView(R.id.get_order_cancel);
                 cancelBtn.setVisibility(View.INVISIBLE);
                 holder.setText(R.id.get_order_pay, "确认收货");
                 holder.setOnClickListener(R.id.get_order_pay, v -> {
-                    toConfirmGetGoods(position, list.get(position).getId());
+                    toConfirmGetGoods(position, paidOrderList.get(position).getId());
                 });
             }
 
         };
         bindingView.rvGoodsInfo.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bindingView.rvGoodsInfo.setAdapter(adapter);
+        bindingView.rvGoodsInfo.setAdapter(noAcceptAdapter);
     }
 
     /**
@@ -375,12 +438,13 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                     @Override
                     public void _doNext(MailFinishOrderBean orderBean) {
                         if (orderBean.getCode().equals("200")) {
-                            finishOrderList.clear();
+                            bindingView.emptyView.setVisibility(View.GONE);
+                            bindingView.rvGoodsInfo.setVisibility(View.VISIBLE);
                             finishOrderList.addAll(orderBean.getData());
-                            setFinishRv(finishOrderList);
-                        } else if (orderBean.getCode().equals("201")) {
-                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
+                            finishAdapter.notifyDataSetChanged();
+                        } else if (orderBean.getCode().equals("201") && currentPage == 1) {
                             bindingView.emptyView.setVisibility(View.VISIBLE);
+                            bindingView.rvGoodsInfo.setVisibility(View.GONE);
                         } else if (orderBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -392,25 +456,22 @@ public class MailFragment extends BaseFragment<FrgNotPaidBinding> {
                 });
     }
 
-    private void setFinishRv(List<MailFinishOrderBean.DataBean> list) {
-        adapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, list) {
+    private void setFinishRv() {
+        finishAdapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_order_of_money, finishOrderList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
-                holder.setText(R.id.get_order_send_name, "接单人:" + list.get(position).getUser().getName());
-                holder.setText(R.id.get_order_time, "" + list.get(position).getOrderTime());
-                holder.setText(R.id.get_order_got_name, "收货人:" + list.get(position).getRevname());
-                holder.setText(R.id.get_order_got_phone, "" + list.get(position).getRevtel());
-                holder.setText(R.id.get_order_number, "订单编号:" + list.get(position).getOrderId());
-                holder.setText(R.id.get_order_money, "￥:" + list.get(position).getPrice());
+                holder.setText(R.id.get_order_send_name, "接单人:" + finishOrderList.get(position).getUser().getName());
+                holder.setText(R.id.get_order_time, "" + finishOrderList.get(position).getOrderTime());
+                holder.setText(R.id.get_order_got_name, "收货人:" + finishOrderList.get(position).getRevname());
+                holder.setText(R.id.get_order_got_phone, "" + finishOrderList.get(position).getRevtel());
+                holder.setText(R.id.get_order_number, "订单编号:" + finishOrderList.get(position).getOrderId());
+                holder.setText(R.id.get_order_money, "￥:" + finishOrderList.get(position).getPrice());
                 TextView cancelBtn = holder.getView(R.id.get_order_cancel);
                 cancelBtn.setVisibility(View.INVISIBLE);
                 holder.setText(R.id.get_order_pay, "已完成");
-//                holder.setOnClickListener(R.id.get_order_pay, v -> {
-//                    toConfirmGetGoods(position, list.get(position).getId());
-//                });
             }
         };
         bindingView.rvGoodsInfo.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bindingView.rvGoodsInfo.setAdapter(adapter);
+        bindingView.rvGoodsInfo.setAdapter(finishAdapter);
     }
 }

@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.ejar.fastbedroom.utils.AppManager;
-import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyYuEPayBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.pay.bean.YuEBean;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,7 +36,7 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
         Bundle bundle = new Bundle();
         bundle = intent.getExtras();
         yuEBean = (YuEBean) bundle.getSerializable("orderId");
-        initTitle();
+        initTitle(yuEBean.getTag());
         setListener();
 //        Log.e("msg", yuEBean.getId() + "dingdaha" + yuEBean.getTotalMoney());
     }
@@ -44,9 +44,6 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
     private void setListener() {
 
         bindingView.yuEPay.setOnClickListener(v -> {
-//            if (yuEBean.getId() == 0) {
-//                return;
-//            } else {
             if (yuEBean.getTag() == -1) {//订单号付款
                 NetRequest.getInstance(UrlConfig.baseUrl).create(UserCenterApi.class)
                         .payByYu_e(APP.token, yuEBean.getId())
@@ -105,25 +102,25 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                                 }
                             }
                         });
-//                }
-
-
-
-
             }
         });
 
     }
 
-    private void initTitle() {
+    private void initTitle(int tag) {
         setTitle("余额支付");
         setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
         });
+        if (tag == -1) {
+            bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney()
+                    + " 元");
+        } else {
+            bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney()
+                    + "含运费(" + yuEBean.getSendPrice() + ") 元");
+        }
 
-        bindingView.yuePayMoney.setText("￥ " + yuEBean.getTotalMoney()
-                + "含运费(" + yuEBean.getSendPrice() + ") 元");
         bindingView.paidOrderNumber.setText("" + yuEBean.getOrderId());
         bindingView.paidOderAddress.setText("收货地址：" + yuEBean.getArea() + yuEBean.getDoor());
     }

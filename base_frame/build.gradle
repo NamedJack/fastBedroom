@@ -59,4 +59,5 @@ dependencies {
     compile('com.jph.takephoto:takephoto_library:4.0.3') {
         exclude group: 'io.reactivex'
     }
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
 }

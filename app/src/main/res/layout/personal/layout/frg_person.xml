@@ -186,7 +186,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@id/image_not_accepte"
                     android:gravity="center"
-                    android:text="未接单"
+                    android:text="待配送"
                     android:textSize="12sp" />
 
                 <TextView

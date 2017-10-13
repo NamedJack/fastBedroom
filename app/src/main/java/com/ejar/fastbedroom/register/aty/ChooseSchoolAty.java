@@ -17,6 +17,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.ejar.fastbedroom.BaseBean;
+import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
@@ -171,7 +173,7 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
             public void onItemClick(View view, int position) {
                 schoolName = mList.get(position).getSchollName();
                 schoolId = mList.get(position).getSchoolId();
-                if (TextUtils.isEmpty(agentAty) || agentAty == null) {
+                if (TextUtils.isEmpty(agentAty) || agentAty == null || agentAty.equals("changeSchool")) {
                     requestSchoolPoint(schoolId);
                 } else if ("agentAty".equals(agentAty)) {
                     SpUtils.put(ChooseSchoolAty.this, "agentSchoolName", schoolName);
@@ -237,10 +239,15 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
                     @Override
                     public void onClick(View v) {
                         pointID = pointList.get(position).getId();
-                        SpUtils.put( ChooseSchoolAty.this,"schoolPoint", pointID);
-                        SpUtils.put( ChooseSchoolAty.this,"schoolName", schoolName);
-                        dialog.dismiss();
-                        ChooseSchoolAty.this.finish();
+                        if(!TextUtils.isEmpty(agentAty) && agentAty.equals("changeSchool")){
+                            changeSchoole(pointID);
+                        }else {
+                            SpUtils.put( ChooseSchoolAty.this,"schoolPoint", pointID);
+                            SpUtils.put( ChooseSchoolAty.this,"schoolName", schoolName);
+                            dialog.dismiss();
+                            ChooseSchoolAty.this.finish();
+                        }
+
 
                     }
                 });
@@ -250,6 +257,28 @@ public class ChooseSchoolAty extends BaseActivity<AtyChooseSchoolBinding> {
         rv.setLayoutManager(new LinearLayoutManager(this));
         showDialog(view);
 
+    }
+
+    private void changeSchoole(int pointID) {
+        NetRequest.getInstance(UrlConfig.baseUrl).create(RegisterApi.class)
+                .userChangeSchool(APP.token, pointID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyBaseObserver<BaseBean>(ChooseSchoolAty.this, true, "修改中..") {
+                    @Override
+                    public void _doNext(BaseBean baseBean) {
+                        if(baseBean.getCode().equals("200")){
+                            TU.cT("修改成功");
+                        }else if(baseBean.getCode().equals("201")){
+                            TU.cT("" +  baseBean.getMsg());
+                        }else if(baseBean.getCode().equals(UrlConfig.logoutCodeOne)){
+                            openNextActivity(LoginActivity.class);
+                            AppManager.removeAllAty();
+                        }
+                        dialog.dismiss();
+                        ChooseSchoolAty.this.finish();
+                    }
+                });
     }
 
     /**

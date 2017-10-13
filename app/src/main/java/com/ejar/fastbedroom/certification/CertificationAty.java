@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.fastbedroom.Api.UserCenterApi;
@@ -27,6 +26,7 @@ import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.personal.aty.PhotoAty;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
@@ -277,8 +277,6 @@ public class CertificationAty extends TakePhotoActivity {
 //        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
 //        MultipartBody.Part bodyBack =
 //                MultipartBody.Part.createFormData("file", file.getName(), requestFileBack);
-
-
         NetRequest.getInstance(UrlConfig.baseUrl).create(UserCenterApi.class)
                 .postCertification(map, fileList)
                 .subscribeOn(Schedulers.io())
@@ -290,9 +288,9 @@ public class CertificationAty extends TakePhotoActivity {
                             TU.cT("提交审核成功");
                             CertificationAty.this.finish();
                         } else if (baseBean.getCode().equals(UrlConfig.logoutCodeOne)) {
-                            AppManager.removeAllAty();
                             Intent intent = new Intent(CertificationAty.this, LoginActivity.class);
                             startActivity(intent);
+                            AppManager.removeAllAty();
                         } else {
                             TU.cT(baseBean.getMsg() + "");
                         }

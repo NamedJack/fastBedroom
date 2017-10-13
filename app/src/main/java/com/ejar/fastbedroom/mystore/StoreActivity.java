@@ -31,6 +31,10 @@ import com.ejar.fastbedroom.mystore.bean.RecommendBean;
 import com.ejar.fastbedroom.mystore.bean.StoreAllBean;
 import com.ejar.fastbedroom.mystore.bean.TabCenterBean;
 import com.ejar.fastbedroom.useraddr.UserAddrAty;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -63,13 +67,16 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
     private boolean flag = false;
     private int goodsId;
     private String goodsPrice;
+    private SmartRefreshLayout refreshLayout;
+    private int currentPage = 1;
+    private int totalPage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_my_store);
         initTitle();
-        allRequest();
+        allRequest(currentPage);
     }
 
 
@@ -113,7 +120,8 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
      *
      * @param rows
      */
-    private void initRecommendRv(List<RecommendBean.RowsBean> rows) {
+    private List<RecommendBean.RowsBean> rows = new ArrayList<>();
+    private void initRecommendRv() {
         if(rows == null || rows.size() == 0){
             bindingView.storeRecommendRv.setVisibility(View.GONE);
             bindingView.storeRecommendEmpty.setVisibility(View.VISIBLE);
@@ -197,11 +205,26 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         setNavigationOnClickListener(v -> {
             finish();
         });
-//        changeAddr = (Button) findViewById(R.id.goods_detail_choose_addr);
-//        confirmAddr = (Button) findViewById(R.id.goods_detail_to_order);
-//        showAddr = (TextView) findViewById(R.id.goods_detail_send_address);
-//        changeAddr.setOnClickListener(clickListener);
-//        confirmAddr.setOnClickListener(clickListener);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.store_sm);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                currentPage = 1;
+                refreshlayout.finishRefresh(2000);
+            }
+        });
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                if(currentPage < totalPage){
+                    currentPage++;
+                    allRequest(currentPage);
+                }else {
+                    refreshlayout.finishLoadmore();
+                }
+            }
+        });
+
     }
 
     View.OnClickListener clickListener = v -> {
@@ -266,13 +289,13 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
         super.onDestroy();
     }
 
-    private void allRequest() {
+    private void allRequest(int currentPage) {
 
         StoreApi service = NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class);
 
         Observable<BannerBean> banner = service.getBanner(APP.token).subscribeOn(Schedulers.io());
         Observable<TabCenterBean> center = service.getRvTab(APP.token).subscribeOn(Schedulers.io());
-        Observable<RecommendBean> recommend = service.getRecommend(APP.token).subscribeOn(Schedulers.io());
+        Observable<RecommendBean> recommend = service.getRecommend(APP.token,currentPage).subscribeOn(Schedulers.io());
 
         Observable.zip(banner, center, recommend, new Function3<BannerBean, TabCenterBean, RecommendBean, Object>() {
             @Override
@@ -297,8 +320,10 @@ public class StoreActivity extends BaseActivity<AtyMyStoreBinding> {
                             Intent intent = new Intent(StoreActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
+                        totalPage =  allBean.getRecommend().getPagetatol();
                         initBanner(allBean.getBanner().getData());
-                        initRecommendRv(allBean.getRecommend().getRows());
+                        rows.addAll(allBean.getRecommend().getRows());
+                        initRecommendRv();
                         initCenterTab(allBean.getTabCenter().getData());
                     }
                 });

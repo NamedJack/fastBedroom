@@ -182,7 +182,7 @@ public class UserAddrAty extends BaseActivity<AtyUserAddrBinding> {
                    "" );
            //存储默认地址信息
            SpUtils.put(UserAddrAty.this, "defaultUserAddrId",
-                   "" );
+                   -1 );
            SpUtils.put(UserAddrAty.this, "defaultAddrTel",
                    "" );
            SpUtils.put(UserAddrAty.this, "defaultAddrName",

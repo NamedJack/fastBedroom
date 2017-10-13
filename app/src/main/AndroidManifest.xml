@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ejar.fastbedroom">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -19,6 +20,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider tools:replace="android:authorities"
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.jph.takephoto.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +72,9 @@
         <activity android:name=".forgotpwd.aty.ChangeUserPwdAty"></activity>
         <activity android:name=".message.MessageWebAty"></activity>
         <activity android:name=".personal.aty.MoneyDetailAty"></activity>
+        <activity android:name=".campusdynamics.aty.CampusDynamicsAty"></activity>
+        <activity android:name=".secondhand.aty.SecondHandAty"></activity>
+        <activity android:name=".campusdynamics.aty.CampusMessageAty"></activity>
         <!--支付宝beginning-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

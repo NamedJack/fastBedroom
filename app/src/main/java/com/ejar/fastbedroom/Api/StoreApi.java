@@ -38,7 +38,8 @@ public interface StoreApi {
 
     @FormUrlEncoded
     @POST("pub/goodsYes")
-    Observable<RecommendBean> getRecommend(@Field("token") String token);
+    Observable<RecommendBean> getRecommend(@Field("token") String token,
+                                           @Field("pageNO") int pageNO);
 
 
     @FormUrlEncoded

@@ -1,5 +1,6 @@
 package com.ejar.fastbedroom.Api;
 
+import com.ejar.fastbedroom.deliver.AutoMessageBean;
 import com.ejar.fastbedroom.deliver.RvBean;
 import com.ejar.fastbedroom.message.bean.MessageBean;
 import com.ejar.fastbedroom.personal.bean.LogoutBean;
@@ -7,6 +8,7 @@ import com.ejar.fastbedroom.personal.bean.ResultBean;
 import com.ejar.fastbedroom.personal.bean.UserInfoBean;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -103,6 +105,9 @@ public interface HomeAtyApi {
     Observable<MessageBean> getMessage(@Field("token") String token);
 
 
+    @FormUrlEncoded
+    @POST("pub/dynamicgd")
+    Observable<AutoMessageBean> getAutoMessage(@Field("token") String token);
 
 
 }

@@ -13,17 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.fastbedroom.utils.AppManager;
-import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.baseframe.widget.AddCartAnimation;
-import com.ejar.baseframe.widget.MyLoadMoreRecycleView;
 import com.ejar.fastbedroom.Api.StoreApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.buycar.BuyCarAty;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyStoreSecondBinding;
@@ -34,7 +31,12 @@ import com.ejar.fastbedroom.mystore.bean.RowBean;
 import com.ejar.fastbedroom.mystore.bean.SecondStoreRvBean;
 import com.ejar.fastbedroom.mystore.bean.SecondStoreTab;
 import com.ejar.fastbedroom.mystore.bean.TabCenterBean;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -65,9 +67,11 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
     private List<String> bannerImg = new ArrayList<>();
     private BigDecimal totalMoney = new BigDecimal(0d);
     private int goodsPid;
-    int curretPage = 2;
-    private MyLoadMoreRecycleView rv;
 
+    private RecyclerView rv;
+    private SmartRefreshLayout refreshLayout;
+    private int currentPage = 1;
+    private int totalItem;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +79,16 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         initTile();
         netBannerRequest();
         getGoodsTab();
-        initRvList(1,dataBean.getId()+"");
+        initRvList(currentPage, dataBean.getId() + "");
     }
 
-
+    /***
+     * 商品列表
+     * @param pageNo
+     * @param pid
+     * @return
+     */
     private List<RowBean> initRvList(int pageNo, String pid) {
-
         NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
                 .getUseRvList(APP.token, "" + pid, pageNo + "")
                 .subscribeOn(Schedulers.io())
@@ -90,12 +98,7 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                     public void _doNext(SecondStoreRvBean secondStoreRvBean) {
                         if (secondStoreRvBean.getCode().equals("200")) {
                             goodsList.addAll(secondStoreRvBean.getRows());
-                            rv.notifyData();
-                            if (secondStoreRvBean.getRows().size() < 10) {
-                                rv.setLoadMoreEnable(false);
-                            } else {
-                                rv.setLoadMoreEnable(true);
-                            }
+                            totalItem = secondStoreRvBean.getTotal();//总条数
                             setDataList();
                         } else if (secondStoreRvBean.getCode().equals("201")) {
                             AppManager.removeAllAty();
@@ -117,9 +120,10 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
             rv.setVisibility(View.GONE);
             bindingView.secondStoreEmpty.setVisibility(View.VISIBLE);
             return;
-        }
+        }//如果先显示了没有数量的界面，刷新后需要显示有数量的界面需要重新设置显示与隐藏
+        rv.setVisibility(View.VISIBLE);
+        bindingView.secondStoreEmpty.setVisibility(View.GONE);
         LinearLayoutManager ll = new LinearLayoutManager(this);
-        rv.setFooterResource(R.layout.default_loading);
         adapter = new MyRecyclerViewAdapter(this, R.layout.item_rv, goodsList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
@@ -129,7 +133,7 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                         + goodsList.get(position).getUnit());
                 holder.setText(R.id.goods_number, "0");
                 ImageView iv = holder.getView(R.id.goods_img);
-                ImageView anim = holder.getView(R.id.img_add_number);
+//                ImageView anim = holder.getView(R.id.img_add_number);
                 Glide.with(StoreSecondAty.this).load(UrlConfig.baseUrl + goodsList.get(position).getImg())
                         .error(R.drawable.defult_img).into(iv);
                 View.OnClickListener itemClick = v -> {
@@ -173,13 +177,13 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
 
         rv.setLayoutManager(ll);
         rv.setAdapter(adapter);
-        rv.setOnLoadMoreListener(new MyLoadMoreRecycleView.OnLoadMoreListener() {
-            @Override
-            public void loadMoreListener() {
-                initRvList(curretPage, goodsPid + "");
-                curretPage++;
-            }
-        });
+//        rv.setOnLoadMoreListener(new MyLoadMoreRecycleView.OnLoadMoreListener() {
+//            @Override
+//            public void loadMoreListener() {
+//                initRvList(curretPage, goodsPid + "");
+//                curretPage++;
+//            }
+//        });
         adapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
@@ -198,6 +202,9 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         });
     }
 
+    /**
+     * 条目分类
+     */
     private void getGoodsTab() {
         centerTabs.clear();
         NetRequest.getInstance(UrlConfig.baseUrl).create(StoreApi.class)
@@ -225,20 +232,19 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
                 });
     }
 
-    private void setCenterTab(List<SecondStoreTab> data) {
+    private void setCenterTab(List<SecondStoreTab> tabData) {
         LinearLayoutManager ll = new LinearLayoutManager(this);
         ll.setOrientation(LinearLayoutManager.HORIZONTAL);
         bindingView.secondStoreTab.setLayoutManager(ll);
-        MyRecyclerViewAdapter tabAdapter = new MyRecyclerViewAdapter(this, R.layout.item_store_second_tab, data) {
+        MyRecyclerViewAdapter tabAdapter = new MyRecyclerViewAdapter(this, R.layout.item_store_second_tab, tabData) {
             @Override
             public void convert(MyViewHolder holder, int position) {
                 TextView bottomLine = holder.getView(R.id.second_store_tab_line);
                 TextView centerTab = holder.getView(R.id.second_store_tab_name);
-                centerTab.setText(data.get(position).getName() + "");
-                if (data.get(position).isCheck()) {
+                centerTab.setText(tabData.get(position).getName() + "");
+                if (tabData.get(position).isCheck()) {
                     bottomLine.setVisibility(View.VISIBLE);
                     centerTab.setTextColor(getResources().getColor(R.color.app_title_gb));
-                    initRvList(1, data.get(position).getId() + "");
                 } else {
                     bottomLine.setVisibility(View.INVISIBLE);
                     centerTab.setTextColor(getResources().getColor(R.color.default_text_color));
@@ -248,13 +254,14 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         tabAdapter.setOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int position) {
-                goodsPid = data.get(position).getId();
+                goodsPid = tabData.get(position).getId();
                 goodsList.clear();
-                rv.notifyData();
-                for (int i = 0; i < data.size(); i++) {
-                        data.get(i).setCheck(false);
+                currentPage = 1;
+                initRvList(currentPage, goodsPid + "");
+                for (int i = 0; i < tabData.size(); i++) {
+                    tabData.get(i).setCheck(false);
                 }
-                data.get(position).setCheck(true);
+                tabData.get(position).setCheck(true);
                 tabAdapter.notifyDataSetChanged();
             }
 
@@ -309,13 +316,33 @@ public class StoreSecondAty extends BaseActivity<AtyStoreSecondBinding> {
         setNavigationOnClickListener(v -> {
             finish();
         });
-        rv = (MyLoadMoreRecycleView) findViewById(R.id.second_store_use_rv);
+        rv = (RecyclerView) findViewById(R.id.second_store_use_rv);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.second_sm);
         bindingView.secondStorePostOrder.setOnClickListener(clickListener);
         bundle = new Bundle();
         Intent intent = getIntent();
         bundle = intent.getExtras();
         dataBean = (TabCenterBean.DataBean) bundle.getSerializable("lifeUser");
         setTitle(dataBean.getName());
+        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                currentPage = 1;
+                refreshlayout.finishRefresh(2000);
+            }
+        });
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                if (currentPage * 10 < totalItem) {
+                    currentPage++;
+                    initRvList(currentPage, dataBean.getId() + "");
+                } else {
+                    refreshlayout.finishLoadmore();
+                }
+            }
+        });
     }
 
     @Override

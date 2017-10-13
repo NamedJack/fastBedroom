@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -200,11 +201,12 @@ public class RegisterInfoAty extends BaseActivity<AtyRegisterInfoBinding> {
                     @Override
                     public void onNext(ConfirmRegisterBean confirmRegisterBean) {
                         NetDialog.closeDialog(mDialog);
+                        Log.e("msg", "注册" + confirmRegisterBean.getCode());
                         if (confirmRegisterBean.getCode().equals("200")) {
                             TU.cT("注册成功");
                             SpUtils.put(APP.getInstance(), "userName", userPhone);
-                            AppManager.removeAllAty();
                             openNextActivity(LoginActivity.class);
+                            AppManager.removeAllAty();
                         } else {
                             TU.cT("" + confirmRegisterBean.getMsg() + confirmRegisterBean.getCode());
                         }

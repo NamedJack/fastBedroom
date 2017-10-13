@@ -101,7 +101,7 @@ public class BookActivity extends BaseActivity<AtyBookBinding> {
                 break;
             case 2:
                 bundle.putString("whichAty", "未接单");
-                setTitle("未接单");
+                setTitle("待配送");
                 break;
             case 3:
                 bundle.putString("whichAty", "已支付");

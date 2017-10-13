@@ -55,7 +55,9 @@ android {
                     'src/main/res/layout/pay',
                     'src/main/res/layout/wxapi',
                     'src/main/res/layout/certification',
-                    'src/main/res/layout/forgotpwd'
+                    'src/main/res/layout/forgotpwd',
+                    'src/main/res/layout/secondhand',
+                    'src/main/res/layout/campus'
             ]
         }
     }

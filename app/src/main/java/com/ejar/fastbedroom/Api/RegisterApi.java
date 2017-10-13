@@ -116,5 +116,11 @@ public interface RegisterApi {
                                           @Field("password") String password,
                                           @Field("password1") String password1);
 
+
+    @FormUrlEncoded
+    @POST("pub/updateschoolid")
+    Observable<BaseBean> userChangeSchool(@Field("token") String token,
+                                          @Field("schoolid") int schooleId);
+
 }
 

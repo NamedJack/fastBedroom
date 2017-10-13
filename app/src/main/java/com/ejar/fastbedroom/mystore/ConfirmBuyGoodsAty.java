@@ -129,7 +129,7 @@ public class ConfirmBuyGoodsAty extends BaseActivity<AtyConfirmBuyGoodsBinding> 
 
         bindingView.userAddre.setText(userArea + userDoor);
         bindingView.userTel.setText(userTel);
-        if (!TextUtils.isEmpty(userName) || userName.equals("")) {
+        if (!TextUtils.isEmpty(userName) || !userName.equals("")) {
             bindingView.userName.setText(userName + " 先生");
         }
 

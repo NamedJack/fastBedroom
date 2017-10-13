@@ -11,12 +11,19 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_top_bg" />
 
+            <com.ejar.fastbedroom.deliver.AutoPollRecyclerView
+                android:id="@+id/auto_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.ejar.fastbedroom.deliver.AutoPollRecyclerView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
@@ -39,7 +46,7 @@
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
-                        android:text="自营超市"
+                        android:text="网上超市"
                         android:textSize="12sp"
                         android:textColor="@color/white" />
 
@@ -67,7 +74,7 @@
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
-                        android:text="二手市场"
+                        android:text="敬请期待"
                         android:textSize="12sp"
                         android:textColor="@color/app_title_gb" />
 
@@ -125,7 +132,7 @@
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal"
                         android:paddingBottom="8dp"
-                        android:text="外卖配送"
+                        android:text="敬请期待"
                         android:textSize="12sp"
                         android:textColor="@color/white" />
 

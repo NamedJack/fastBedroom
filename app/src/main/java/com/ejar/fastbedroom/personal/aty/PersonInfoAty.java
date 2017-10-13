@@ -8,8 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.ejar.fastbedroom.utils.AppManager;
-import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
@@ -18,12 +16,14 @@ import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyPersoninfoBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.personal.bean.LogoutBean;
 import com.ejar.fastbedroom.personal.bean.UserInfoBean;
 import com.ejar.fastbedroom.register.aty.ChooseSchoolAty;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
 
 import java.io.File;
@@ -126,7 +126,9 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     startActivity(intent);
                     break;
                 case R.id.change_person_school:
-                    openNextActivity(ChooseSchoolAty.class);
+                    intent = new Intent(PersonInfoAty.this, ChooseSchoolAty.class);
+                    intent.putExtra("agentAty", "changeSchool");
+                    startActivity(intent);
                     break;
                 case R.id.change_person_number:
                     intent = new Intent(PersonInfoAty.this, ChangeMessageAty.class);
@@ -175,9 +177,9 @@ public class PersonInfoAty extends BaseActivity<AtyPersoninfoBinding> {
                     public void _doNext(LogoutBean logoutBean) {
                         if (logoutBean.getCode().equals("200")) {
                             SpUtils.put(APP.getInstance(), "token", "");
-                            AppManager.removeAllAty();
                             Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);
                             startActivity(intent);
+                            AppManager.removeAllAty();
                         } else if (logoutBean.getCode().equals(UrlConfig.logoutCodeOne)) {
                             AppManager.removeAllAty();
                             Intent intent = new Intent(PersonInfoAty.this, LoginActivity.class);

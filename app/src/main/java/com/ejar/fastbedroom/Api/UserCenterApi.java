@@ -3,6 +3,9 @@ package com.ejar.fastbedroom.Api;
 import com.ejar.fastbedroom.BaseBean;
 import com.ejar.fastbedroom.advice.bean.AboutUsBean;
 import com.ejar.fastbedroom.advice.bean.UsAppBean;
+import com.ejar.fastbedroom.campusdynamics.bean.CampusHeadImg;
+import com.ejar.fastbedroom.campusdynamics.bean.CampusMessageBean;
+import com.ejar.fastbedroom.campusdynamics.bean.DetailMessageBean;
 import com.ejar.fastbedroom.fastmail.bean.MailWayWarrper;
 import com.ejar.fastbedroom.fastmail.bean.PostMailBean;
 import com.ejar.fastbedroom.pay.bean.SignBean;
@@ -271,11 +274,47 @@ public interface UserCenterApi {
                                   @Field("password") String password,
                                   @Field("money") double money);
 
+    /**
+     * money明细
+     * @param token
+     * @param year
+     * @param month
+     * @return
+     */
     @FormUrlEncoded
     @POST("pub/evaluation")
     Observable<MoneyDetailBean> getMoneyDetail(@Field("token") String token,
                                                @Field("years") int year,
                                                @Field("month") int month);
 
+    /**
+     * 校园动态图片
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/DynamicImage")
+    Observable<CampusHeadImg> getCampusImg(@Field("token") String token);
+
+
+    /**
+     * 校园动态列表
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/dynamiclistqd")
+    Observable<CampusMessageBean> getCampusMessage(@Field("token") String token, @Field("pageNo") int pageNo);
+
+    /**
+     * 消息web
+     * @param token
+     * @param id
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("pub/dynamicdatis")
+    Observable<DetailMessageBean> getCampusDetailMessage(@Field("token") String token,
+                                                         @Field("id") int id);
 
 }

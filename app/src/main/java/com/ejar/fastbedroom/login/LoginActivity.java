@@ -10,6 +10,7 @@ import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
 import com.ejar.baseframe.utils.toast.NetDialog;
+import com.ejar.fastbedroom.useraddr.UserAddrAty;
 import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.LoginApi;
 import com.ejar.fastbedroom.R;
@@ -107,6 +108,18 @@ public class LoginActivity extends BaseActivity<AtyLoginBinding> {
                         } else if (userBean.getCode().equals("200")) {
                             SpUtils.put(APP.getInstance(), "token", userBean.getToken());
                             SpUtils.put(APP.getInstance(), "userName", userName);
+
+                            SpUtils.put(LoginActivity.this, "defaultUserAddrId",
+                                    -1 );
+                            SpUtils.put(LoginActivity.this, "defaultAddrTel",
+                                    "" );
+                            SpUtils.put(LoginActivity.this, "defaultAddrName",
+                                    "" );
+                            SpUtils.put(LoginActivity.this, "defaultAddrArea",
+                                    "" );
+                            SpUtils.put(LoginActivity.this, "defaultAddrDoor",
+                                    "" );
+
                             APP.token = userBean.getToken();
                             openNextActivity(HomeActivity.class);
                             LoginActivity.this.finish();

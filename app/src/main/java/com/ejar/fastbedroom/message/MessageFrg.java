@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -73,13 +74,20 @@ public class MessageFrg extends BaseFragment<FrgMessageBinding> {
         MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getContext(), R.layout.item_message, posts) {
             @Override
             public void convert(MyViewHolder holder, int position) {
-                ImageView iv = holder.getView(R.id.message_item_rv);
+                try {
+                    ImageView iv = holder.getView(R.id.message_item_rv);
 //                Log.e("msg", "png++" + posts.get(position).getTitleimg());
-                Glide.with(getContext()).load(UrlConfig.baseUrl + posts.get(position).getTitleimg())
-                        .error(R.drawable.img_message_default).into(iv);
-                holder.setOnClickListener(R.id.message_item_rv, v -> {
-                    openNextActivity(posts.get(position).getId());
-                });
+                    String imgUrl = UrlConfig.baseUrl + posts.get(position).getTitleimg();
+//                    Log.e("msg", "tupan" + imgUrl);
+                    Glide.with(iv.getContext()).load(imgUrl)
+                            .placeholder(R.drawable.img_message_default)
+                            .into(iv);
+                    holder.setOnClickListener(R.id.message_item_rv, v -> {
+                        openNextActivity(posts.get(position).getId());
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         };
         bindingView.messageRv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -88,6 +96,7 @@ public class MessageFrg extends BaseFragment<FrgMessageBinding> {
 
     private void openNextActivity(int id) {
         Intent intent = new Intent(getActivity(), MessageWebAty.class);
+        intent.putExtra("tag", "list");
         intent.putExtra("webId", id);
         startActivity(intent);
     }
@@ -116,6 +125,13 @@ public class MessageFrg extends BaseFragment<FrgMessageBinding> {
             @Override
             public void OnBannerClick(int position) {
 //                TU.cT(position + "");
+                int id =  imgs.get(position).getId();
+                String url = imgs.get(position).getUrl();
+                Intent intent = new Intent(getActivity(), MessageWebAty.class);
+                intent.putExtra("webId", id);
+                intent.putExtra("tag", "banner");
+                intent.putExtra("url", url);
+                startActivity(intent);
             }
         });
     }

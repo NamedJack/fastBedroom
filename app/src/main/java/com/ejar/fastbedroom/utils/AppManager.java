@@ -35,7 +35,7 @@ public class AppManager {
     }
 
     public static void removeAllAty() {
-        TU.cT("帐号在其他地方登录，请重新登录！");
+        TU.cT("请登录！");
         for (Activity activity : activityStruct) {
             if (activity != null) {
                 activity.finish();
@@ -45,14 +45,6 @@ public class AppManager {
         SpUtils.put(APP.getContext(),"token","");
     }
 
-//    public static void removeOtherAty() {
-//        for (Activity activity : activityStruct) {
-//            if (activity != LoginActivity) {
-//                activity.finish();
-//            }
-//        }
-//        activityStruct.clear();
-//    }
 
 
 
