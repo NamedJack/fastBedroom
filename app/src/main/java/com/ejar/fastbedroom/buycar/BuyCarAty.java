@@ -90,36 +90,36 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
     private void initData(List<BuyCarBean.DataBean> netList) {
         if (netList.size() > 0) {
             allCarList.addAll(netList);
-            initAdapter(netList);
+            initAdapter();
             bindingView.viewPaidInfo.setVisibility(View.VISIBLE);
         }else {
             TU.cT("购物车没有商品哦，赶紧去商城添加吧~~");
         }
     }
 
-    private void initAdapter(List<BuyCarBean.DataBean> carList) {
-        adapter = new MyRecyclerViewAdapter(this, R.layout.item_rv, carList) {
+    private void initAdapter() {
+        adapter = new MyRecyclerViewAdapter(this, R.layout.item_rv, allCarList) {
             @Override
             public void convert(MyViewHolder holder, int position) {
-                holder.setText(R.id.goods_title, carList.get(position).getName());
-                holder.setText(R.id.goods_content, carList.get(position).getSummary());
-                holder.setText(R.id.goods_price, carList.get(position).getShopPrice() + "元/"
-                        + carList.get(position).getUnit());
-                holder.setText(R.id.goods_number, carList.get(position).getNumber() + "");
+                holder.setText(R.id.goods_title, allCarList.get(position).getName());
+                holder.setText(R.id.goods_content, allCarList.get(position).getSummary());
+                holder.setText(R.id.goods_price, allCarList.get(position).getShopPrice() + "元/"
+                        + allCarList.get(position).getUnit());
+                holder.setText(R.id.goods_number, allCarList.get(position).getNumber() + "");
                 ImageView iv = holder.getView(R.id.goods_img);
-                Glide.with(BuyCarAty.this).load(UrlConfig.baseUrl + carList.get(position).getImg())
+                Glide.with(BuyCarAty.this).load(UrlConfig.baseUrl + allCarList.get(position).getImg())
                         .error(R.drawable.defult_img).into(iv);
                 CheckBox checkBox = holder.getView(R.id.goods_isChoose);
                 checkBox.setVisibility(View.VISIBLE);
-                checkBox.setChecked(carList.get(position).isChecked());
+                checkBox.setChecked(allCarList.get(position).isChecked());
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        carList.get(position).setChecked(isChecked);
+                        allCarList.get(position).setChecked(isChecked);
                         if (isChecked) {
-                            chooseList.add(carList.get(position));
+                            chooseList.add(allCarList.get(position));
                         } else {
-                            chooseList.remove(carList.get(position));
+                            chooseList.remove(allCarList.get(position));
                             if (chooseList.size() == 0) {//单个商品挨个取消后 把全选设为false
                                 bindingView.checkedAll.setChecked(false);
                             }
@@ -133,24 +133,24 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     int number = Integer.parseInt(goodsNumber.getText().toString().trim());
                     switch (v.getId()) {
                         case R.id.goods_add_number:
-                            if (number > carList.get(position).getStock()) {
+                            if (number > allCarList.get(position).getStock()) {
                                 TU.cT("已达该商品最大库存");
                                 break;
                             }
                             number++;
                             goodsNumber.setText(number + "");
-                            carList.get(position).setNumber(number);
+                            allCarList.get(position).setNumber(number);
                             getTotalMoney(chooseList);
                             break;
                         case R.id.goods_cut_number:
                             if (number > 1) {
                                 number--;
                                 goodsNumber.setText(number + "");
-                                carList.get(position).setNumber(number);
+                                allCarList.get(position).setNumber(number);
                             } else {//最少为1个
                                 number = 1;
                                 goodsNumber.setText(number + "");
-                                carList.get(position).setNumber(number);
+                                allCarList.get(position).setNumber(number);
                             }
                             getTotalMoney(chooseList);
                             break;
@@ -262,7 +262,7 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
             case R.id.choose_get_goods_addr:
                 openNextActivity(UserAddrAty.class);
                 break;
-            case R.id.go_to_delete:
+            case R.id.go_to_delete://删除商品
                 if (chooseList.size() == 0) {
                     TU.cT("未选择商品");
                     return;
@@ -292,7 +292,12 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     public void _doNext(BaseBean baseBean) {
                         if (baseBean.getCode().equals("200")) {
                             TU.cT("删除成功");
-                            getBuyCar();
+                            for (int i = 0; i < chooseList.size(); i++) {
+                                allCarList.remove(chooseList.get(i));
+                            }
+                            chooseList.clear();
+                            getTotalMoney(chooseList);
+                            adapter.notifyDataSetChanged();
                         } else {
                             TU.cT("" + baseBean.getMsg());
                         }
@@ -319,6 +324,7 @@ public class BuyCarAty extends BaseActivity<AtyBuyCarBinding> {
                     @Override
                     public void _doNext(BuyCarBean buyCarBean) {
                         if (buyCarBean.getCode().equals("200")) {
+//                            Log.e("msg", "购物车" + buyCarBean.getData().size());
                             initData(buyCarBean.getData());
                         } else if (buyCarBean.getCode().equals(UrlConfig.logoutCodeTwo)) {
                             AppManager.removeAllAty();

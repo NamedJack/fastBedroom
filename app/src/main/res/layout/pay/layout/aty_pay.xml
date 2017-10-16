@@ -137,8 +137,11 @@
                     android:textSize="@dimen/center_text_size" />
 
                 <LinearLayout
+                    android:id="@+id/pay_order_zfb"
+                    android:clickable="true"
+                    android:layout_height="60dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:orientation="horizontal"
                     android:paddingLeft="8dp"
                     android:paddingRight="15dp">
 
@@ -147,14 +150,41 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/icon_pay_zfb" />
 
-                    <TextView
-                        android:id="@+id/pay_order_zfb"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:drawableRight="@drawable/icon_pay_normail"
-                        android:gravity="center_vertical"
-                        android:paddingRight="10dp"
-                        android:text="支付宝" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingRight="10dp"
+                            android:text="支付宝"
+                            android:textSize="@dimen/center_text_size" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center_vertical"
+                            android:paddingRight="10dp"
+                            android:text="使用支付宝支付"
+                            android:textColor="@color/app_title_gb"
+                            android:textSize="@dimen/small_text_size" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/img_pay_order_zfb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/icon_pay_normail" />
                 </LinearLayout>
 
                 <View
@@ -191,8 +221,11 @@
                     android:background="@color/light_gray" />
 
                 <LinearLayout
+                    android:id="@+id/pay_order_ye"
+                    android:clickable="true"
+                    android:layout_height="60dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:orientation="horizontal"
                     android:paddingLeft="17dp"
                     android:paddingRight="15dp">
 
@@ -201,15 +234,41 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/icon_pay_last" />
 
-                    <TextView
-                        android:id="@+id/pay_order_ye"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:drawableRight="@drawable/icon_pay_normail"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="10dp"
-                        android:text="余额" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="10dp"
+                            android:text="余额" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="10dp"
+                            android:text="使用余额支付"
+                            android:textColor="@color/app_title_gb"
+                            android:textSize="@dimen/small_text_size" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/img_pay_order_ye"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/icon_pay_normail" />
                 </LinearLayout>
 
                 <View

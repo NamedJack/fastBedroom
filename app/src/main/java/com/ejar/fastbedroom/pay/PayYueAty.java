@@ -14,6 +14,7 @@ import com.ejar.fastbedroom.application.APP;
 import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyYuEPayBinding;
+import com.ejar.fastbedroom.home.HomeActivity;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.pay.bean.YuEBean;
 import com.ejar.fastbedroom.utils.AppManager;
@@ -53,9 +54,12 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                             @Override
                             public void _doNext(BaseBean baseBean) {
                                 if (baseBean.getCode().equals("200")) {
-                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_sucess);
-                                    bindingView.tvPay.setText("支付成功");
-                                    bindingView.yuEPay.setVisibility(View.GONE);
+//                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_sucess);
+//                                    bindingView.tvPay.setText("支付成功");
+//                                    bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT(""+ baseBean.getMsg());
+                                    openNextActivity(HomeActivity.class);
+                                    AppManager.backToHome();
                                 } else if (baseBean.getCode().equals("201")) {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
@@ -82,9 +86,12 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
                             @Override
                             public void _doNext(BaseBean baseBean) {
                                 if (baseBean.getCode().equals("200")) {
-                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_sucess);
-                                    bindingView.tvPay.setText("支付成功");
-                                    bindingView.yuEPay.setVisibility(View.GONE);
+//                                    bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_sucess);
+//                                    bindingView.tvPay.setText("支付成功");
+//                                    bindingView.yuEPay.setVisibility(View.GONE);
+                                    TU.cT(""+ baseBean.getMsg());
+                                    openNextActivity(HomeActivity.class);
+                                    AppManager.backToHome();
                                 } else if (baseBean.getCode().equals("201")) {
                                     bindingView.imgPayTitle.setImageResource(R.drawable.img_paid_lose);
                                     bindingView.tvPay.setText("支付失败");
@@ -122,6 +129,6 @@ public class PayYueAty extends BaseActivity<AtyYuEPayBinding> {
         }
 
         bindingView.paidOrderNumber.setText("" + yuEBean.getOrderId());
-        bindingView.paidOderAddress.setText("收货地址：" + yuEBean.getArea() + yuEBean.getDoor());
+        bindingView.paidOderAddress.setText("收货地址：" +  yuEBean.getDoor());
     }
 }

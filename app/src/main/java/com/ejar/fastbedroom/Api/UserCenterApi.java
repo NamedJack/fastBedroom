@@ -20,7 +20,9 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -196,14 +198,14 @@ public interface UserCenterApi {
 
     /**
      * 实名认证
-     * @param userMaps
+     *
      * @return
      */
-    @Multipart
-    @POST("pub/realNameAuthentication")
-    Observable<BaseBean> postCertification(@QueryMap Map<String , String> userMaps,
-                                         @Part List<MultipartBody.Part> files);
 
+    @POST("pub/realNameAuthentication")
+    Observable<BaseBean> postCertification(@Body RequestBody Body);
+//    Observable<BaseBean> postCertification(@QueryMap Map<String , String> userMaps,
+//                                           @Part List<MultipartBody.Part> files);
 
     /**
      * 修改用户头像
@@ -285,7 +287,8 @@ public interface UserCenterApi {
     @POST("pub/evaluation")
     Observable<MoneyDetailBean> getMoneyDetail(@Field("token") String token,
                                                @Field("years") int year,
-                                               @Field("month") int month);
+                                               @Field("month") int month,
+                                               @Field("pageNo") int pageNo);
 
     /**
      * 校园动态图片

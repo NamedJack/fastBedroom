@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.base.frg.BaseFragment;
 import com.ejar.baseframe.baseAdapter.MyRecyclerViewAdapter;
 import com.ejar.baseframe.baseAdapter.MyViewHolder;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
-import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.HomeAtyApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
@@ -23,6 +20,10 @@ import com.ejar.fastbedroom.databinding.FrgMessageBinding;
 import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.message.bean.MessageBean;
 import com.ejar.fastbedroom.mystore.banner.GlideImageLoader;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.utils.TU;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -45,6 +46,13 @@ public class MessageFrg extends BaseFragment<FrgMessageBinding> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getMessage();
+        bindingView.messageSf.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                getMessage();
+                bindingView.messageSf.finishRefresh();
+            }
+        });
     }
 
     private void getMessage() {

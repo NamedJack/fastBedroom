@@ -105,7 +105,10 @@ public class MyStoreFragment extends BaseFragment<FrgNotPaidBinding> {
                         Button payBtn = holder.getView(R.id.get_order_cancel);
                         payBtn.setVisibility(View.INVISIBLE);
                         Button cancelBtn = holder.getView(R.id.get_order_pay);
-                        cancelBtn.setVisibility(View.INVISIBLE);
+                        cancelBtn.setText("取消订单");
+                        holder.setOnClickListener(R.id.get_order_pay, v -> {
+                            cancelPaidOrder(list.get(position).getId(), position);
+                        });
                         break;
                     case "已支付":
                         holder.setText(R.id.get_order_send_name, "接单人: " + list.get(position).getCurierName());
@@ -130,6 +133,7 @@ public class MyStoreFragment extends BaseFragment<FrgNotPaidBinding> {
         bindingView.rvGoodsInfo.setLayoutManager(new LinearLayoutManager(getContext()));
         bindingView.rvGoodsInfo.setAdapter(adapter);
     }
+
 
     private void setLoadMore(String data) {
         bindingView.frgSm.setEnableLoadmore(true);
@@ -240,6 +244,27 @@ public class MyStoreFragment extends BaseFragment<FrgNotPaidBinding> {
 
 
     /***************************未接单*************************************/
+    private void cancelPaidOrder(int id, int position) {
+        NetRequest.getInstance(UrlConfig.baseUrl).create(AllOrderInfoApi.class)
+                .storeCancelOder(APP.token, id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MyBaseObserver<BaseBean>(getContext(), true, "取消中...") {
+                    @Override
+                    public void _doNext(BaseBean baseBean) {
+                        if (baseBean.getCode().equals("200")) {
+                            list.remove(position);
+                            adapter.notifyDataSetChanged();
+                        } else if (baseBean.getCode().equals(UrlConfig.logoutCodeOne)) {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(intent);
+                            AppManager.removeAllAty();
+                        } else {
+                            TU.cT("" + baseBean.getMsg());
+                        }
+                    }
+                });
+    }
 
     /***************************待收货************************************/
 

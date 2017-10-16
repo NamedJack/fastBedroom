@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.baseframe.base.frg.BaseFragment;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
@@ -27,6 +26,7 @@ import com.ejar.fastbedroom.personal.aty.MoneyDetailAty;
 import com.ejar.fastbedroom.personal.aty.PersonInfoAty;
 import com.ejar.fastbedroom.personal.bean.UserInfoBean;
 import com.ejar.fastbedroom.useraddr.UserAddrAty;
+import com.ejar.fastbedroom.utils.AppManager;
 import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,9 +69,9 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
                         if (userInfoBean.getCode().equals("200")) {
                             setPersonMessage(userInfoBean);
                         } else if (userInfoBean.getCode().equals(UrlConfig.logoutCodeOne)) {
-                            AppManager.removeAllAty();
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
+                            AppManager.removeAllAty();
                         } else {
                             TU.cT(userInfoBean.getMsg());
                         }
@@ -157,6 +157,7 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
                 startActivity(intent);
                 break;
             case R.id.person_certification://实名认证
+//                TU.cT("正在开发中...");
                 intent = new Intent(getActivity(), CertificationAty.class);
                 startActivity(intent);
                 break;
@@ -176,6 +177,12 @@ public class PersonFrg extends BaseFragment<FrgPersonBinding> {
             case R.id.person_money_detail://收支明细
                 intent = new Intent(getActivity(), MoneyDetailAty.class);
                 startActivity(intent);
+                break;
+            case R.id.person_my_second_hand:
+                TU.cT("正在开发中...");
+                break;
+            case R.id.person_add_second_hand:
+                TU.cT("正在开发中...");
                 break;
         }
     };

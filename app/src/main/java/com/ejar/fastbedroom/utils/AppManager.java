@@ -44,6 +44,15 @@ public class AppManager {
         activityStruct.clear();
         SpUtils.put(APP.getContext(),"token","");
     }
+    public static void backToHome() {
+        for (Activity activity : activityStruct) {
+            if (activity != null) {
+                activity.finish();
+            }
+        }
+        activityStruct.clear();
+//        SpUtils.put(APP.getContext(),"token","");
+    }
 
 
 

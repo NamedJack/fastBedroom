@@ -115,7 +115,7 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
     /****************************Title***********************************/
 
     private void initTitle() {
-        setTitle("填写订单");
+        setTitle("确认订单");
         setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {
             finish();
@@ -155,23 +155,25 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
 
 
     View.OnClickListener clickListener = v -> {
-        Drawable drawableRight = getResources().getDrawable(R.drawable.icon_pay_choose);
-        drawableRight.setBounds(0, 0, drawableRight.getMinimumWidth(), drawableRight.getMinimumHeight());
+//        Drawable drawableRight = getResources().getDrawable(R.drawable.icon_pay_choose);
+//        drawableRight.setBounds(0, 0, drawableRight.getMinimumWidth(), drawableRight.getMinimumHeight());
         switch (v.getId()) {
             case R.id.pay_order_zfb:
                 setDefaultDrawable();
-                bindingView.payOrderZfb.setCompoundDrawables(null, null, drawableRight, null);
+                bindingView.imgPayOrderZfb.setImageResource(R.drawable.icon_pay_choose);
+//                bindingView.payOrderZfb.setCompoundDrawables(null, null, drawableRight, null);
                 payWay = 0x0001;
                 break;
             case R.id.pay_order_wx:
                 setDefaultDrawable();
-                bindingView.payOrderWx.setCompoundDrawables(null, null, drawableRight, null);
+//                bindingView.payOrderWx.setCompoundDrawables(null, null, drawableRight, null);
 //                TU.cT("");
                 payWay = 0x0002;
                 break;
             case R.id.pay_order_ye:
                 setDefaultDrawable();
-                bindingView.payOrderYe.setCompoundDrawables(null, null, drawableRight, null);
+                bindingView.imgPayOrderYe.setImageResource(R.drawable.icon_pay_choose);
+//                bindingView.payOrderYe.setCompoundDrawables(null, null, drawableRight, null);
                 payWay = 0x0003;
                 break;
 
@@ -213,16 +215,22 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
         String phone = (String) SpUtils.get(this, "defaultAddrTel", "");
         String area = (String) SpUtils.get(this, "defaultAddrArea", "");
         bindingView.payOderTime.setVisibility(View.GONE);
-
         bindingView.payOrderRv.setVisibility(View.GONE);
         bindingView.payOderTimeTop.setVisibility(View.GONE);
         bindingView.topView.setVisibility(View.GONE);
         bindingView.centerView.setVisibility(View.GONE);
-        bindingView.payOrderName.setText("收货人：" + name);
-        bindingView.payOrderPhone.setText("" + phone);
-        bindingView.payOrderAddress.setText("收货地址:" + area + door);
         bindingView.payOrderTips.setText("付款金额: ￥" + totalMoney + "元 含运费(" + sendPrice + ")");
         bindingView.payOrderTotal.setText("￥ " + totalMoney + "元 含运费(" + sendPrice + ")");
+        if(tag.equals("storeOrder")){
+            bindingView.payOrderName.setText("收货人：" + storeOrder.getAddress().getReceivename());
+            bindingView.payOrderPhone.setText("" + storeOrder.getAddress().getReceivetel());
+            bindingView.payOrderAddress.setText("收货地址:" + storeOrder.getAddress().getReceivesite());
+        }else {
+            bindingView.payOrderName.setText("收货人：" + name);
+            bindingView.payOrderPhone.setText("" + phone);
+            bindingView.payOrderAddress.setText("收货地址:" + area + door);
+        }
+
     }
 
     View.OnClickListener clickListener3 = v -> {
@@ -406,11 +414,13 @@ public class PayAty extends BaseActivity<AtyPayBinding> {
 
 
     private void setDefaultDrawable() {
-        Drawable drawableRight = getResources().getDrawable(R.drawable.icon_pay_normail);
-        drawableRight.setBounds(0, 0, drawableRight.getMinimumWidth(), drawableRight.getMinimumHeight());
-        bindingView.payOrderZfb.setCompoundDrawables(null, null, drawableRight, null);
-        bindingView.payOrderWx.setCompoundDrawables(null, null, drawableRight, null);
-        bindingView.payOrderYe.setCompoundDrawables(null, null, drawableRight, null);
+        bindingView.imgPayOrderYe.setImageResource(R.drawable.icon_pay_normail);
+        bindingView.imgPayOrderZfb.setImageResource(R.drawable.icon_pay_normail);
+//        Drawable drawableRight = getResources().getDrawable(R.drawable.icon_pay_normail);
+//        drawableRight.setBounds(0, 0, drawableRight.getMinimumWidth(), drawableRight.getMinimumHeight());
+//        bindingView.payOrderZfb.setCompoundDrawables(null, null, drawableRight, null);
+//        bindingView.payOrderWx.setCompoundDrawables(null, null, drawableRight, null);
+//        bindingView.payOrderYe.setCompoundDrawables(null, null, drawableRight, null);
     }
 
     private Handler handler = new Handler() {

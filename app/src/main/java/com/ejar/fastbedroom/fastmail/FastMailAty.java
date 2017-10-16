@@ -13,21 +13,21 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.baseframe.utils.net.MyBaseObserver;
 import com.ejar.baseframe.utils.net.NetRequest;
 import com.ejar.baseframe.utils.sp.SpUtils;
-import com.ejar.fastbedroom.login.LoginActivity;
-import com.ejar.fastbedroom.utils.AppManager;
-import com.ejar.fastbedroom.utils.TU;
 import com.ejar.fastbedroom.Api.UserCenterApi;
 import com.ejar.fastbedroom.R;
 import com.ejar.fastbedroom.application.APP;
+import com.ejar.fastbedroom.base.BaseActivity;
 import com.ejar.fastbedroom.config.UrlConfig;
 import com.ejar.fastbedroom.databinding.AtyFastMailBinding;
 import com.ejar.fastbedroom.fastmail.bean.PostMailBean;
+import com.ejar.fastbedroom.login.LoginActivity;
 import com.ejar.fastbedroom.pay.PayAty;
 import com.ejar.fastbedroom.useraddr.UserAddrAty;
+import com.ejar.fastbedroom.utils.AppManager;
+import com.ejar.fastbedroom.utils.TU;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -99,6 +99,7 @@ public class FastMailAty extends BaseActivity<AtyFastMailBinding> {
         setHomeBackIcon(R.drawable.icon_back_buy_car);
         setNavigationOnClickListener(v -> {finish();});
         ll = (LinearLayout) findViewById(R.id.mail_code_rl);
+        SpUtils.put(this, "mailName", "");
     }
 
     View.OnClickListener clickListener = v -> {
